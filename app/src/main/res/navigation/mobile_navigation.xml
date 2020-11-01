@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_persons"
+        android:name="com.example.alf.ui.persons.PersonsFragment"
+        android:label="@string/menu_persons"
+        tools:layout="@layout/fragment_persons" />
+
+    <fragment
         android:id="@+id/nav_matches"
         android:name="com.example.alf.ui.matches.MatchesFragment"
         android:label="@string/menu_matches"
@@ -23,9 +29,4 @@
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.alf.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 </navigation>
