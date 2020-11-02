@@ -1,13 +1,15 @@
 package com.example.alf.ui.persons;
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.alf.R
-import com.squareup.picasso.Picasso
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,7 +19,9 @@ class PersonsAdapter(var listener: PersonListener) :
 
     companion object {
         const val personsImagesUrl: String = "https://storage.googleapis.com/alf-dev/person/"
+        const val flagsImagesUrl: String = "https://storage.googleapis.com/alf-dev/country/"
         const val personsImagesExtension: String = ".jpg"
+        const val flagsImagesExtension: String = ".svg"
     }
 
     private var persons: ArrayList<PersonModel>? = null
@@ -41,6 +45,7 @@ class PersonsAdapter(var listener: PersonListener) :
         var patronymicTextView: TextView? = null
         var lastNameTextView: TextView? = null
         var birthDateTextView: TextView? = null
+        var flagImageView: ImageView? = null
 
         init {
             photoImageView = itemView.findViewById(R.id.photo)
@@ -48,6 +53,7 @@ class PersonsAdapter(var listener: PersonListener) :
             patronymicTextView = itemView.findViewById(R.id.patronymic)
             lastNameTextView = itemView.findViewById(R.id.last_name)
             birthDateTextView = itemView.findViewById(R.id.birth_date)
+            flagImageView = itemView.findViewById(R.id.flag)
         }
     }
 
@@ -77,14 +83,18 @@ class PersonsAdapter(var listener: PersonListener) :
         holder.birthDateTextView?.text = if (person?.birthDate == null) "" else
             SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(person.birthDate)
         // load photo
-        val imageUrl = personsImagesUrl + person?.id + personsImagesExtension
-        val picasso: Picasso = Picasso.get()
-        picasso.isLoggingEnabled = true
-        picasso
-            .load(imageUrl)
-            .placeholder(R.color.white)
-            .error(R.drawable.ic_launcher_foreground)
-            .into(holder.photoImageView);
+        val photoImageUrl = personsImagesUrl + person?.id + personsImagesExtension
+        holder.photoImageView?.context?.let {
+            Glide
+                .with(it)
+                .load(photoImageUrl)
+                .placeholder(android.R.color.darker_gray)
+                .error(android.R.color.holo_red_dark)
+                .into(holder.photoImageView!!)
+        };
+        // load flag
+        val flagImageUrl = flagsImagesUrl + person?.country?.name?.toLowerCase(Locale.ROOT) + flagsImagesExtension
+        GlideToVectorYou.init().with(holder.photoImageView?.context).load(Uri.parse(flagImageUrl), holder.flagImageView);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

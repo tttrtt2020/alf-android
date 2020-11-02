@@ -55,6 +55,12 @@
                 android:text="Birth date"
                 android:textSize="16sp" />
 
+            <ImageView
+                android:id="@+id/flag"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:adjustViewBounds="true" />
+
         </LinearLayout>
 
     </RelativeLayout>
