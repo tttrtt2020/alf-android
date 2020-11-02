@@ -29,8 +29,12 @@ class PersonsViewModel(application: Application) : AndroidViewModel(application)
         deletePersonLiveData = MutableLiveData()*/
     }
 
-    fun fetchAllPersons() {
+    /*fun fetchAllPersons() {
         personModelListLiveData = personRepository?.fetchAllPersons()
+    }*/
+
+    fun fetchPersonsByQuery(query: String) {
+        personModelListLiveData = personRepository?.fetchPersonsByQuery(query)
     }
 
     /*fun createPerson(personModel: PersonModel) {

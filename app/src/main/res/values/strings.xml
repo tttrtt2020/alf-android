@@ -11,4 +11,6 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_persons">Persons</string>
     <string name="menu_matches">Matches</string>
+    <string name="search_title">Search title</string>
+    <string name="search_hint">Search</string>
 </resources>

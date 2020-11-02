@@ -16,33 +16,25 @@ class PersonRepository {
         apiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
     }
 
-    fun fetchAllPersons(): LiveData<List<PersonModel>> {
+    fun fetchPersonsByQuery(query: String): LiveData<List<PersonModel>> {
         val data = MutableLiveData<List<PersonModel>>()
 
-        //apiInterface?.fetchAllPersons()?.enqueue(object : Callback<List<PersonModel>> {
-        apiInterface?.fetchAllPersons()?.enqueue(object : Callback<PersonsPageModel> {
+        apiInterface?.fetchPersonsPageByQuery(query)?.enqueue(object : Callback<PersonsPageModel> {
 
-            //override fun onFailure(call: Call<List<PersonModel>>, t: Throwable) {
             override fun onFailure(call: Call<PersonsPageModel>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                //call: Call<List<PersonModel>>,
                 call: Call<PersonsPageModel>,
-                //response: Response<List<PersonModel>>
                 response: Response<PersonsPageModel>
             ) {
-
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    //data.value = res
-                    //data.value = res.content?.persons
                     data.value = res.content
                 } else {
                     data.value = null
                 }
-
             }
         })
 

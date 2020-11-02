@@ -30,10 +30,6 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
         personsViewModel =
             ViewModelProvider(this).get(PersonsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_persons, container, false)
-        /*val textView: TextView = root.findViewById(R.id.text_persons)
-        personsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })*/
 
         progressBar = root.findViewById(R.id.persons_progress)
         recyclerView = root.findViewById(R.id.persons_recycler_view)
@@ -41,7 +37,8 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
         //initAdapter()
 
         //personsViewModel = ViewModelProvider(this)[PersonsViewModel::class.java]
-        personsViewModel.fetchAllPersons()
+        //personsViewModel.fetchAllPersons()
+        personsViewModel.fetchPersonsByQuery("")
         personsViewModel.personModelListLiveData?.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 recyclerView.visibility = View.VISIBLE
@@ -58,10 +55,8 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
-
             // use a linear layout manager
             layoutManager = viewManager
-
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
         }
@@ -75,5 +70,18 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
 
     override fun onItemDeleted(personModel: PersonModel, position: Int) {
         TODO("Not yet implemented")
+    }
+
+    fun search(query: String) {
+        personsViewModel.fetchPersonsByQuery(query)
+        personsViewModel.personModelListLiveData?.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                recyclerView.visibility = View.VISIBLE
+                viewAdapter.setPersons(it as ArrayList<PersonModel>)
+            } else {
+                showToast("Something went wrong")
+            }
+            progressBar.visibility = View.GONE
+        })
     }
 }
