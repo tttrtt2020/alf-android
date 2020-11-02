@@ -4,28 +4,76 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
 
-class PersonsFragment : Fragment() {
+class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
 
     private lateinit var personsViewModel: PersonsViewModel
 
+    private lateinit var progressBar: ProgressBar
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: PersonsAdapter
+    private lateinit var viewManager: RecyclerView.LayoutManager
+
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         personsViewModel =
-                ViewModelProvider(this).get(PersonsViewModel::class.java)
+            ViewModelProvider(this).get(PersonsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_persons, container, false)
-        val textView: TextView = root.findViewById(R.id.text_persons)
+        /*val textView: TextView = root.findViewById(R.id.text_persons)
         personsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
+        })*/
+
+        progressBar = root.findViewById(R.id.persons_progress)
+        recyclerView = root.findViewById(R.id.persons_recycler_view)
+
+        //initAdapter()
+
+        //personsViewModel = ViewModelProvider(this)[PersonsViewModel::class.java]
+        personsViewModel.fetchAllPersons()
+        personsViewModel.personModelListLiveData?.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                recyclerView.visibility = View.VISIBLE
+                viewAdapter.setPersons(it as ArrayList<PersonModel>)
+            } else {
+                showToast("Something went wrong")
+            }
+            progressBar.visibility = View.GONE
         })
+
+        viewAdapter = PersonsAdapter(this)
+        viewManager = LinearLayoutManager(context);
+        recyclerView.apply {
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            setHasFixedSize(true)
+
+            // use a linear layout manager
+            layoutManager = viewManager
+
+            // specify an viewAdapter (see also next example)
+            adapter = viewAdapter
+        }
+
         return root
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemDeleted(personModel: PersonModel, position: Int) {
+        TODO("Not yet implemented")
     }
 }
