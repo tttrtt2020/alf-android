@@ -4,7 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.alf.data.model.PersonModel
+import com.example.alf.data.repository.PersonRepository
 
 /*
 class PersonsViewModel : ViewModel() {

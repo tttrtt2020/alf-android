@@ -1,7 +1,7 @@
 package com.example.alf.network
 
-import com.example.alf.ui.events.EventModel
-import com.example.alf.ui.persons.PersonsPageModel
+import com.example.alf.data.model.EventModel
+import com.example.alf.data.model.PersonsPageModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

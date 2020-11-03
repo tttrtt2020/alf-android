@@ -1,14 +1,16 @@
-package com.example.alf.ui.events
+package com.example.alf.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.alf.data.model.PersonModel
 import com.example.alf.network.ApiClient
 import com.example.alf.network.ApiInterface
+import com.example.alf.data.model.PersonsPageModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EventRepository {
+class PersonRepository {
 
     private var apiInterface: ApiInterface? = null
 
@@ -16,22 +18,22 @@ class EventRepository {
         apiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
     }
 
-    fun fetchAllEvents(): LiveData<List<EventModel>> {
-        val data = MutableLiveData<List<EventModel>>()
+    fun fetchPersonsByQuery(query: String): LiveData<List<PersonModel>> {
+        val data = MutableLiveData<List<PersonModel>>()
 
-        apiInterface?.fetchAllEvents()?.enqueue(object : Callback<List<EventModel>> {
+        apiInterface?.fetchPersonsPageByQuery(query)?.enqueue(object : Callback<PersonsPageModel> {
 
-            override fun onFailure(call: Call<List<EventModel>>, t: Throwable) {
+            override fun onFailure(call: Call<PersonsPageModel>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                call: Call<List<EventModel>>,
-                response: Response<List<EventModel>>
+                    call: Call<PersonsPageModel>,
+                    response: Response<PersonsPageModel>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    data.value = res
+                    data.value = res.content
                 } else {
                     data.value = null
                 }
@@ -39,17 +41,18 @@ class EventRepository {
         })
 
         return data
+
     }
 
-    /*fun createEvent(eventModel: EventModel):LiveData<EventModel>{
-        val data = MutableLiveData<EventModel>()
+    /*fun createPerson(personModel: PersonModel):LiveData<PersonModel>{
+        val data = MutableLiveData<PersonModel>()
 
-        apiInterface?.createEvent(eventModel)?.enqueue(object : Callback<EventModel>{
-            override fun onFailure(call: Call<EventModel>, t: Throwable) {
+        apiInterface?.createPerson(personModel)?.enqueue(object : Callback<PersonModel>{
+            override fun onFailure(call: Call<PersonModel>, t: Throwable) {
                 data.value = null
             }
 
-            override fun onResponse(call: Call<EventModel>, response: Response<EventModel>) {
+            override fun onResponse(call: Call<PersonModel>, response: Response<PersonModel>) {
                 val res = response.body()
                 if (response.code() == 201 && res!=null){
                     data.value = res
@@ -63,10 +66,10 @@ class EventRepository {
 
     }
 
-    fun deleteEvent(id:Int):LiveData<Boolean>{
+    fun deletePerson(id:Int):LiveData<Boolean>{
         val data = MutableLiveData<Boolean>()
 
-        apiInterface?.deleteEvent(id)?.enqueue(object : Callback<String>{
+        apiInterface?.deletePerson(id)?.enqueue(object : Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 data.value = false
             }

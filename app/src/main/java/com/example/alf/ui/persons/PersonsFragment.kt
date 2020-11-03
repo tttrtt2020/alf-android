@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
+import com.example.alf.data.model.PersonModel
 
 class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
 

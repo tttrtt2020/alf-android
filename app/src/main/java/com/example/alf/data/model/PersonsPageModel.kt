@@ -1,4 +1,4 @@
-package com.example.alf.ui.persons
+package com.example.alf.data.model
 
 class PersonsPageModel {
 
