@@ -1,8 +1,6 @@
 package com.example.alf.network
 
-import com.example.alf.data.model.EventModel
-import com.example.alf.data.model.PersonModel
-import com.example.alf.data.model.PersonsPageModel
+import com.example.alf.data.model.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,6 +15,12 @@ interface ApiInterface {
 
     @GET("persons/{id}")
     fun fetchPersonById(@Path("id") id: Int): Call<PersonModel>
+
+    @GET("matches?sort=dateTime,desc")
+    fun fetchMatchesPage(): Call<MatchesPageModel>
+
+    @GET("matches/{id}")
+    fun fetchMatchById(@Path("id") id: Int): Call<MatchModel>
 
     @GET("events")
     fun fetchAllEvents(): Call<List<EventModel>>

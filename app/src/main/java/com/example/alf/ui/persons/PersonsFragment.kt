@@ -29,8 +29,7 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        personsViewModel =
-            ViewModelProvider(this).get(PersonsViewModel::class.java)
+        personsViewModel = ViewModelProvider(this).get(PersonsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_persons, container, false)
 
         progressBar = root.findViewById(R.id.persons_progress)
