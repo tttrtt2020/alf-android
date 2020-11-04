@@ -29,6 +29,8 @@ class PersonsAdapter(var listener: PersonListener) :
 
     interface PersonListener {
         fun onItemDeleted(personModel: PersonModel, position: Int)
+
+        fun onItemClick(personModel: PersonModel, position: Int)
     }
 
     fun setPersons(list: ArrayList<PersonModel>) {
@@ -96,6 +98,12 @@ class PersonsAdapter(var listener: PersonListener) :
         // load flag
         val flagImageUrl = flagsImagesUrl + person?.country?.name?.toLowerCase(Locale.ROOT) + flagsImagesExtension
         GlideToVectorYou.init().with(holder.photoImageView?.context).load(Uri.parse(flagImageUrl), holder.flagImageView);
+
+        holder.itemView.setOnClickListener {
+            if (person != null) {
+                listener.onItemClick(person, position)
+            }
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

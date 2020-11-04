@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
@@ -62,6 +63,16 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
             adapter = viewAdapter
         }
 
+        /*val rvAdapter = RepoListAdapter(
+                dataBindingComponent = dataBindingComponent,
+                appExecutors = appExecutors,
+                showFullName = true
+        ) { repo ->
+            findNavController().navigate(
+                    PersonsFragmentDirections.showRepo(repo.owner.login, repo.name)
+            )
+        }*/
+
         return root
     }
 
@@ -71,6 +82,13 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
 
     override fun onItemDeleted(personModel: PersonModel, position: Int) {
         TODO("Not yet implemented")
+    }
+
+    override fun onItemClick(personModel: PersonModel, position: Int) {
+        val action = personModel.id?.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(personId = it) }
+        if (action != null) {
+            findNavController().navigate(action)
+        }
     }
 
     fun search(query: String) {

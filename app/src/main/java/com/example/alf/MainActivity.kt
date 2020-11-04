@@ -67,17 +67,18 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        return true
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
 
         var personsFragment: PersonsFragment = supportFragmentManager.fragments[0]
             .childFragmentManager.fragments[0] as PersonsFragment
 
-        if (newText != null) {
-            personsFragment.search(newText)
+        if (query != null) {
+            personsFragment.search(query)
         }
+
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
 
         return true
     }

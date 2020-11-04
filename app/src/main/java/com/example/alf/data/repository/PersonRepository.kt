@@ -44,6 +44,31 @@ class PersonRepository {
 
     }
 
+    fun fetchPersonById(id: Int): LiveData<PersonModel>? {
+        val data = MutableLiveData<PersonModel>()
+
+        apiInterface?.fetchPersonById(id)?.enqueue(object : Callback<PersonModel> {
+
+            override fun onFailure(call: Call<PersonModel>, t: Throwable) {
+                data.value = null
+            }
+
+            override fun onResponse(
+                call: Call<PersonModel>,
+                response: Response<PersonModel>
+            ) {
+                val res = response.body()
+                if (response.code() == 200 && res != null) {
+                    data.value = res
+                } else {
+                    data.value = null
+                }
+            }
+        })
+
+        return data
+    }
+
     /*fun createPerson(personModel: PersonModel):LiveData<PersonModel>{
         val data = MutableLiveData<PersonModel>()
 
