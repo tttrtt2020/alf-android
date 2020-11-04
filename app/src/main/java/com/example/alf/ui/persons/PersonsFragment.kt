@@ -36,7 +36,11 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
         progressBar = root.findViewById(R.id.persons_progress)
         recyclerView = root.findViewById(R.id.persons_recycler_view)
 
-        //initAdapter()
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //personsViewModel = ViewModelProvider(this)[PersonsViewModel::class.java]
         //personsViewModel.fetchAllPersons()
@@ -62,18 +66,6 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
         }
-
-        /*val rvAdapter = RepoListAdapter(
-                dataBindingComponent = dataBindingComponent,
-                appExecutors = appExecutors,
-                showFullName = true
-        ) { repo ->
-            findNavController().navigate(
-                    PersonsFragmentDirections.showRepo(repo.owner.login, repo.name)
-            )
-        }*/
-
-        return root
     }
 
     private fun showToast(msg: String) {
