@@ -12,7 +12,7 @@ import com.example.alf.data.model.MatchModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchesAdapter(var listener: MatchesAdapter.MatchListener) :
+class MatchesAdapter(var listener: MatchListener) :
         RecyclerView.Adapter<MatchesAdapter.ViewHolder>() {
 
     companion object {
@@ -59,10 +59,7 @@ class MatchesAdapter(var listener: MatchesAdapter.MatchListener) :
 
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MatchesAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // create a new view
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_match, parent, false) as View
@@ -94,7 +91,7 @@ class MatchesAdapter(var listener: MatchesAdapter.MatchListener) :
                 .placeholder(android.R.color.darker_gray)
                 .error(android.R.color.holo_red_dark)
                 .into(holder.hostLogoImageView!!)
-        };
+        }
         val guestLogoImageUrl = clubLogosUrl + match?.guestMatchTeam?.team?.club?.id + clubLogosExtension
         holder.guestLogoImageView?.context?.let {
             Glide
@@ -103,7 +100,13 @@ class MatchesAdapter(var listener: MatchesAdapter.MatchListener) :
                 .placeholder(android.R.color.darker_gray)
                 .error(android.R.color.holo_red_dark)
                 .into(holder.guestLogoImageView!!)
-        };
+        }
+
+        holder.itemView.setOnClickListener {
+            if (match != null) {
+                listener.onItemClick(match, position)
+            }
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

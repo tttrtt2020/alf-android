@@ -62,10 +62,7 @@ class PersonsAdapter(var listener: PersonListener) :
 
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): PersonsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // create a new view
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_person, parent, false) as View
@@ -94,10 +91,10 @@ class PersonsAdapter(var listener: PersonListener) :
                 .placeholder(android.R.color.darker_gray)
                 .error(android.R.color.holo_red_dark)
                 .into(holder.photoImageView!!)
-        };
+        }
         // load flag
         val flagImageUrl = flagsImagesUrl + person?.country?.name?.toLowerCase(Locale.ROOT) + flagsImagesExtension
-        GlideToVectorYou.init().with(holder.photoImageView?.context).load(Uri.parse(flagImageUrl), holder.flagImageView);
+        GlideToVectorYou.init().with(holder.photoImageView?.context).load(Uri.parse(flagImageUrl), holder.flagImageView)
 
         holder.itemView.setOnClickListener {
             if (person != null) {

@@ -44,7 +44,7 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
         //personsViewModel = ViewModelProvider(this)[PersonsViewModel::class.java]
         //personsViewModel.fetchAllPersons()
         personsViewModel.fetchPersonsByQuery("")
-        personsViewModel.personModelListLiveData?.observe(viewLifecycleOwner, Observer {
+        personsViewModel.personModelListLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
                 recyclerView.visibility = View.VISIBLE
                 viewAdapter.setPersons(it as ArrayList<PersonModel>)
@@ -55,7 +55,7 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
         })
 
         viewAdapter = PersonsAdapter(this)
-        viewManager = LinearLayoutManager(context);
+        viewManager = LinearLayoutManager(context)
         recyclerView.apply {
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
@@ -76,15 +76,13 @@ class PersonsFragment : Fragment(), PersonsAdapter.PersonListener {
     }
 
     override fun onItemClick(personModel: PersonModel, position: Int) {
-        val action = personModel.id?.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(personId = it) }
-        if (action != null) {
-            findNavController().navigate(action)
-        }
+        val action = personModel.id.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(personId = it) }
+        findNavController().navigate(action)
     }
 
     fun search(query: String) {
         personsViewModel.fetchPersonsByQuery(query)
-        personsViewModel.personModelListLiveData?.observe(viewLifecycleOwner, Observer {
+        personsViewModel.personModelListLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
                 recyclerView.visibility = View.VISIBLE
                 viewAdapter.setPersons(it as ArrayList<PersonModel>)

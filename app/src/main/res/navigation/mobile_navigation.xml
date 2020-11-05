@@ -25,7 +25,11 @@
         android:id="@+id/nav_matches"
         android:name="com.example.alf.ui.matches.MatchesFragment"
         android:label="@string/menu_matches"
-        tools:layout="@layout/fragment_matches" />
+        tools:layout="@layout/fragment_matches" >
+        <action
+            android:id="@+id/action_nav_matches_to_matchFragment"
+            app:destination="@id/matchFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -40,8 +44,16 @@
         tools:layout="@layout/fragment_person" >
         <argument
             android:name="personId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/matchFragment"
+        android:name="com.example.alf.ui.match.MatchFragment"
+        android:label="fragment_match"
+        tools:layout="@layout/fragment_match" >
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

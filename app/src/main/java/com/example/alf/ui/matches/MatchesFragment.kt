@@ -9,10 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
 import com.example.alf.data.model.MatchModel
+import com.example.alf.ui.persons.PersonsFragmentDirections
 
 class MatchesFragment : Fragment(), MatchesAdapter.MatchListener {
 
@@ -41,7 +43,7 @@ class MatchesFragment : Fragment(), MatchesAdapter.MatchListener {
         super.onViewCreated(view, savedInstanceState)
 
         matchesViewModel.fetchAllMatches()
-        matchesViewModel.matchModelListLiveData?.observe(viewLifecycleOwner, Observer {
+        matchesViewModel.matchModelListLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
                 recyclerView.visibility = View.VISIBLE
                 viewAdapter.setMatches(it as ArrayList<MatchModel>)
@@ -52,7 +54,7 @@ class MatchesFragment : Fragment(), MatchesAdapter.MatchListener {
         })
 
         viewAdapter = MatchesAdapter(this)
-        viewManager = LinearLayoutManager(context);
+        viewManager = LinearLayoutManager(context)
         recyclerView.apply {
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
@@ -73,6 +75,7 @@ class MatchesFragment : Fragment(), MatchesAdapter.MatchListener {
     }
 
     override fun onItemClick(matchModel: MatchModel, position: Int) {
-        TODO("Not yet implemented")
+        val action = matchModel.id.let { MatchesFragmentDirections.actionNavMatchesToMatchFragment(matchId = it) }
+        findNavController().navigate(action)
     }
 }

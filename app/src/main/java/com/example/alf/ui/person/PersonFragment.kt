@@ -29,7 +29,7 @@ class PersonFragment : Fragment() {
     private lateinit var heightTextView: TextView
     private lateinit var weightTextView: TextView
 
-    val args: PersonFragmentArgs by navArgs()
+    private val args: PersonFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,13 +51,17 @@ class PersonFragment : Fragment() {
 
         personViewModel = ViewModelProvider(this)[PersonViewModel::class.java]
         personViewModel.fetchPersonById(args.personId)
-        personViewModel.personModelLiveData?.observe(viewLifecycleOwner, Observer {
+        personViewModel.personModelLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
                 firstNameTextView.text = it.firstName
                 patronymicTextView.text = it.patronymic
                 lastNameTextView.text = it.lastName
                 if (it.birthDate != null) {
-                    birthDateDatePicker.updateDate(it.birthDate.year, it.birthDate?.month, it.birthDate?.day)
+                    birthDateDatePicker.updateDate(
+                        it.birthDate.year,
+                        it.birthDate.month,
+                        it.birthDate.day
+                    )
                 }
                 countryTextView.text = it.country?.name
                 heightTextView.text = it.height.toString()
