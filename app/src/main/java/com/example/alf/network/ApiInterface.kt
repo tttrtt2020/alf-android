@@ -19,6 +19,9 @@ interface ApiInterface {
     @GET("matches?sort=dateTime,desc")
     fun fetchMatchesPage(): Call<MatchesPageModel>
 
+    @GET("matches?sort=dateTime,desc")
+    suspend fun fetchMatchesPage(@Query("page") page: Int): MatchesPageModel
+
     @GET("matches/{id}")
     fun fetchMatchById(@Path("id") id: Int): Call<MatchModel>
 

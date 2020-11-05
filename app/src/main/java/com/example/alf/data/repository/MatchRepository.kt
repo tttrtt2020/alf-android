@@ -12,24 +12,20 @@ import retrofit2.Response
 
 class MatchRepository {
 
-    private var apiInterface: ApiInterface? = null
-
-    init {
-        apiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
-    }
+    private var apiInterface: ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
 
     fun fetchMatches(): LiveData<List<MatchModel>> {
         val data = MutableLiveData<List<MatchModel>>()
 
-        apiInterface?.fetchMatchesPage()?.enqueue(object : Callback<MatchesPageModel> {
+        apiInterface.fetchMatchesPage().enqueue(object : Callback<MatchesPageModel> {
 
             override fun onFailure(call: Call<MatchesPageModel>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                    call: Call<MatchesPageModel>,
-                    response: Response<MatchesPageModel>
+                call: Call<MatchesPageModel>,
+                response: Response<MatchesPageModel>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
@@ -47,7 +43,7 @@ class MatchRepository {
     fun fetchMatchById(id: Int): LiveData<MatchModel>? {
         val data = MutableLiveData<MatchModel>()
 
-        apiInterface?.fetchMatchById(id)?.enqueue(object : Callback<MatchModel> {
+        apiInterface.fetchMatchById(id).enqueue(object : Callback<MatchModel> {
 
             override fun onFailure(call: Call<MatchModel>, t: Throwable) {
                 data.value = null
@@ -67,6 +63,10 @@ class MatchRepository {
         })
 
         return data
+    }
+
+    suspend fun fetchMatchesPage(nextPageNumber: Int): MatchesPageModel {
+        return apiInterface.fetchMatchesPage(nextPageNumber)
     }
 
     /*fun createMatch(personModel: MatchModel):LiveData<MatchModel>{

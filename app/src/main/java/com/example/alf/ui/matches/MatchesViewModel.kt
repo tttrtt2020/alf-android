@@ -4,7 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.alf.data.model.MatchModel
+import com.example.alf.data.paging.MatchesBackendService
+import com.example.alf.data.paging.MatchesPagingSource
 import com.example.alf.data.repository.MatchRepository
 
 class MatchesViewModel(application: Application) : AndroidViewModel(application) {
@@ -13,6 +19,10 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     var matchModelListLiveData: LiveData<List<MatchModel>>? = null
     /*var createMatchLiveData: LiveData<MatchModel>? = null
     var deleteMatchLiveData: LiveData<Boolean>? = null*/
+
+    val flow = Pager(PagingConfig(pageSize = 20)) {
+        MatchesPagingSource(MatchesBackendService())
+    }.flow.cachedIn(viewModelScope)
 
     init {
         matchRepository = MatchRepository()

@@ -7,30 +7,29 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
 import com.example.alf.data.model.MatchModel
-import com.example.alf.ui.persons.PersonsFragmentDirections
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class MatchesFragment : Fragment(), MatchesAdapter.MatchListener {
+class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
 
-    private lateinit var matchesViewModel: MatchesViewModel
+    private val matchesViewModel by viewModels<MatchesViewModel>()
 
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: MatchesAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewAdapter: MatchesPagingAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        matchesViewModel = ViewModelProvider(this).get(MatchesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_matches, container, false)
 
         progressBar = root.findViewById(R.id.matches_progress)
@@ -42,27 +41,15 @@ class MatchesFragment : Fragment(), MatchesAdapter.MatchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        matchesViewModel.fetchAllMatches()
-        matchesViewModel.matchModelListLiveData?.observe(viewLifecycleOwner, {
-            if (it != null) {
-                recyclerView.visibility = View.VISIBLE
-                viewAdapter.setMatches(it as ArrayList<MatchModel>)
-            } else {
-                showToast("Something went wrong")
-            }
-            progressBar.visibility = View.GONE
-        })
-
-        viewAdapter = MatchesAdapter(this)
-        viewManager = LinearLayoutManager(context)
+        viewAdapter = MatchesPagingAdapter(MatchesPagingAdapter.MatchModelComparator, this)
         recyclerView.apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-            setHasFixedSize(true)
-            // use a linear layout manager
-            layoutManager = viewManager
-            // specify an viewAdapter (see also next example)
+            layoutManager = LinearLayoutManager(context)
             adapter = viewAdapter
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            matchesViewModel.flow.collectLatest { pagingData ->
+                viewAdapter.submitData(pagingData)
+            }
         }
     }
 
