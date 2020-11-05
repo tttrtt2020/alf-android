@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.R
@@ -14,9 +16,8 @@ import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-class PersonsAdapter(var listener: PersonListener) :
-    RecyclerView.Adapter<PersonsAdapter.ViewHolder>() {
+class PersonsPagingAdapter(diffCallback: DiffUtil.ItemCallback<PersonModel>, var listener: PersonListener) :
+    PagingDataAdapter<PersonModel, PersonsPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
         const val personsImagesUrl: String = "https://storage.googleapis.com/alf-dev/person/"
@@ -25,17 +26,10 @@ class PersonsAdapter(var listener: PersonListener) :
         const val flagsImagesExtension: String = ".svg"
     }
 
-    private var persons: ArrayList<PersonModel>? = null
-
     interface PersonListener {
         fun onItemDeleted(personModel: PersonModel, position: Int)
 
         fun onItemClick(personModel: PersonModel, position: Int)
-    }
-
-    fun setPersons(list: ArrayList<PersonModel>) {
-        persons = list
-        notifyDataSetChanged()
     }
 
     // Provide a reference to the views for each data item
@@ -62,12 +56,8 @@ class PersonsAdapter(var listener: PersonListener) :
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create a new view
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_person, parent, false) as View
-        // set the view's size, margins, paddings and layout parameters
-        //val nameTextView = itemView.findViewById<TextView>(R.id.person_name)
-
         return ViewHolder(itemView)
     }
 
@@ -75,7 +65,7 @@ class PersonsAdapter(var listener: PersonListener) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        val person = persons?.get(position)
+        val person = getItem(position)
         holder.firstNameTextView?.text = person?.firstName
         holder.patronymicTextView?.text = person?.patronymic
         holder.lastNameTextView?.text = person?.lastName
@@ -102,7 +92,14 @@ class PersonsAdapter(var listener: PersonListener) :
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = persons?.size ?: 0
+    object PersonModelComparator : DiffUtil.ItemCallback<PersonModel>() {
+        override fun areItemsTheSame(oldItem: PersonModel, newItem: PersonModel): Boolean {
+            // Id is unique.
+            return oldItem.id == newItem.id
+        }
 
+        override fun areContentsTheSame(oldItem: PersonModel, newItem: PersonModel): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

@@ -8,10 +8,16 @@ import retrofit2.http.Query
 
 interface ApiInterface {
     @GET("persons")
-    fun fetchPersonsPage(@Query("page") page: Int): Call<PersonsPageModel>
+    fun fetchPersonsPage(): Call<PersonsPageModel>
 
     @GET("persons")
-    fun fetchPersonsPageByQuery(@Query("lastName") lastName: String): Call<PersonsPageModel>
+    suspend fun fetchPersonsPage(@Query("lastName") lastName: String, @Query("page") page: Int): PersonsPageModel
+
+    /*@GET("persons")
+    fun fetchPersonsPageByQuery(@Query("lastName") lastName: String): Call<PersonsPageModel>*/
+
+    @GET("persons")
+    suspend fun fetchPersonsPageByQuery(@Query("lastName") lastName: String): PersonsPageModel
 
     @GET("persons/{id}")
     fun fetchPersonById(@Path("id") id: Int): Call<PersonModel>

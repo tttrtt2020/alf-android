@@ -12,13 +12,9 @@ import retrofit2.Response
 
 class PersonRepository {
 
-    private var apiInterface: ApiInterface? = null
+    private var apiInterface: ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
 
-    init {
-        apiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
-    }
-
-    fun fetchPersonsByQuery(query: String): LiveData<List<PersonModel>> {
+    /*fun fetchPersonsByQuery(query: String): LiveData<List<PersonModel>> {
         val data = MutableLiveData<List<PersonModel>>()
 
         apiInterface?.fetchPersonsPageByQuery(query)?.enqueue(object : Callback<PersonsPageModel> {
@@ -42,12 +38,12 @@ class PersonRepository {
 
         return data
 
-    }
+    }*/
 
     fun fetchPersonById(id: Int): LiveData<PersonModel>? {
         val data = MutableLiveData<PersonModel>()
 
-        apiInterface?.fetchPersonById(id)?.enqueue(object : Callback<PersonModel> {
+        apiInterface.fetchPersonById(id).enqueue(object : Callback<PersonModel> {
 
             override fun onFailure(call: Call<PersonModel>, t: Throwable) {
                 data.value = null
@@ -67,6 +63,10 @@ class PersonRepository {
         })
 
         return data
+    }
+
+    suspend fun fetchPersonsPage(query: String, nextPageNumber: Int): PersonsPageModel {
+        return apiInterface.fetchPersonsPage(query, nextPageNumber)
     }
 
     /*fun createPerson(personModel: PersonModel):LiveData<PersonModel>{

@@ -31,10 +31,8 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
             savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_matches, container, false)
-
         progressBar = root.findViewById(R.id.matches_progress)
         recyclerView = root.findViewById(R.id.matches_recycler_view)
-
         return root
     }
 
