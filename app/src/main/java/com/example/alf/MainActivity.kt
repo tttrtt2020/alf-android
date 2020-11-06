@@ -68,11 +68,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextSubmit(query: String?): Boolean {
 
-        var personsFragment: PersonsFragment = supportFragmentManager.fragments[0]
+        val personsFragment: PersonsFragment = supportFragmentManager.fragments[0]
             .childFragmentManager.fragments[0] as PersonsFragment
 
         if (query != null) {
-            personsFragment.search(query)
+            personsFragment.doSearch(query)
         }
 
         return true

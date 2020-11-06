@@ -55,12 +55,8 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<MatchModel>, var 
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create a new view
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_match, parent, false) as View
-        // set the view's size, margins, paddings and layout parameters
-        //val nameTextView = itemView.findViewById<TextView>(R.id.match_name)
-
         return ViewHolder(itemView)
     }
 

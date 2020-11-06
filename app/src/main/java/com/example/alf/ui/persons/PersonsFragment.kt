@@ -4,51 +4,63 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.alf.R
+import com.example.alf.Injection
 import com.example.alf.data.model.PersonModel
+import com.example.alf.databinding.FragmentPersonsBinding
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class PersonsFragment : Fragment(), PersonsPagingAdapter.PersonListener {
 
-    private val personsViewModel by viewModels<PersonsViewModel>()
+    companion object {
+        private const val LAST_SEARCH_QUERY: String = "last_search_query"
+        private const val DEFAULT_QUERY = ""
+    }
 
-    private lateinit var progressBar: ProgressBar
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: PersonsPagingAdapter
+    private lateinit var binding: FragmentPersonsBinding
+    private lateinit var personsViewModel: SearchPersonsViewModel
+    private val viewAdapter = PersonsPagingAdapter(PersonsPagingAdapter.PersonModelComparator, this)
+
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_persons, container, false)
-        progressBar = root.findViewById(R.id.persons_progress)
-        recyclerView = root.findViewById(R.id.persons_recycler_view)
-        return root
+        binding = FragmentPersonsBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewAdapter = PersonsPagingAdapter(PersonsPagingAdapter.PersonModelComparator, this)
-        recyclerView.apply {
+        // get the view model
+        personsViewModel = ViewModelProvider(this, Injection.provideViewModelFactory()).get(SearchPersonsViewModel::class.java)
+
+        binding.personsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = viewAdapter
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            personsViewModel.flow.collectLatest { pagingData ->
-                viewAdapter.submitData(pagingData)
-            }
-        }
+        val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
+        search(query)
+        initSearch(query)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
     }
 
     private fun showToast(msg: String) {
@@ -64,7 +76,37 @@ class PersonsFragment : Fragment(), PersonsPagingAdapter.PersonListener {
         findNavController().navigate(action)
     }
 
-    fun search(query: String) {
-        TODO("Not yet implemented")
+    private fun search(query: String) {
+        // Make sure we cancel the previous job before creating a new one
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            personsViewModel.searchPersons(query).collectLatest {
+                viewAdapter.submitData(it)
+            }
+        }
+    }
+
+    private fun initSearch(query: String) {
+        //...
+        // First part of the method is unchanged
+
+        // Scroll to top when the list is refreshed from network.
+        lifecycleScope.launch {
+            viewAdapter.loadStateFlow
+                // Only emit when REFRESH LoadState changes.
+                .distinctUntilChangedBy { it.refresh }
+                // Only react to cases where REFRESH completes i.e., NotLoading.
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { binding.personsRecyclerView.scrollToPosition(0) }
+        }
+    }
+
+    fun doSearch(query: String) {
+        query.trim().let {
+            if (it.isNotEmpty()) {
+                binding.personsRecyclerView.scrollToPosition(0)
+                search(it)
+            }
+        }
     }
 }
