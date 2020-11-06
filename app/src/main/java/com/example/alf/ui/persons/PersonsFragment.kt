@@ -5,15 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alf.Injection
 import com.example.alf.data.model.PersonModel
 import com.example.alf.databinding.FragmentPersonsBinding
+import com.example.alf.ui.PersonsLoadStateAdapter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -49,13 +50,38 @@ class PersonsFragment : Fragment(), PersonsPagingAdapter.PersonListener {
         // get the view model
         personsViewModel = ViewModelProvider(this, Injection.provideViewModelFactory()).get(SearchPersonsViewModel::class.java)
 
-        binding.personsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = viewAdapter
-        }
+        initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         search(query)
         initSearch(query)
+    }
+
+    private fun initAdapter() {
+        binding.personsRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
+            header = PersonsLoadStateAdapter { viewAdapter.retry() },
+            footer = PersonsLoadStateAdapter { viewAdapter.retry() }
+        )
+        viewAdapter.addLoadStateListener { loadState ->
+            // Only show the list if refresh succeeds.
+            binding.personsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+            // Show loading spinner during initial load or refresh.
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            // Show the retry state if initial load or refresh fails.
+            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
+            // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(
+                    context,
+                    "\uD83D\uDE28 Wooops ${it.error}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
