@@ -3,21 +3,21 @@ package com.example.alf.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.MatchModel
-import com.example.alf.network.ApiClient
-import com.example.alf.network.ApiInterface
 import com.example.alf.data.model.MatchesPageModel
+import com.example.alf.network.ApiClient
+import com.example.alf.network.MatchApiInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MatchRepository {
 
-    private var apiInterface: ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
+    private var matchApiInterface: MatchApiInterface = ApiClient.getApiClient().create(MatchApiInterface::class.java)
 
     fun fetchMatches(): LiveData<List<MatchModel>> {
         val data = MutableLiveData<List<MatchModel>>()
 
-        apiInterface.fetchMatchesPage().enqueue(object : Callback<MatchesPageModel> {
+        matchApiInterface.fetchMatchesPage().enqueue(object : Callback<MatchesPageModel> {
 
             override fun onFailure(call: Call<MatchesPageModel>, t: Throwable) {
                 data.value = null
@@ -43,7 +43,7 @@ class MatchRepository {
     fun fetchMatchById(id: Int): LiveData<MatchModel>? {
         val data = MutableLiveData<MatchModel>()
 
-        apiInterface.fetchMatchById(id).enqueue(object : Callback<MatchModel> {
+        matchApiInterface.fetchMatchById(id).enqueue(object : Callback<MatchModel> {
 
             override fun onFailure(call: Call<MatchModel>, t: Throwable) {
                 data.value = null
@@ -66,7 +66,7 @@ class MatchRepository {
     }
 
     suspend fun fetchMatchesPage(nextPageNumber: Int): MatchesPageModel {
-        return apiInterface.fetchMatchesPage(nextPageNumber)
+        return matchApiInterface.fetchMatchesPage(nextPageNumber)
     }
 
     /*fun createMatch(personModel: MatchModel):LiveData<MatchModel>{

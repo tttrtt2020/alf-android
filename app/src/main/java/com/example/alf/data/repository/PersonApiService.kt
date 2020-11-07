@@ -3,16 +3,16 @@ package com.example.alf.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.PersonModel
-import com.example.alf.network.ApiClient
-import com.example.alf.network.ApiInterface
 import com.example.alf.data.model.PersonsPageModel
+import com.example.alf.network.ApiClient
+import com.example.alf.network.PersonApiInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class PersonApiService {
 
-    private var apiInterface: ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
+    private var personApiInterface: PersonApiInterface = ApiClient.getApiClient().create(PersonApiInterface::class.java)
 
     /*fun fetchPersonsByQuery(query: String): LiveData<List<PersonModel>> {
         val data = MutableLiveData<List<PersonModel>>()
@@ -43,7 +43,7 @@ class PersonApiService {
     fun fetchPersonById(id: Int): LiveData<PersonModel>? {
         val data = MutableLiveData<PersonModel>()
 
-        apiInterface.fetchPersonById(id).enqueue(object : Callback<PersonModel> {
+        personApiInterface.fetchPersonById(id).enqueue(object : Callback<PersonModel> {
 
             override fun onFailure(call: Call<PersonModel>, t: Throwable) {
                 data.value = null
@@ -66,7 +66,7 @@ class PersonApiService {
     }
 
     suspend fun fetchPersonsPage(query: String, nextPageNumber: Int): PersonsPageModel {
-        return apiInterface.fetchPersonsPage(query, nextPageNumber)
+        return personApiInterface.fetchPersonsPage(query, nextPageNumber)
     }
 
     /*fun createPerson(personModel: PersonModel):LiveData<PersonModel>{
