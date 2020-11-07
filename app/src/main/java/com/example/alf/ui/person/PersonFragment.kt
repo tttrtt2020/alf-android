@@ -9,12 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.alf.R
-import com.example.alf.ui.persons.PersonsAdapter
+import com.example.alf.ui.persons.PersonsPagingAdapter
 
 class PersonFragment : Fragment() {
 
@@ -67,7 +66,7 @@ class PersonFragment : Fragment() {
                 heightTextView.text = it.height.toString()
                 weightTextView.text = it.weight.toString()
                 // load photo
-                val photoImageUrl = PersonsAdapter.personsImagesUrl + it.id + PersonsAdapter.personsImagesExtension
+                val photoImageUrl = PersonsPagingAdapter.personsImagesUrl + it.id + PersonsPagingAdapter.personsImagesExtension
                 context?.let { it1 ->
                     Glide
                         .with(it1)
