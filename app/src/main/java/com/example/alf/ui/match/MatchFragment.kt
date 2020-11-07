@@ -4,29 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.example.alf.R
+import com.example.alf.databinding.FragmentMatchBinding
 import com.example.alf.ui.matches.MatchesAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MatchFragment : Fragment() {
 
-    private lateinit var matchViewModel: MatchViewModel
+    private lateinit var binding: FragmentMatchBinding
 
-    private lateinit var hostLogoImageView: ImageView
-    private lateinit var guestLogoImageView: ImageView
-    private lateinit var hostNameTextView: TextView
-    private lateinit var guestNameTextView: TextView
-    private lateinit var resultTextView: TextView
-    private lateinit var dateTextView: TextView
-    private lateinit var timeTextView: TextView
+    private lateinit var matchInfoAdapter: MatchInfoAdapter
+    private lateinit var viewPager: ViewPager2
+
+
+    private lateinit var matchViewModel: MatchViewModel
 
     private val args: MatchFragmentArgs by navArgs()
 
@@ -35,24 +31,22 @@ class MatchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        matchViewModel = ViewModelProvider(this).get(MatchViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_match, container, false)
+        binding = FragmentMatchBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        hostLogoImageView = root.findViewById(R.id.host_logo)
-        guestLogoImageView = root.findViewById(R.id.guest_logo)
-        hostNameTextView = root.findViewById(R.id.host_name)
-        guestNameTextView = root.findViewById(R.id.guest_name)
-        resultTextView = root.findViewById(R.id.result)
-        dateTextView = root.findViewById(R.id.date)
-        timeTextView = root.findViewById(R.id.time)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        matchViewModel = ViewModelProvider(this).get(MatchViewModel::class.java)
 
         matchViewModel = ViewModelProvider(this)[MatchViewModel::class.java]
         matchViewModel.fetchMatchById(args.matchId)
         matchViewModel.matchModelLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
-                hostNameTextView.text = it.hostMatchTeam.team.name
-                guestNameTextView.text = it.guestMatchTeam.team.name
-                resultTextView.text = it.status
+                binding.hostName.text = it.hostMatchTeam.team.name
+                binding.guestName.text = it.guestMatchTeam.team.name
+                binding.result.text = it.status
                 /*if (it.dateTime != null) {
                     dateDatePicker.updateDate(it.dateTime!!.year, it.dateTime?.month, it.dateTime?.day)
                 }*/
@@ -64,7 +58,7 @@ class MatchFragment : Fragment() {
                         .load(hostClubLogoUrl)
                         .placeholder(android.R.color.darker_gray)
                         .error(android.R.color.holo_red_dark)
-                        .into(hostLogoImageView)
+                        .into(binding.hostLogo)
                 }
                 val guestClubLogoUrl = MatchesAdapter.clubLogosUrl + it.guestMatchTeam.team.club.id + MatchesAdapter.clubLogosExtension
                 context?.let { it1 ->
@@ -73,14 +67,20 @@ class MatchFragment : Fragment() {
                         .load(guestClubLogoUrl)
                         .placeholder(android.R.color.darker_gray)
                         .error(android.R.color.holo_red_dark)
-                        .into(guestLogoImageView)
+                        .into(binding.guestLogo)
                 }
             } else {
                 showToast("Something went wrong")
             }
         })
 
-        return root
+        matchInfoAdapter = MatchInfoAdapter(this)
+        viewPager = binding.pager
+        viewPager.adapter = matchInfoAdapter
+        val tabLayout = binding.tabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = if (position == 0) "Squads" else "Events"
+        }.attach()
     }
 
     private fun showToast(msg: String) {
