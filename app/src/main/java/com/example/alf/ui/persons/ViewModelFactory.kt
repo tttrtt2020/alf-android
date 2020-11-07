@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 /**
  * Factory for ViewModels
  */
-class ViewModelFactory(private val repository: PersonsRepository) : ViewModelProvider.Factory {
+class ViewModelFactory(private val repository: PersonsPagingRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SearchPersonsViewModel::class.java)) {

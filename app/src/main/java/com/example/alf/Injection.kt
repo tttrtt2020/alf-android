@@ -18,7 +18,7 @@ package com.example.alf
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.alf.data.paging.PersonsService
-import com.example.alf.ui.persons.PersonsRepository
+import com.example.alf.ui.persons.PersonsPagingRepository
 import com.example.alf.ui.persons.ViewModelFactory
 
 /**
@@ -32,8 +32,8 @@ object Injection {
      * Creates an instance of [PersonsRepository] based on the [PersonsService] and a
      * [PersonsLocalCache]
      */
-    private fun providePersonsRepository(): PersonsRepository {
-        return PersonsRepository(PersonsService())
+    private fun providePersonsRepository(): PersonsPagingRepository {
+        return PersonsPagingRepository(PersonsService())
     }
 
     /**

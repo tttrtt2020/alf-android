@@ -5,24 +5,24 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.PersonModel
-import com.example.alf.data.repository.PersonRepository
+import com.example.alf.data.repository.PersonApiService
 
 class PersonViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var personRepository: PersonRepository? = null
+    private var personService: PersonApiService? = null
     var personModelLiveData: LiveData<PersonModel>? = null
     /*var createPersonLiveData: LiveData<PersonModel>? = null
     var deletePersonLiveData: LiveData<Boolean>? = null*/
 
     init {
-        personRepository = PersonRepository()
+        personService = PersonApiService()
         personModelLiveData = MutableLiveData()
         /*createPersonLiveData = MutableLiveData()
         deletePersonLiveData = MutableLiveData()*/
     }
 
     fun fetchPersonById(id: Int) {
-        personModelLiveData = personRepository?.fetchPersonById(id)
+        personModelLiveData = personService?.fetchPersonById(id)
     }
 
     /*fun createPerson(personModel: PersonModel) {

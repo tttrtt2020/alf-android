@@ -8,7 +8,7 @@ import com.example.alf.data.paging.PersonsPagingSource
 import com.example.alf.data.paging.PersonsService
 import kotlinx.coroutines.flow.Flow
 
-class PersonsRepository(private val service: PersonsService) {
+class PersonsPagingRepository(private val service: PersonsService) {
 
     fun getSearchResultStream(query: String): Flow<PagingData<PersonModel>> {
         return Pager(

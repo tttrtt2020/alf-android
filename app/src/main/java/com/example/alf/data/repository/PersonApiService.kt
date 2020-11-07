@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PersonRepository {
+class PersonApiService {
 
     private var apiInterface: ApiInterface = ApiClient.getApiClient().create(ApiInterface::class.java)
 

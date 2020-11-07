@@ -7,15 +7,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.alf.data.model.PersonModel
-import com.example.alf.data.repository.PersonRepository
+import com.example.alf.data.repository.PersonApiService
 import kotlinx.coroutines.flow.Flow
 
 
 class SearchPersonsViewModel(
-    private val repository: PersonsRepository
+    private val personsPagingRepository: PersonsPagingRepository
 ) : ViewModel() {
 
-    private var personRepository: PersonRepository? = null
+    private var personApiService: PersonApiService? = null
     var personModelListLiveData: LiveData<List<PersonModel>>? = null
     /*var createPersonLiveData: LiveData<PersonModel>? = null
     var deletePersonLiveData: LiveData<Boolean>? = null*/
@@ -25,7 +25,7 @@ class SearchPersonsViewModel(
     private var currentSearchResult: Flow<PagingData<PersonModel>>? = null
 
     init {
-        personRepository = PersonRepository()
+        personApiService = PersonApiService()
         personModelListLiveData = MutableLiveData()
         /*createPersonLiveData = MutableLiveData()
         deletePersonLiveData = MutableLiveData()*/
@@ -37,7 +37,8 @@ class SearchPersonsViewModel(
             return lastResult
         }
         currentQueryValue = queryString
-        val newResult: Flow<PagingData<PersonModel>> = repository.getSearchResultStream(queryString)
+        val newResult: Flow<PagingData<PersonModel>> = personsPagingRepository
+            .getSearchResultStream(queryString)
             .cachedIn(viewModelScope)
         currentSearchResult = newResult
         return newResult
