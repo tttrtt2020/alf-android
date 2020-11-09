@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.example.alf.databinding.FragmentMatchBinding
 import com.example.alf.ui.matches.MatchesAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MatchFragment : Fragment() {
 
@@ -49,6 +51,15 @@ class MatchFragment : Fragment() {
                 /*if (it.dateTime != null) {
                     dateDatePicker.updateDate(it.dateTime!!.year, it.dateTime?.month, it.dateTime?.day)
                 }*/
+
+                binding.result.text = if (it.mainInfo.match.status == "FINISHED")
+                    (it.mainInfo.match.result.hostGoals.toString() + ":" + it.mainInfo.match.result.guestGoals.toString())
+                else "- : -"
+                binding.date.text = if (it.mainInfo.match.dateTime == null) "-" else
+                    SimpleDateFormat("EEE, MMM d", Locale.getDefault()).format(it.mainInfo.match.dateTime)
+                binding.time.text = if (it.mainInfo.match.dateTime == null) "-" else
+                    SimpleDateFormat("HH:mm", Locale.getDefault()).format(it.mainInfo.match.dateTime)
+
                 // load club logos
                 val hostClubLogoUrl = MatchesAdapter.clubLogosUrl + it.mainInfo.match.hostTeam.clubId + MatchesAdapter.clubLogosExtension
                 context?.let { it1 ->
