@@ -1,5 +1,7 @@
 package com.example.alf.data.model
 
 data class EventModel(
-    var id: Int? = 0
+    var minute: String,
+    var name: String,
+    var eventType: EventTypeModel
 )
