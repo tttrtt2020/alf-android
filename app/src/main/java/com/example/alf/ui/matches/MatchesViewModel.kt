@@ -11,11 +11,11 @@ import androidx.paging.cachedIn
 import com.example.alf.data.model.MatchModel
 import com.example.alf.data.paging.MatchesBackendService
 import com.example.alf.data.paging.MatchesPagingSource
-import com.example.alf.data.repository.MatchRepository
+import com.example.alf.data.repository.MatchApiService
 
 class MatchesViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var matchRepository: MatchRepository? = null
+    private var matchApiService: MatchApiService? = null
     var matchModelListLiveData: LiveData<List<MatchModel>>? = null
     /*var createMatchLiveData: LiveData<MatchModel>? = null
     var deleteMatchLiveData: LiveData<Boolean>? = null*/
@@ -25,7 +25,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     }.flow.cachedIn(viewModelScope)
 
     init {
-        matchRepository = MatchRepository()
+        matchApiService = MatchApiService()
         matchModelListLiveData = MutableLiveData()
         /*createMatchLiveData = MutableLiveData()
         deleteMatchLiveData = MutableLiveData()*/
@@ -36,7 +36,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     }*/
 
     fun fetchAllMatches() {
-        matchModelListLiveData = matchRepository?.fetchMatches()
+        matchModelListLiveData = matchApiService?.fetchMatches()
     }
 
     /*fun createMatch(matchModel: MatchModel) {

@@ -1,12 +1,12 @@
 package com.example.alf.data.paging
 
 import com.example.alf.data.model.MatchesPageModel
-import com.example.alf.data.repository.MatchRepository
+import com.example.alf.data.repository.MatchApiService
 
 class MatchesBackendService {
 
     suspend fun searchMatchesPage(nextPageNumber: Int): MatchesPageModel {
-        return MatchRepository().fetchMatchesPage(nextPageNumber)
+        return MatchApiService().fetchMatchesPage(nextPageNumber)
     }
 
 }

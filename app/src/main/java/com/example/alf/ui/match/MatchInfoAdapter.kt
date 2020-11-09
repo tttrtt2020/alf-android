@@ -12,7 +12,7 @@ class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         const val ARG_OBJECT = "object"
     }
 
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = 3
 
     override fun getItemViewType(position: Int): Int {
         return position
@@ -20,11 +20,21 @@ class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         // Return a NEW fragment instance in createFragment(int)
-        val fragment = if (position == 0) SquadsFragment() else EventsFragment()
 
+        /*val fragment: Fragment = if (position == 0) {
+            SquadsFragment()
+        } else {
+            EventsFragment()
+        }
+        fragment.*/
+
+        val fragment = if (position == 0) SquadsFragment() else if (position == 1) EventsFragment() else SquadsFragment()
+
+        //fragment.arguments.putString("team", if (position == 0) "host" else "guest")
         fragment.arguments = Bundle().apply {
             // Our object is just an integer :-P
             putInt(ARG_OBJECT, position + 1)
+            putString("team", if (position == 0) "host" else if (position == 2) "guest" else "")
         }
         return fragment
     }

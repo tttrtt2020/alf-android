@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -22,7 +22,8 @@ class MatchFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
 
 
-    private lateinit var matchViewModel: MatchViewModel
+    //private lateinit var matchViewModel: MatchViewModel
+    private val matchViewModel: MatchViewModel by activityViewModels()
 
     private val args: MatchFragmentArgs by navArgs()
 
@@ -38,20 +39,18 @@ class MatchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        matchViewModel = ViewModelProvider(this).get(MatchViewModel::class.java)
-
-        matchViewModel = ViewModelProvider(this)[MatchViewModel::class.java]
+        //matchViewModel = ViewModelProvider(this)[MatchViewModel::class.java]
         matchViewModel.fetchMatchById(args.matchId)
         matchViewModel.matchModelLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
-                binding.hostName.text = it.hostMatchTeam.team.name
-                binding.guestName.text = it.guestMatchTeam.team.name
-                binding.result.text = it.status
+                binding.hostName.text = it.mainInfo.match.hostTeam.name
+                binding.guestName.text = it.mainInfo.match.guestTeam.name
+                binding.result.text = it.mainInfo.match.status
                 /*if (it.dateTime != null) {
                     dateDatePicker.updateDate(it.dateTime!!.year, it.dateTime?.month, it.dateTime?.day)
                 }*/
                 // load club logos
-                val hostClubLogoUrl = MatchesAdapter.clubLogosUrl + it.hostMatchTeam.team.club.id + MatchesAdapter.clubLogosExtension
+                val hostClubLogoUrl = MatchesAdapter.clubLogosUrl + it.mainInfo.match.hostTeam.clubId + MatchesAdapter.clubLogosExtension
                 context?.let { it1 ->
                     Glide
                         .with(it1)
@@ -60,7 +59,7 @@ class MatchFragment : Fragment() {
                         .error(android.R.color.holo_red_dark)
                         .into(binding.hostLogo)
                 }
-                val guestClubLogoUrl = MatchesAdapter.clubLogosUrl + it.guestMatchTeam.team.club.id + MatchesAdapter.clubLogosExtension
+                val guestClubLogoUrl = MatchesAdapter.clubLogosUrl + it.mainInfo.match.guestTeam.clubId + MatchesAdapter.clubLogosExtension
                 context?.let { it1 ->
                     Glide
                         .with(it1)
@@ -79,7 +78,7 @@ class MatchFragment : Fragment() {
         viewPager.adapter = matchInfoAdapter
         val tabLayout = binding.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = if (position == 0) "Squads" else "Events"
+            tab.text = if (position == 0) "Host team" else if (position == 1) "Events" else "Guest team"
         }.attach()
     }
 

@@ -83,7 +83,7 @@ class MatchesAdapter(var listener: MatchListener) :
         holder.dateTextView?.text = if (match?.dateTime == null) "-" else
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(match.dateTime)
         // load logos
-        val hostLogoImageUrl = clubLogosUrl + match?.hostMatchTeam?.team?.club?.id + clubLogosExtension
+        val hostLogoImageUrl = clubLogosUrl + match?.hostMatchTeam?.team?.clubId + clubLogosExtension
         holder.hostLogoImageView?.context?.let {
             Glide
                 .with(it)
@@ -92,7 +92,7 @@ class MatchesAdapter(var listener: MatchListener) :
                 .error(android.R.color.holo_red_dark)
                 .into(holder.hostLogoImageView!!)
         }
-        val guestLogoImageUrl = clubLogosUrl + match?.guestMatchTeam?.team?.club?.id + clubLogosExtension
+        val guestLogoImageUrl = clubLogosUrl + match?.guestMatchTeam?.team?.clubId + clubLogosExtension
         holder.guestLogoImageView?.context?.let {
             Glide
                 .with(it)

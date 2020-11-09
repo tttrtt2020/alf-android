@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.MatchModel
 import com.example.alf.data.model.MatchesPageModel
+import com.example.alf.data.model.match.MatchInfoModel
+import com.example.alf.data.model.match.SquadsModel
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MatchRepository {
+class MatchApiService {
 
     private var matchApiInterface: MatchApiInterface = ApiClient.getApiClient().create(MatchApiInterface::class.java)
 
@@ -40,18 +42,18 @@ class MatchRepository {
 
     }
 
-    fun fetchMatchById(id: Int): LiveData<MatchModel>? {
-        val data = MutableLiveData<MatchModel>()
+    fun fetchMatchInfoById(id: Int): LiveData<MatchInfoModel>? {
+        val data = MutableLiveData<MatchInfoModel>()
 
-        matchApiInterface.fetchMatchById(id).enqueue(object : Callback<MatchModel> {
+        matchApiInterface.fetchMatchInfoById(id).enqueue(object : Callback<MatchInfoModel> {
 
-            override fun onFailure(call: Call<MatchModel>, t: Throwable) {
+            override fun onFailure(call: Call<MatchInfoModel>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                call: Call<MatchModel>,
-                response: Response<MatchModel>
+                call: Call<MatchInfoModel>,
+                response: Response<MatchInfoModel>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
@@ -67,6 +69,31 @@ class MatchRepository {
 
     suspend fun fetchMatchesPage(nextPageNumber: Int): MatchesPageModel {
         return matchApiInterface.fetchMatchesPage(nextPageNumber)
+    }
+
+    fun fetchMatchSquadsInfoById(id: Int): LiveData<SquadsModel> {
+        val data = MutableLiveData<SquadsModel>()
+
+        matchApiInterface.fetchMatchSquadsInfoById(id).enqueue(object : Callback<SquadsModel> {
+
+            override fun onFailure(call: Call<SquadsModel>, t: Throwable) {
+                data.value = null
+            }
+
+            override fun onResponse(
+                call: Call<SquadsModel>,
+                response: Response<SquadsModel>
+            ) {
+                val res = response.body()
+                if (response.code() == 200 && res != null) {
+                    data.value = res
+                } else {
+                    data.value = null
+                }
+            }
+        })
+
+        return data
     }
 
     /*fun createMatch(personModel: MatchModel):LiveData<MatchModel>{

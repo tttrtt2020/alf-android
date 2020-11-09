@@ -1,29 +1,30 @@
-package com.example.alf.ui.match
+package com.example.alf.ui.match.squads
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.MatchModel
-import com.example.alf.data.model.match.MatchInfoModel
+import com.example.alf.data.model.match.MatchPersonModel
+import com.example.alf.data.model.match.SquadsModel
 import com.example.alf.data.repository.MatchApiService
 
-class MatchViewModel(application: Application) : AndroidViewModel(application) {
+class SquadsViewModel(application: Application) : AndroidViewModel(application) {
 
     private var matchApiService: MatchApiService? = null
-    var matchModelLiveData: LiveData<MatchInfoModel>? = null
+    var matchPersonsModelLiveData: LiveData<SquadsModel>? = null
     /*var createMatchLiveData: LiveData<MatchModel>? = null
     var deleteMatchLiveData: LiveData<Boolean>? = null*/
 
     init {
         matchApiService = MatchApiService()
-        matchModelLiveData = MutableLiveData()
+        matchPersonsModelLiveData = MutableLiveData()
         /*createMatchLiveData = MutableLiveData()
         deleteMatchLiveData = MutableLiveData()*/
     }
 
-    fun fetchMatchById(id: Int) {
-        matchModelLiveData = matchApiService?.fetchMatchInfoById(id)
+    fun fetchMatchSquadsInfoById(id: Int) {
+        matchPersonsModelLiveData = matchApiService?.fetchMatchSquadsInfoById(id)
     }
 
     /*fun createMatch(matchModel: MatchModel) {
