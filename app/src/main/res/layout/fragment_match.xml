@@ -11,91 +11,109 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/main_info_frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_margin"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="@dimen/main_info_frame_layout_height"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/gray">
 
-            <LinearLayout
-                android:id="@+id/result_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/card_margin"
-                android:orientation="vertical"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/dark_transparent_foreground"/>
 
-                <TextView
-                    android:id="@+id/result"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/card_margin">
+
+                <LinearLayout
+                    android:id="@+id/result_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="- : -"
+                    android:layout_marginHorizontal="@dimen/card_margin"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="- : -"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:text="Result"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Result"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/host_logo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="@dimen/card_margin"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/guest_logo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="@dimen/card_margin"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/host_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/host_logo"
+                    android:layout_toStartOf="@id/result_layout"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="Host name"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/white"/>
 
                 <TextView
-                    android:id="@+id/date"
+                    android:id="@+id/guest_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:text="Result"
-                    android:textSize="12sp" />
+                    android:layout_toStartOf="@id/guest_logo"
+                    android:layout_toEndOf="@id/result_layout"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="Guest name"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"/>
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Result"
-                    android:textSize="12sp" />
 
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/host_logo"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="@dimen/card_margin"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
-
-            <ImageView
-                android:id="@+id/guest_logo"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="@dimen/card_margin"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
-
-            <TextView
-                android:id="@+id/host_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/host_logo"
-                android:layout_toStartOf="@id/result_layout"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:text="Host name"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/guest_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/guest_logo"
-                android:layout_toEndOf="@id/result_layout"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:text="Guest name"
-                android:textSize="16sp" />
-
-        </RelativeLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

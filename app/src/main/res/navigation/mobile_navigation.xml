@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/personFragment"
         android:name="com.example.alf.ui.person.PersonFragment"
-        android:label="fragment_person"
+        android:label="@string/title_person"
         tools:layout="@layout/fragment_person" >
         <argument
             android:name="personId"
@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/matchFragment"
         android:name="com.example.alf.ui.match.MatchFragment"
-        android:label="fragment_match"
+        android:label="@string/title_match"
         tools:layout="@layout/fragment_match" >
         <argument
             android:name="matchId"

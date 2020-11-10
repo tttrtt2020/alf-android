@@ -13,4 +13,6 @@
 
     <color name="gray">#555555</color>
     <color name="dark_gray">#333333</color>
+
+    <color name="dark_transparent_foreground">#C0444444</color>
 </resources>

@@ -6,6 +6,7 @@ import java.util.*
 data class MatchModel(
     var id: Int,
     var dateTime: Date?,
+    var stadium: StadiumModel?,
     var hostTeam: TeamModel,
     var guestTeam: TeamModel,
     var status: String,
