@@ -16,7 +16,11 @@ import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PersonsPagingAdapter(diffCallback: DiffUtil.ItemCallback<PersonModel>, var listener: PersonListener) :
+
+class PersonsPagingAdapter(
+    diffCallback: DiffUtil.ItemCallback<PersonModel>,
+    private var listener: PersonListener
+) :
     PagingDataAdapter<PersonModel, PersonsPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
@@ -78,12 +82,16 @@ class PersonsPagingAdapter(diffCallback: DiffUtil.ItemCallback<PersonModel>, var
                 .with(it)
                 .load(photoImageUrl)
                 .placeholder(android.R.color.darker_gray)
-                .error(android.R.color.holo_red_dark)
+                .error(R.drawable.ic_no_photo_with_padding)
                 .into(holder.photoImageView!!)
         }
         // load flag
-        val flagImageUrl = flagsImagesUrl + person?.country?.name?.toLowerCase(Locale.ROOT) + flagsImagesExtension
-        GlideToVectorYou.init().with(holder.photoImageView?.context).load(Uri.parse(flagImageUrl), holder.flagImageView)
+        val flagImageUrl =
+            flagsImagesUrl + person?.country?.name?.toLowerCase(Locale.ROOT) + flagsImagesExtension
+        GlideToVectorYou.init().with(holder.photoImageView?.context).load(
+            Uri.parse(flagImageUrl),
+            holder.flagImageView
+        )
 
         holder.itemView.setOnClickListener {
             if (person != null) {
