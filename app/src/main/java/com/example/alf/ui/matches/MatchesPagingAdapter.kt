@@ -73,7 +73,7 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<MatchModel>, var 
                 (match.resultHostGoals.toString() + ":" + match.resultGuestGoals.toString()) else "- : -"
             holder.dateTextView?.text = if (match.dateTime == null) "-" else
                 SimpleDateFormat("EEE, MMM d", Locale.getDefault()).format(match.dateTime)
-            holder.dateTextView?.text = if (match.dateTime == null) "-" else
+            holder.timeTextView?.text = if (match.dateTime == null) "-" else
                 SimpleDateFormat("HH:mm", Locale.getDefault()).format(match.dateTime)
             // load logos
             val hostLogoImageUrl = clubLogosUrl + match.hostMatchTeam.team.club.id + clubLogosExtension
