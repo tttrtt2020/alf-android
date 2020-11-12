@@ -15,4 +15,5 @@
     <string name="search_hint">Search</string>
     <string name="title_person">Person</string>
     <string name="title_match">Match</string>
+    <string name="title_formations">Formations</string>
 </resources>

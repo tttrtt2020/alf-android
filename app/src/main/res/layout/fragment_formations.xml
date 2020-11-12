@@ -5,24 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/formation"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_margin="@dimen/card_margin"
-        android:layout_gravity="center_horizontal"
-        app:icon="@drawable/ic_formation"
-        android:text="Formation"/>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/match_persons_recycler_view"
+        android:id="@+id/formations_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingVertical="@dimen/card_margin_half"
         android:clipToPadding="false"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
-        app:layoutManager="LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>

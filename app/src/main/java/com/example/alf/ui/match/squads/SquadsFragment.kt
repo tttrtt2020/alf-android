@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,10 @@ import com.example.alf.data.model.match.MatchPersonModel
 import com.example.alf.databinding.FragmentMatchBinding
 import com.example.alf.databinding.FragmentSquadsBinding
 import com.example.alf.ui.match.MatchFragmentArgs
+import com.example.alf.ui.match.MatchFragmentDirections
 import com.example.alf.ui.match.MatchViewModel
+import com.example.alf.ui.match.formations.FormationsFragment
+import com.example.alf.ui.matches.MatchesFragmentDirections
 import com.example.alf.ui.matches.MatchesPagingAdapter
 import com.example.alf.ui.matches.MatchesViewModel
 import com.google.android.material.tabs.TabLayout
@@ -29,7 +33,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener {
+class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnClickListener {
 
     private lateinit var binding: FragmentSquadsBinding
 
@@ -46,6 +50,9 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSquadsBinding.inflate(layoutInflater)
+
+        binding.formation.setOnClickListener(this)
+
         return binding.root
     }
 
@@ -132,5 +139,11 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener {
 
     override fun onItemClick(matchPersonModel: MatchPersonModel, position: Int) {
         TODO("Not yet implemented")
+    }
+
+    override fun onClick(v: View?) {
+        val matchId = matchViewModel.matchModelLiveData?.value?.mainInfo?.match?.id
+        val action = matchId.let { MatchFragmentDirections.actionMatchFragmentToFormationsFragment() }
+        findNavController().navigate(action)
     }
 }
