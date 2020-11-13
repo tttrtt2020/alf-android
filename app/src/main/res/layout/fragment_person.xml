@@ -13,13 +13,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/card_margin_half"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/photo"
                 android:layout_width="150dp"
                 android:layout_height="210dp"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/card_margin_half"
+                android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
@@ -29,50 +31,51 @@
                 android:id="@+id/first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/card_margin_half"
                 android:hint="First name"/>
 
             <EditText
                 android:id="@+id/patronymic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/card_margin_half"
                 android:hint="Patronymic"/>
 
             <EditText
                 android:id="@+id/last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/card_margin_half"
                 android:hint="Last name"/>
 
-            <DatePicker
+            <EditText
                 android:id="@+id/birth_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:datePickerMode="calendar"
-                android:hint="Birth date"/>
+                android:layout_margin="@dimen/card_margin_half"
+                android:inputType="date"
+                android:hint="Birth date"
+                android:focusable="false" />
 
             <EditText
                 android:id="@+id/country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/card_margin_half"
                 android:hint="Country"/>
 
             <EditText
                 android:id="@+id/height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/card_margin_half"
                 android:hint="Height"/>
 
             <EditText
                 android:id="@+id/weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/card_margin_half"
                 android:hint="Weight"/>
 
             <!--<androidx.appcompat.widget.SwitchCompat

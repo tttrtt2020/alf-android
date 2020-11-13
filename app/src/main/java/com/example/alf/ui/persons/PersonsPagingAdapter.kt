@@ -74,7 +74,7 @@ class PersonsPagingAdapter(
         holder.patronymicTextView?.text = person?.patronymic
         holder.lastNameTextView?.text = person?.lastName
         holder.birthDateTextView?.text = if (person?.birthDate == null) "" else
-            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(person.birthDate)
+            SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(person.birthDate)
         // load photo
         val photoImageUrl = personsImagesUrl + person?.id + personsImagesExtension
         holder.photoImageView?.context?.let {
