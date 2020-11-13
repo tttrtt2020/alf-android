@@ -9,78 +9,67 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.alf.R
+import com.example.alf.databinding.FragmentMatchBinding
+import com.example.alf.databinding.FragmentPersonBinding
+import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.persons.PersonsPagingAdapter
 
 class PersonFragment : Fragment() {
 
-    private lateinit var personViewModel: PersonViewModel
-
-    private lateinit var photoImageView: ImageView
-    private lateinit var firstNameTextView: TextView
-    private lateinit var patronymicTextView: TextView
-    private lateinit var lastNameTextView: TextView
-    private lateinit var birthDateDatePicker: DatePicker
-    private lateinit var countryTextView: TextView
-    private lateinit var heightTextView: TextView
-    private lateinit var weightTextView: TextView
+    private lateinit var binding: FragmentPersonBinding
 
     private val args: PersonFragmentArgs by navArgs()
+
+    private val personViewModel: PersonViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        personViewModel =
-            ViewModelProvider(this).get(PersonViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_person, container, false)
+        binding = FragmentPersonBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
-        photoImageView = root.findViewById(R.id.photo)
-        firstNameTextView = root.findViewById(R.id.first_name)
-        patronymicTextView = root.findViewById(R.id.patronymic)
-        lastNameTextView = root.findViewById(R.id.last_name)
-        birthDateDatePicker = root.findViewById(R.id.birth_date)
-        countryTextView = root.findViewById(R.id.country)
-        heightTextView = root.findViewById(R.id.height)
-        weightTextView = root.findViewById(R.id.weight)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        personViewModel = ViewModelProvider(this)[PersonViewModel::class.java]
         personViewModel.fetchPersonById(args.personId)
         personViewModel.personModelLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
-                firstNameTextView.text = it.firstName
-                patronymicTextView.text = it.patronymic
-                lastNameTextView.text = it.lastName
+                binding.firstName.setText(it.firstName)
+                binding.patronymic.setText(it.patronymic)
+                binding.lastName.setText(it.lastName)
                 if (it.birthDate != null) {
-                    birthDateDatePicker.updateDate(
-                        it.birthDate.year,
-                        it.birthDate.month,
-                        it.birthDate.day
+                    binding.birthDate.updateDate(
+                            it.birthDate.year,
+                            it.birthDate.month,
+                            it.birthDate.day
                     )
                 }
-                countryTextView.text = it.country?.name
-                heightTextView.text = it.height.toString()
-                weightTextView.text = it.weight.toString()
+                binding.country.setText(it.country?.name)
+                binding.height.setText(it.height.toString())
+                binding.weight.setText(it.weight.toString())
                 // load photo
                 val photoImageUrl = PersonsPagingAdapter.personsImagesUrl + it.id + PersonsPagingAdapter.personsImagesExtension
                 context?.let { it1 ->
                     Glide
-                        .with(it1)
-                        .load(photoImageUrl)
-                        .placeholder(android.R.color.darker_gray)
-                        .error(android.R.color.holo_red_dark)
-                        .into(photoImageView)
+                            .with(it1)
+                            .load(photoImageUrl)
+                            .placeholder(android.R.color.darker_gray)
+                            .error(android.R.color.holo_red_dark)
+                            .into(binding.photo)
                 }
             } else {
                 showToast("Something went wrong")
             }
         })
-
-        return root
     }
 
     private fun showToast(msg: String) {
