@@ -2,15 +2,14 @@ package com.example.alf.ui.person
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.alf.R
 import com.example.alf.databinding.FragmentPersonBinding
 import com.example.alf.ui.persons.PersonsPagingAdapter
 import java.text.ParseException
@@ -29,6 +28,12 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private val calendar: Calendar = Calendar.getInstance()
     private val dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,6 +75,12 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 showToast("Something went wrong")
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.person, menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun showToast(msg: String) {

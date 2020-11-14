@@ -20,13 +20,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-
-    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,14 +52,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
 
-        // Associate searchable configuration with the SearchView
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView = menu.findItem(R.id.search).actionView as SearchView
-        searchView.apply {
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        }
-        searchView.setOnQueryTextListener(this)
-
         return true
     }
 
@@ -70,20 +60,4 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-
-        val personsFragment: PersonsFragment = supportFragmentManager.fragments[0]
-            .childFragmentManager.fragments[0] as PersonsFragment
-
-        if (query != null) {
-            personsFragment.doSearch(query)
-        }
-
-        return true
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-
-        return true
-    }
 }
