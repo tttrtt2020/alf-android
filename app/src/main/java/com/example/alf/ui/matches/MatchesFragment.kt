@@ -1,49 +1,75 @@
 package com.example.alf.ui.matches
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ProgressBar
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
 import com.example.alf.data.model.MatchModel
+import com.example.alf.databinding.FragmentMatchesBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
 
+    private lateinit var binding: FragmentMatchesBinding
+
     private val matchesViewModel by viewModels<MatchesViewModel>()
 
-    private lateinit var progressBar: ProgressBar
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: MatchesPagingAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_matches, container, false)
-        progressBar = root.findViewById(R.id.matches_progress)
-        recyclerView = root.findViewById(R.id.matches_recycler_view)
-        return root
+        binding = FragmentMatchesBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewAdapter = MatchesPagingAdapter(MatchesPagingAdapter.MatchModelComparator, this)
-        recyclerView.apply {
+        binding.matchesRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = viewAdapter
         }
+
+        showMatches(false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.matches, menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.show_only_finished -> {
+                showMatches(true)
+                true
+            }
+            /*R.id.help -> {
+                showHelp()
+                true
+            }*/
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showMatches(showOnlyFinished: Boolean) {
         viewLifecycleOwner.lifecycleScope.launch {
             matchesViewModel.flow.collectLatest { pagingData ->
                 viewAdapter.submitData(pagingData)
@@ -63,4 +89,6 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
         val action = matchModel.id.let { MatchesFragmentDirections.actionNavMatchesToMatchFragment(matchId = it) }
         findNavController().navigate(action)
     }
+
+
 }
