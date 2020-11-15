@@ -15,4 +15,7 @@
     <color name="dark_gray">#333333</color>
 
     <color name="dark_transparent_foreground">#C0444444</color>
+
+    <color name="green">#33AA33</color>
+    <color name="red">#AA3333</color>
 </resources>
