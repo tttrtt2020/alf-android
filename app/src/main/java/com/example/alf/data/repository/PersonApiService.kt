@@ -1,6 +1,5 @@
 package com.example.alf.data.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.PersonModel
 import com.example.alf.data.model.PersonsPageModel
@@ -40,7 +39,7 @@ class PersonApiService {
 
     }*/
 
-    fun fetchPersonById(id: Int): LiveData<PersonModel>? {
+    fun fetchPersonById(id: Int): MutableLiveData<PersonModel>? {
         val data = MutableLiveData<PersonModel>()
 
         personApiInterface.fetchPersonById(id).enqueue(object : Callback<PersonModel> {

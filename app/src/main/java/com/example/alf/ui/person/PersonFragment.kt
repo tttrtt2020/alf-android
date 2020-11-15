@@ -6,7 +6,7 @@ import android.view.*
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.alf.R
@@ -23,11 +23,12 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private val args: PersonFragmentArgs by navArgs()
 
-    //private val personViewModel: PersonViewModel by viewModels()
-    private val personViewModel: PersonViewModel by activityViewModels()
+    private val personViewModel: PersonViewModel by viewModels()
 
     private val calendar: Calendar = Calendar.getInstance()
     private val dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+
+    private lateinit var saveMenuItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,9 +48,15 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        personViewModel.fetchPersonById(args.personId)
-        personViewModel.personModelLiveData?.observe(viewLifecycleOwner, {
+        if (personViewModel.personLiveData?.value == null) {
+            personViewModel.fetchPersonById(args.personId)
+        }
+        personViewModel.personLiveData?.observe(viewLifecycleOwner, {
             if (it != null) {
+                if (personViewModel.originalPersonLiveData == null) {
+                    personViewModel.originalPersonLiveData?.value = it
+                }
+
                 binding.firstName.setText(it.firstName)
                 binding.patronymic.setText(it.patronymic)
                 binding.lastName.setText(it.lastName)
@@ -71,6 +78,10 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                             .error(android.R.color.holo_red_dark)
                             .into(binding.photo)
                 }
+
+                saveMenuItem.isEnabled = personViewModel.originalPersonLiveData?.value
+                        ?.equals(personViewModel.personLiveData!!.value) ?: false
+
             } else {
                 showToast("Something went wrong")
             }
@@ -80,7 +91,37 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.person, menu)
 
+        saveMenuItem = menu.findItem(R.id.action_save)
+
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_photo -> {
+                takePhoto()
+                true
+            }
+            R.id.action_save -> {
+                save()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun takePhoto() {
+        TODO("Not yet implemented")
+        /*val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, 1)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+        }*/
+    }
+
+    private fun save() {
+        TODO("Not yet implemented")
     }
 
     private fun showToast(msg: String) {
@@ -113,7 +154,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        binding.birthDate.setText(dateFormat.format(calendar.time));
+        personViewModel.personLiveData?.value = personViewModel.personLiveData?.value
     }
 
 }

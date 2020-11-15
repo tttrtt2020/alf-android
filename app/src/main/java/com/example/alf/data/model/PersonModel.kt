@@ -7,7 +7,7 @@ data class PersonModel(
     var firstName: String,
     var patronymic: String?,
     var lastName: String?,
-    val birthDate: Date?,
+    var birthDate: Date?,
     var country: CountryModel?,
     var height: Int?,
     var weight: Int?,
