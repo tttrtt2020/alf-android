@@ -18,6 +18,7 @@ import com.example.alf.R
 import com.example.alf.data.model.PersonModel
 import com.example.alf.databinding.FragmentPersonsBinding
 import com.example.alf.ui.PersonsLoadStateAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -57,6 +58,11 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.fab.setOnClickListener {
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
 
         // get the view model
         personsViewModel = ViewModelProvider(this, Injection.provideViewModelFactory()).get(
