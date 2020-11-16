@@ -5,14 +5,15 @@ import android.os.Bundle
 import android.view.*
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.alf.R
+import com.example.alf.data.model.PersonModel
 import com.example.alf.databinding.FragmentPersonBinding
 import com.example.alf.ui.persons.PersonsPagingAdapter
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,43 +49,17 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (personViewModel.personLiveData?.value == null) {
-            personViewModel.fetchPersonById(args.personId)
-        }
-        personViewModel.personLiveData?.observe(viewLifecycleOwner, {
+        personViewModel.getPersonLiveData(args.personId).observe(viewLifecycleOwner, {
             if (it != null) {
-                if (personViewModel.originalPersonLiveData == null) {
-                    personViewModel.originalPersonLiveData?.value = it
-                }
-
-                binding.firstName.setText(it.firstName)
-                binding.patronymic.setText(it.patronymic)
-                binding.lastName.setText(it.lastName)
-                binding.birthDate.showSoftInputOnFocus = false
-                if (it.birthDate != null) {
-                    binding.birthDate.setText(dateFormat.format(it.birthDate))
-                }
-                binding.birthDate.setOnClickListener { showDatePicker() }
-                binding.country.setText(it.country?.name)
-                binding.height.setText(it.height.toString())
-                binding.weight.setText(it.weight.toString())
-                // load photo
-                val photoImageUrl = PersonsPagingAdapter.personsImagesUrl + it.id + PersonsPagingAdapter.personsImagesExtension
-                context?.let { it1 ->
-                    Glide
-                            .with(it1)
-                            .load(photoImageUrl)
-                            .placeholder(android.R.color.darker_gray)
-                            .error(android.R.color.holo_red_dark)
-                            .into(binding.photo)
-                }
-
-                saveMenuItem.isEnabled = personViewModel.originalPersonLiveData?.value
-                        ?.equals(personViewModel.personLiveData!!.value) ?: false
-
+                onPersonLoadSuccess(it)
             } else {
-                showToast("Something went wrong")
+                onPersonLoadFail()
             }
+            binding.progressBar.visibility = View.GONE
+        })
+
+        personViewModel.saveEnabledLiveData.observe(viewLifecycleOwner, {
+            saveMenuItem.isEnabled = it
         })
     }
 
@@ -110,6 +85,56 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
+    private fun onPersonLoadSuccess(personModel: PersonModel) {
+        binding.personData.visibility = View.VISIBLE
+
+        personViewModel.saveOriginal(personModel)
+
+        binding.firstName.setText(personModel.firstName)
+        binding.patronymic.setText(personModel.patronymic)
+        binding.lastName.setText(personModel.lastName)
+        binding.birthDate.showSoftInputOnFocus = false
+        if (personModel.birthDate != null) {
+            binding.birthDate.setText(dateFormat.format(personModel.birthDate))
+        }
+        binding.birthDate.setOnClickListener { showDatePicker() }
+        binding.country.setText(personModel.country?.name)
+        binding.height.setText(personModel.height.toString())
+        binding.weight.setText(personModel.weight.toString())
+        // load photo
+        val photoImageUrl = PersonsPagingAdapter.personsImagesUrl + personModel.id + PersonsPagingAdapter.personsImagesExtension
+        context?.let { it1 ->
+            Glide
+                .with(it1)
+                .load(photoImageUrl)
+                .placeholder(android.R.color.darker_gray)
+                .error(android.R.color.holo_red_dark)
+                .into(binding.photo)
+        }
+
+        saveMenuItem.isEnabled = personViewModel.isPersonChanged()
+
+        addTextChangeListeners()
+    }
+
+    private fun onPersonLoadFail() {
+        binding.personData.visibility = View.GONE
+        showToast("Something went wrong")
+    }
+
+    private fun addTextChangeListeners() {
+        binding.firstName.doAfterTextChanged { text -> personViewModel.setFirstName(text.toString()) }
+        binding.patronymic.doAfterTextChanged { text -> personViewModel.setPatronymic(text.toString()) }
+        binding.lastName.doAfterTextChanged { text -> personViewModel.setLastName(text.toString()) }
+        //binding.country.doAfterTextChanged { text -> personViewModel.setCountry(text.toString()) }
+        binding.height.doAfterTextChanged { text -> personViewModel.setHeight(text.toString().toInt()) }
+        binding.weight.doAfterTextChanged { text -> personViewModel.setWeight(text.toString().toInt()) }
+    }
+
+    private fun removeTextChangeListeners() {
+        //binding.firstName.removeTextChangedListener(this)
+    }
+
     private fun takePhoto() {
         TODO("Not yet implemented")
         /*val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -129,18 +154,8 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun showDatePicker() {
-        // Use the current shown date as the default date in the picker
-        val formattedDate = binding.birthDate.text.toString()
-        try {
-            val date = dateFormat.parse(formattedDate)
-            if (date == null) {
-                calendar.time = Date()
-            } else {
-                calendar.time = date
-            }
-        } catch (e : ParseException) {
-            calendar.time = Date()
-        }
+        // Use the current person birth date as the default date in the picker or today if null
+        calendar.time = personViewModel.getBirthDate() ?: Date()
 
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -150,11 +165,12 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-        personViewModel.personLiveData?.value = personViewModel.personLiveData?.value
+        personViewModel.setBirthDate(calendar.time)
+        binding.birthDate.setText(dateFormat.format(calendar.time))
     }
 
 }

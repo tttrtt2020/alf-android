@@ -1,5 +1,6 @@
 package com.example.alf.data.model
 
+import java.io.Serializable
 import java.util.*
 
 data class PersonModel(
@@ -11,4 +12,4 @@ data class PersonModel(
     var country: CountryModel?,
     var height: Int?,
     var weight: Int?,
-)
+): Serializable
