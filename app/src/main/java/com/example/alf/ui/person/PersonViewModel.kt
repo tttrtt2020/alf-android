@@ -2,6 +2,7 @@ package com.example.alf.ui.person
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.CountryModel
 import com.example.alf.data.model.PersonModel
@@ -9,23 +10,27 @@ import com.example.alf.data.model.deepCopy
 import com.example.alf.data.repository.PersonApiService
 import java.util.*
 
-class PersonViewModel(application: Application) : AndroidViewModel(application) {
+class PersonViewModel(application: Application, id: Int) : AndroidViewModel(application) {
 
     private var personService: PersonApiService = PersonApiService()
     private var originalPerson: PersonModel? = null
-    private var personLiveData: MutableLiveData<PersonModel> = MutableLiveData()
+    private var personLiveData: LiveData<PersonModel> = MutableLiveData()
     /*var createPersonLiveData: LiveData<PersonModel>? = MutableLiveData()
     var deletePersonLiveData: LiveData<Boolean>? = MutableLiveData()*/
 
     var saveEnabledLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getPersonLiveData(id: Int): MutableLiveData<PersonModel> {
+    init {
         fetchPersonById(id)
-        return personLiveData
     }
 
     private fun fetchPersonById(id: Int) {
         personLiveData = personService.fetchPersonById(id)!!
+        originalPerson = deepCopy(personLiveData.value)
+    }
+
+    fun getPersonLiveData(): LiveData<PersonModel> {
+        return personLiveData
     }
 
     /*fun createPerson(personModel: PersonModel) {
@@ -36,18 +41,12 @@ class PersonViewModel(application: Application) : AndroidViewModel(application) 
         deletePersonLiveData = personRepository?.deletePerson(id)
     }*/
 
-    fun onPersonDataChanged() {
+    private fun onPersonDataChanged() {
         saveEnabledLiveData.value = isPersonChanged()
     }
 
-    fun isPersonChanged(): Boolean {
+    private fun isPersonChanged(): Boolean {
         return originalPerson != personLiveData.value
-    }
-
-    fun saveOriginal(personModel: PersonModel) {
-        if (originalPerson == null) {
-            originalPerson = deepCopy(personModel)
-        }
     }
 
     fun getBirthDate(): Date? {
@@ -57,10 +56,6 @@ class PersonViewModel(application: Application) : AndroidViewModel(application) 
     fun setBirthDate(time: Date) {
         personLiveData.value?.birthDate = time
         onPersonDataChanged()
-    }
-
-    fun getFirstName(): String? {
-        return personLiveData.value?.firstName
     }
 
     fun setFirstName(firstName: String) {

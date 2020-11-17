@@ -24,7 +24,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private val args: PersonFragmentArgs by navArgs()
 
-    private val personViewModel: PersonViewModel by viewModels()
+    private val personViewModel: PersonViewModel by viewModels { PersonViewModelFactory(activity?.application!!, args.personId) }
 
     private val calendar: Calendar = Calendar.getInstance()
     private val dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
@@ -49,7 +49,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        personViewModel.getPersonLiveData(args.personId).observe(viewLifecycleOwner, {
+        personViewModel.getPersonLiveData().observe(viewLifecycleOwner, {
             if (it != null) {
                 onPersonLoadSuccess(it)
             } else {
@@ -57,16 +57,15 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
             binding.progressBar.visibility = View.GONE
         })
-
-        personViewModel.saveEnabledLiveData.observe(viewLifecycleOwner, {
-            saveMenuItem.isEnabled = it
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.person, menu)
 
         saveMenuItem = menu.findItem(R.id.action_save)
+        personViewModel.saveEnabledLiveData.observe(viewLifecycleOwner, {
+            saveMenuItem.isEnabled = it
+        })
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -87,8 +86,6 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun onPersonLoadSuccess(personModel: PersonModel) {
         binding.personData.visibility = View.VISIBLE
-
-        personViewModel.saveOriginal(personModel)
 
         binding.firstName.setText(personModel.firstName)
         binding.patronymic.setText(personModel.patronymic)
@@ -112,8 +109,6 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 .into(binding.photo)
         }
 
-        saveMenuItem.isEnabled = personViewModel.isPersonChanged()
-
         addTextChangeListeners()
     }
 
@@ -132,7 +127,6 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun removeTextChangeListeners() {
-        //binding.firstName.removeTextChangedListener(this)
     }
 
     private fun takePhoto() {
@@ -169,8 +163,8 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-        personViewModel.setBirthDate(calendar.time)
         binding.birthDate.setText(dateFormat.format(calendar.time))
+        personViewModel.setBirthDate(calendar.time)
     }
 
 }
