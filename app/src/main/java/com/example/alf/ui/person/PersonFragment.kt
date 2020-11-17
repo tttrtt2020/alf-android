@@ -51,9 +51,9 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         personViewModel.getPersonLiveData().observe(viewLifecycleOwner, {
             if (it != null) {
-                onPersonLoadSuccess(it)
+                onGetPersonSuccess(it)
             } else {
-                onPersonLoadFail()
+                onGetPersonFail()
             }
             binding.progressBar.visibility = View.GONE
         })
@@ -84,7 +84,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    private fun onPersonLoadSuccess(personModel: PersonModel) {
+    private fun onGetPersonSuccess(personModel: PersonModel) {
         binding.personData.visibility = View.VISIBLE
 
         binding.firstName.setText(personModel.firstName)
@@ -112,7 +112,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         addTextChangeListeners()
     }
 
-    private fun onPersonLoadFail() {
+    private fun onGetPersonFail() {
         binding.personData.visibility = View.GONE
         showToast("Something went wrong")
     }
