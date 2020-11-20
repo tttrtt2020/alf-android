@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alf.R
-import com.example.alf.data.model.MatchModel
+import com.example.alf.data.model.Match
 import com.example.alf.databinding.FragmentMatchesBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -81,12 +81,12 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onItemDeleted(matchModel: MatchModel, position: Int) {
+    override fun onItemDeleted(match: Match, position: Int) {
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(matchModel: MatchModel, position: Int) {
-        val action = matchModel.id.let { MatchesFragmentDirections.actionNavMatchesToMatchFragment(matchId = it) }
+    override fun onItemClick(match: Match, position: Int) {
+        val action = match.id.let { MatchesFragmentDirections.actionNavMatchesToMatchFragment(matchId = it) }
         findNavController().navigate(action)
     }
 

@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.R
-import com.example.alf.data.model.MatchModel
+import com.example.alf.data.model.Match
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<MatchModel>, var listener: MatchListener) :
-    PagingDataAdapter<MatchModel, MatchesPagingAdapter.ViewHolder>(diffCallback) {
+class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var listener: MatchListener) :
+    PagingDataAdapter<Match, MatchesPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
         const val clubLogosUrl: String = "https://storage.googleapis.com/alf-dev/club/"
@@ -23,9 +23,9 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<MatchModel>, var 
     }
 
     interface MatchListener {
-        fun onItemDeleted(matchModel: MatchModel, position: Int)
+        fun onItemDeleted(match: Match, position: Int)
 
-        fun onItemClick(matchModel: MatchModel, position: Int)
+        fun onItemClick(match: Match, position: Int)
     }
 
     // Provide a reference to the views for each data item
@@ -102,13 +102,13 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<MatchModel>, var 
 
     }
 
-    object MatchModelComparator : DiffUtil.ItemCallback<MatchModel>() {
-        override fun areItemsTheSame(oldItem: MatchModel, newItem: MatchModel): Boolean {
+    object MatchModelComparator : DiffUtil.ItemCallback<Match>() {
+        override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {
             // Id is unique.
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MatchModel, newItem: MatchModel): Boolean {
+        override fun areContentsTheSame(oldItem: Match, newItem: Match): Boolean {
             return oldItem == newItem
         }
     }

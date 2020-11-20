@@ -15,7 +15,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.Injection
 import com.example.alf.R
-import com.example.alf.data.model.PersonModel
+import com.example.alf.data.model.Person
 import com.example.alf.databinding.FragmentPersonsBinding
 import com.example.alf.ui.PersonsLoadStateAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -36,7 +36,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
 
     private lateinit var binding: FragmentPersonsBinding
     private lateinit var personsViewModel: SearchPersonsViewModel
-    private val viewAdapter = PersonsPagingAdapter(PersonsPagingAdapter.PersonModelComparator, this)
+    private val viewAdapter = PersonsPagingAdapter(PersonsPagingAdapter.PersonComparator, this)
 
     private lateinit var searchView: SearchView
     private var searchJob: Job? = null
@@ -146,16 +146,16 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onItemDeleted(personModel: PersonModel, position: Int) {
+    override fun onItemDeleted(person: Person, position: Int) {
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(personModel: PersonModel, position: Int) {
-        openPerson(personModel)
+    override fun onItemClick(person: Person, position: Int) {
+        openPerson(person)
     }
 
-    private fun openPerson(personModel: PersonModel) {
-        val action = personModel.id.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(
+    private fun openPerson(person: Person) {
+        val action = person.id.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(
             personId = it
         ) }
         findNavController().navigate(action)

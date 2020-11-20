@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.R
-import com.example.alf.data.model.MatchModel
+import com.example.alf.data.model.Match
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,15 +20,15 @@ class MatchesAdapter(var listener: MatchListener) :
         const val clubLogosExtension: String = ".png"
     }
 
-    private var matches: ArrayList<MatchModel>? = null
+    private var matches: ArrayList<Match>? = null
 
     interface MatchListener {
-        fun onItemDeleted(matchModel: MatchModel, position: Int)
+        fun onItemDeleted(match: Match, position: Int)
 
-        fun onItemClick(matchModel: MatchModel, position: Int)
+        fun onItemClick(match: Match, position: Int)
     }
 
-    fun setMatches(list: ArrayList<MatchModel>) {
+    fun setMatches(list: ArrayList<Match>) {
         matches = list
         notifyDataSetChanged()
     }

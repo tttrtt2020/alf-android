@@ -6,21 +6,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
-import com.example.alf.data.model.EventModel
+import com.example.alf.data.model.Event
 import java.util.*
 
 class EventsAdapter(var listener: EventsListener) :
         RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
-    private var events: ArrayList<EventModel>? = null
+    private var events: ArrayList<Event>? = null
 
     interface EventsListener {
-        fun onItemDeleted(eventModel: EventModel, position: Int)
+        fun onItemDeleted(event: Event, position: Int)
 
-        fun onItemClick(eventModel: EventModel, position: Int)
+        fun onItemClick(event: Event, position: Int)
     }
 
-    fun setEvents(list: ArrayList<EventModel>) {
+    fun setEvents(list: ArrayList<Event>) {
         events = list
         notifyDataSetChanged()
     }

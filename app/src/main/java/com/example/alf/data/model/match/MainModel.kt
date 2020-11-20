@@ -1,10 +1,10 @@
 package com.example.alf.data.model.match
 
-import com.example.alf.data.model.EventModel
+import com.example.alf.data.model.Event
 
 data class MainModel (
-    var match: MatchModel,
+        var match: MatchModel,
     //var referees:
-    val hostEvents: List<EventModel>,
-    val guestEvents: List<EventModel>,
+        val hostEvents: List<Event>,
+        val guestEvents: List<Event>,
 )

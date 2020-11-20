@@ -11,17 +11,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.R
-import com.example.alf.data.model.PersonModel
+import com.example.alf.data.model.Person
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class PersonsPagingAdapter(
-    diffCallback: DiffUtil.ItemCallback<PersonModel>,
+    diffCallback: DiffUtil.ItemCallback<Person>,
     private var listener: PersonListener
 ) :
-    PagingDataAdapter<PersonModel, PersonsPagingAdapter.ViewHolder>(diffCallback) {
+    PagingDataAdapter<Person, PersonsPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
         const val personsImagesUrl: String = "https://storage.googleapis.com/alf-dev/person/"
@@ -31,9 +31,9 @@ class PersonsPagingAdapter(
     }
 
     interface PersonListener {
-        fun onItemDeleted(personModel: PersonModel, position: Int)
+        fun onItemDeleted(person: Person, position: Int)
 
-        fun onItemClick(personModel: PersonModel, position: Int)
+        fun onItemClick(person: Person, position: Int)
     }
 
     // Provide a reference to the views for each data item
@@ -100,13 +100,13 @@ class PersonsPagingAdapter(
         }
     }
 
-    object PersonModelComparator : DiffUtil.ItemCallback<PersonModel>() {
-        override fun areItemsTheSame(oldItem: PersonModel, newItem: PersonModel): Boolean {
+    object PersonComparator : DiffUtil.ItemCallback<Person>() {
+        override fun areItemsTheSame(oldItem: Person, newItem: Person): Boolean {
             // Id is unique.
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: PersonModel, newItem: PersonModel): Boolean {
+        override fun areContentsTheSame(oldItem: Person, newItem: Person): Boolean {
             return oldItem == newItem
         }
     }

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.alf.data.model.PersonModel
+import com.example.alf.data.model.Person
 import com.example.alf.data.repository.PersonApiService
 import kotlinx.coroutines.flow.Flow
 
@@ -16,28 +16,28 @@ class SearchPersonsViewModel(
 ) : ViewModel() {
 
     private var personApiService: PersonApiService? = null
-    var personModelListLiveData: LiveData<List<PersonModel>>? = null
-    /*var createPersonLiveData: LiveData<PersonModel>? = null
+    var personListLiveData: LiveData<List<Person>>? = null
+    /*var createPersonLiveData: LiveData<Person>? = null
     var deletePersonLiveData: LiveData<Boolean>? = null*/
 
     private var currentQueryValue: String? = null
 
-    private var currentSearchResult: Flow<PagingData<PersonModel>>? = null
+    private var currentSearchResult: Flow<PagingData<Person>>? = null
 
     init {
         personApiService = PersonApiService()
-        personModelListLiveData = MutableLiveData()
+        personListLiveData = MutableLiveData()
         /*createPersonLiveData = MutableLiveData()
         deletePersonLiveData = MutableLiveData()*/
     }
 
-    fun searchPersons(queryString: String): Flow<PagingData<PersonModel>> {
+    fun searchPersons(queryString: String): Flow<PagingData<Person>> {
         val lastResult = currentSearchResult
         if (queryString == currentQueryValue && lastResult != null) {
             return lastResult
         }
         currentQueryValue = queryString
-        val newResult: Flow<PagingData<PersonModel>> = personsPagingRepository
+        val newResult: Flow<PagingData<Person>> = personsPagingRepository
             .getSearchResultStream(queryString)
             .cachedIn(viewModelScope)
         currentSearchResult = newResult
@@ -45,15 +45,15 @@ class SearchPersonsViewModel(
     }
 
     /*fun fetchAllPersons() {
-        personModelListLiveData = personRepository?.fetchAllPersons()
+        personListLiveData = personRepository?.fetchAllPersons()
     }*/
 
     /*fun fetchPersonsByQuery(query: String) {
-        personModelListLiveData = personRepository?.fetchPersonsByQuery(query)
+        personListLiveData = personRepository?.fetchPersonsByQuery(query)
     }*/
 
-    /*fun createPerson(personModel: PersonModel) {
-        createPersonLiveData = personRepository?.createPerson(personModel)
+    /*fun createPerson(person: Person) {
+        createPersonLiveData = personRepository?.createPerson(person)
     }
 
     fun deletePerson(id: Int) {

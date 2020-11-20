@@ -1,7 +1,7 @@
 package com.example.alf.data.paging
 
 import androidx.paging.PagingSource
-import com.example.alf.data.model.PersonModel
+import com.example.alf.data.model.Person
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -10,9 +10,9 @@ private const val STARTING_PAGE_INDEX = 1
 class PersonsPagingSource(
     private val service: PersonsService,
     private var query: String
-) : PagingSource<Int, PersonModel>() {
+) : PagingSource<Int, Person>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PersonModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Person> {
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: STARTING_PAGE_INDEX

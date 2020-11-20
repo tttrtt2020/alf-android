@@ -1,15 +1,15 @@
 package com.example.alf.data.paging
 
 import androidx.paging.PagingSource
-import com.example.alf.data.model.MatchModel
+import com.example.alf.data.model.Match
 import retrofit2.HttpException
 import java.io.IOException
 
 class MatchesPagingSource(
     private val backend: MatchesBackendService,
-) : PagingSource<Int, MatchModel>() {
+) : PagingSource<Int, Match>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MatchModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Match> {
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: 1

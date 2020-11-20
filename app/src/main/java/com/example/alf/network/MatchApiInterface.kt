@@ -1,6 +1,6 @@
 package com.example.alf.network
 
-import com.example.alf.data.model.MatchesPageModel
+import com.example.alf.data.model.MatchesPage
 import com.example.alf.data.model.match.MatchInfoModel
 import com.example.alf.data.model.match.SquadsModel
 import retrofit2.Call
@@ -11,10 +11,10 @@ import retrofit2.http.Query
 interface MatchApiInterface {
 
     @GET("matches?sort=dateTime,desc")
-    fun fetchMatchesPage(): Call<MatchesPageModel>
+    fun fetchMatchesPage(): Call<MatchesPage>
 
     @GET("matches?sort=dateTime,desc")
-    suspend fun fetchMatchesPage(@Query("page") page: Int): MatchesPageModel
+    suspend fun fetchMatchesPage(@Query("page") page: Int): MatchesPage
 
     @GET("getMatchInfo/{id}")
     fun fetchMatchInfoById(@Path("id") id: Int): Call<MatchInfoModel>

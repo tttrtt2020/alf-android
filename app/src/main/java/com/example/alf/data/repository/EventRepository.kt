@@ -2,7 +2,7 @@ package com.example.alf.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.EventModel
+import com.example.alf.data.model.Event
 import com.example.alf.network.ApiClient
 import com.example.alf.network.EventApiInterface
 import retrofit2.Call
@@ -17,18 +17,18 @@ class EventRepository {
         eventApiInterface = ApiClient.getApiClient().create(EventApiInterface::class.java)
     }
 
-    fun fetchAllEvents(): LiveData<List<EventModel>> {
-        val data = MutableLiveData<List<EventModel>>()
+    fun fetchAllEvents(): LiveData<List<Event>> {
+        val data = MutableLiveData<List<Event>>()
 
-        eventApiInterface?.fetchAllEvents()?.enqueue(object : Callback<List<EventModel>> {
+        eventApiInterface?.fetchAllEvents()?.enqueue(object : Callback<List<Event>> {
 
-            override fun onFailure(call: Call<List<EventModel>>, t: Throwable) {
+            override fun onFailure(call: Call<List<Event>>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                    call: Call<List<EventModel>>,
-                    response: Response<List<EventModel>>
+                    call: Call<List<Event>>,
+                    response: Response<List<Event>>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {

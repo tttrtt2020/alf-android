@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.example.alf.data.model.MatchModel
+import com.example.alf.data.model.Match
 import com.example.alf.data.paging.MatchesBackendService
 import com.example.alf.data.paging.MatchesPagingSource
 import com.example.alf.data.repository.MatchApiService
@@ -16,7 +16,7 @@ import com.example.alf.data.repository.MatchApiService
 class MatchesViewModel(application: Application) : AndroidViewModel(application) {
 
     private var matchApiService: MatchApiService? = null
-    var matchModelListLiveData: LiveData<List<MatchModel>>? = null
+    var matchListLiveData: LiveData<List<Match>>? = null
     /*var createMatchLiveData: LiveData<MatchModel>? = null
     var deleteMatchLiveData: LiveData<Boolean>? = null*/
 
@@ -26,7 +26,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         matchApiService = MatchApiService()
-        matchModelListLiveData = MutableLiveData()
+        matchListLiveData = MutableLiveData()
         /*createMatchLiveData = MutableLiveData()
         deleteMatchLiveData = MutableLiveData()*/
     }
@@ -36,7 +36,7 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     }*/
 
     fun fetchAllMatches() {
-        matchModelListLiveData = matchApiService?.fetchMatches()
+        matchListLiveData = matchApiService?.fetchMatches()
     }
 
     /*fun createMatch(matchModel: MatchModel) {

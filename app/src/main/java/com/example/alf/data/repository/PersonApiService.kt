@@ -1,8 +1,9 @@
 package com.example.alf.data.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.PersonModel
-import com.example.alf.data.model.PersonsPageModel
+import com.example.alf.data.model.Person
+import com.example.alf.data.model.PersonsPage
 import com.example.alf.network.ApiClient
 import com.example.alf.network.PersonApiInterface
 import retrofit2.Call
@@ -13,8 +14,8 @@ class PersonApiService {
 
     private var personApiInterface: PersonApiInterface = ApiClient.getApiClient().create(PersonApiInterface::class.java)
 
-    /*fun fetchPersonsByQuery(query: String): LiveData<List<PersonModel>> {
-        val data = MutableLiveData<List<PersonModel>>()
+    /*fun fetchPersonsByQuery(query: String): LiveData<List<Person>> {
+        val data = MutableLiveData<List<Person>>()
 
         apiInterface?.fetchPersonsPageByQuery(query)?.enqueue(object : Callback<PersonsPageModel> {
 
@@ -39,21 +40,45 @@ class PersonApiService {
 
     }*/
 
-    fun fetchPersonById(id: Int): MutableLiveData<PersonModel>? {
-        val data = MutableLiveData<PersonModel>()
+    fun fetchPersonById(personLiveData: MutableLiveData<Person>, id: Int): LiveData<Person>? {
 
-        personApiInterface.fetchPersonById(id).enqueue(object : Callback<PersonModel> {
+        personApiInterface.fetchPersonById(id).enqueue(object : Callback<Person> {
 
-            override fun onFailure(call: Call<PersonModel>, t: Throwable) {
-                data.value = null
+            override fun onFailure(call: Call<Person>, t: Throwable) {
+                personLiveData.value = null
             }
 
             override fun onResponse(
-                call: Call<PersonModel>,
-                response: Response<PersonModel>
+                call: Call<Person>,
+                response: Response<Person>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
+                    personLiveData.value = res
+                } else {
+                    personLiveData.value = null
+                }
+            }
+        })
+
+        return personLiveData
+    }
+
+    suspend fun fetchPersonsPage(query: String, nextPageNumber: Int): PersonsPage {
+        return personApiInterface.fetchPersonsPage(query, nextPageNumber)
+    }
+
+    fun createPerson(person: Person): LiveData<Person>{
+        val data = MutableLiveData<Person>()
+
+        personApiInterface.createPerson(person).enqueue(object : Callback<Person>{
+            override fun onFailure(call: Call<Person>, t: Throwable) {
+                data.value = null
+            }
+
+            override fun onResponse(call: Call<Person>, response: Response<Person>) {
+                val res = response.body()
+                if (response.code() == 201 && res!=null){
                     data.value = res
                 } else {
                     data.value = null
@@ -64,36 +89,37 @@ class PersonApiService {
         return data
     }
 
-    suspend fun fetchPersonsPage(query: String, nextPageNumber: Int): PersonsPageModel {
-        return personApiInterface.fetchPersonsPage(query, nextPageNumber)
-    }
+    fun updatePerson(personLiveData: MutableLiveData<Person>, person: Person?): LiveData<Person>{
 
-    /*fun createPerson(personModel: PersonModel):LiveData<PersonModel>{
-        val data = MutableLiveData<PersonModel>()
+        if (person == null) {
+            personLiveData.value = null
+            return personLiveData
+        }
 
-        apiInterface?.createPerson(personModel)?.enqueue(object : Callback<PersonModel>{
-            override fun onFailure(call: Call<PersonModel>, t: Throwable) {
-                data.value = null
+        // todo: think if response is needed and on failure state
+
+        personApiInterface.updatePerson(person.id, person).enqueue(object : Callback<Person>{
+            override fun onFailure(call: Call<Person>, t: Throwable) {
+                personLiveData.value = null
             }
 
-            override fun onResponse(call: Call<PersonModel>, response: Response<PersonModel>) {
+            override fun onResponse(call: Call<Person>, response: Response<Person>) {
                 val res = response.body()
-                if (response.code() == 201 && res!=null){
-                    data.value = res
-                }else{
-                    data.value = null
+                if (response.code() == 200 && res!=null){
+                    personLiveData.value = res
+                } else {
+                    personLiveData.value = null
                 }
             }
         })
 
-        return data
-
+        return personLiveData
     }
 
-    fun deletePerson(id:Int):LiveData<Boolean>{
+    /*fun deletePerson(id:Int):LiveData<Boolean>{
         val data = MutableLiveData<Boolean>()
 
-        apiInterface?.deletePerson(id)?.enqueue(object : Callback<String>{
+        personApiInterface.deletePerson(id)?.enqueue(object : Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 data.value = false
             }

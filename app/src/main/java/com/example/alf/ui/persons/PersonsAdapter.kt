@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.R
-import com.example.alf.data.model.PersonModel
+import com.example.alf.data.model.Person
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,15 +25,15 @@ class PersonsAdapter(var listener: PersonListener) :
         const val flagsImagesExtension: String = ".svg"
     }
 
-    private var persons: ArrayList<PersonModel>? = null
+    private var persons: ArrayList<Person>? = null
 
     interface PersonListener {
-        fun onItemDeleted(personModel: PersonModel, position: Int)
+        fun onItemDeleted(person: Person, position: Int)
 
-        fun onItemClick(personModel: PersonModel, position: Int)
+        fun onItemClick(person: Person, position: Int)
     }
 
-    fun setPersons(list: ArrayList<PersonModel>) {
+    fun setPersons(list: ArrayList<Person>) {
         persons = list
         notifyDataSetChanged()
     }

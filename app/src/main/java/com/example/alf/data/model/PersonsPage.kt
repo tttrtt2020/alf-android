@@ -1,7 +1,7 @@
 package com.example.alf.data.model
 
-data class PersonsPageModel (
-    var content: List<PersonModel>,
+data class PersonsPage (
+    var content: List<Person>,
     var last: Boolean,
     var totalPages: Int,
     var totalElements: Int,

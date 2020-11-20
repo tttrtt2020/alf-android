@@ -1,6 +1,6 @@
 package com.example.alf.data.model
 
-data class ClubModel (
+class EventType (
     var id: Int,
     var name: String
 )

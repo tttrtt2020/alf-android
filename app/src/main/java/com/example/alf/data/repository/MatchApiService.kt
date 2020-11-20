@@ -2,8 +2,8 @@ package com.example.alf.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.MatchModel
-import com.example.alf.data.model.MatchesPageModel
+import com.example.alf.data.model.Match
+import com.example.alf.data.model.MatchesPage
 import com.example.alf.data.model.match.MatchInfoModel
 import com.example.alf.data.model.match.SquadsModel
 import com.example.alf.network.ApiClient
@@ -16,18 +16,18 @@ class MatchApiService {
 
     private var matchApiInterface: MatchApiInterface = ApiClient.getApiClient().create(MatchApiInterface::class.java)
 
-    fun fetchMatches(): LiveData<List<MatchModel>> {
-        val data = MutableLiveData<List<MatchModel>>()
+    fun fetchMatches(): LiveData<List<Match>> {
+        val data = MutableLiveData<List<Match>>()
 
-        matchApiInterface.fetchMatchesPage().enqueue(object : Callback<MatchesPageModel> {
+        matchApiInterface.fetchMatchesPage().enqueue(object : Callback<MatchesPage> {
 
-            override fun onFailure(call: Call<MatchesPageModel>, t: Throwable) {
+            override fun onFailure(call: Call<MatchesPage>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                call: Call<MatchesPageModel>,
-                response: Response<MatchesPageModel>
+                    call: Call<MatchesPage>,
+                    response: Response<MatchesPage>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
@@ -67,7 +67,7 @@ class MatchApiService {
         return data
     }
 
-    suspend fun fetchMatchesPage(nextPageNumber: Int): MatchesPageModel {
+    suspend fun fetchMatchesPage(nextPageNumber: Int): MatchesPage {
         return matchApiInterface.fetchMatchesPage(nextPageNumber)
     }
 

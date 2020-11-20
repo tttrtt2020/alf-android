@@ -1,7 +1,7 @@
 package com.example.alf.data.model
 
-data class EventModel(
+data class Event(
     var minute: String,
     var name: String,
-    var eventType: EventTypeModel
+    var eventType: EventType
 )
