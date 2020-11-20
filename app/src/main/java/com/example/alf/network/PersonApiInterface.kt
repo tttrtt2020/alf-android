@@ -22,9 +22,12 @@ interface PersonApiInterface {
     fun fetchPersonById(@Path("id") id: Int): Call<Person>
 
     @POST("persons")
-    fun createPerson(@Body personModel: Person): Call<Person>
+    fun createPerson(@Body person: Person): Call<Person>
 
     @PUT("persons/{id}")
-    fun updatePerson(@Path("id") id: Int, @Body personModel: Person): Call<Person>
+    fun updatePerson(@Path("id") id: Int, @Body person: Person): Call<Person>
+
+    @DELETE("persons/{id}")
+    fun deletePerson(@Path("id") id: Int): Call<Person>
 
 }

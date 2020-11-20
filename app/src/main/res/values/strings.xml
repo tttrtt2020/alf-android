@@ -8,6 +8,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_photo">Take photo</string>
     <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
     <string name="show_only_finished">Show only finished</string>
 
     <string name="menu_home">Home</string>

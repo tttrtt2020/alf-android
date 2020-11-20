@@ -116,21 +116,17 @@ class PersonApiService {
         return personLiveData
     }
 
-    /*fun deletePerson(id:Int):LiveData<Boolean>{
-        val data = MutableLiveData<Boolean>()
+    fun deletePerson(personLiveData: MutableLiveData<Person>, person: Person) {
 
-        personApiInterface.deletePerson(id)?.enqueue(object : Callback<String>{
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                data.value = false
+        personApiInterface.deletePerson(person.id).enqueue(object : Callback<Person> {
+            override fun onFailure(call: Call<Person>, t: Throwable) {
+                personLiveData.value = personLiveData.value
             }
 
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                data.value = response.code() == 200
+            override fun onResponse(call: Call<Person>, response: Response<Person>) {
+                personLiveData.value = if (response.code() == 200) null else personLiveData.value
             }
         })
-
-        return data
-
-    }*/
+    }
 
 }

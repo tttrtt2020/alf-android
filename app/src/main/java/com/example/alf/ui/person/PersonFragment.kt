@@ -80,6 +80,10 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 save()
                 true
             }
+            R.id.action_delete -> {
+                delete()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -141,6 +145,11 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun save() {
         TODO("Not yet implemented")
+    }
+
+    private fun delete() {
+        //binding.progressBar.visibility = View.VISIBLE
+        personViewModel.deletePerson()
     }
 
     private fun showToast(msg: String) {
