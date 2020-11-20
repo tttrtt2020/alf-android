@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -30,7 +31,8 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        viewBinding  true
+        dataBinding true
     }
 
     kotlinOptions {
@@ -60,11 +62,13 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.github.corouteam:GlideToVectorYou:2.0.0'
 
-    implementation "androidx.paging:paging-runtime-ktx:3.0.0-alpha08"
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0-alpha09"
     // Jetpack Compose Integration
-    implementation "androidx.paging:paging-compose:1.0.0-alpha01"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha02"
 
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
+
+    kapt "com.android.databinding:compiler:6.5"
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

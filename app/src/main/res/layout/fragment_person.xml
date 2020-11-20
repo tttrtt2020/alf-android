@@ -1,100 +1,113 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8" ?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.person.PersonFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable name="personViewModel" type="com.example.alf.ui.person.PersonViewModel" />
+    </data>
 
-    <ScrollView
-        android:id="@+id/person_data"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        tools:context=".ui.person.PersonFragment">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/person_data"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{personViewModel.personDataLiveData ? View.VISIBLE : View.GONE}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/card_margin_half"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="150dp"
+                    android:layout_height="210dp"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:hint="First name"
+                    android:text="@={personViewModel.personLiveData.firstName}" />
+
+                <EditText
+                    android:id="@+id/patronymic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:hint="Patronymic"
+                    android:text="@={personViewModel.personLiveData.patronymic}"/>
+
+                <EditText
+                    android:id="@+id/last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:hint="Last name"
+                    android:text="@={personViewModel.personLiveData.lastName}"/>
+
+                <EditText
+                    android:id="@+id/birth_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:inputType="date"
+                    android:hint="Birth date"
+                    android:focusable="false" />
+
+                <EditText
+                    android:id="@+id/country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:hint="Country"/>
+
+                <EditText
+                    android:id="@+id/height"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:hint="Height"/>
+
+                <EditText
+                    android:id="@+id/weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_margin_half"
+                    android:hint="Weight"/>
+
+                <!--<androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/foot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>-->
+
+            </LinearLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/card_margin_half"
-            android:orientation="vertical">
+            android:visibility="@{personViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/photo"
-                android:layout_width="150dp"
-                android:layout_height="210dp"
-                android:layout_margin="@dimen/card_margin_half"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/first_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin_half"
-                android:hint="First name"/>
-
-            <EditText
-                android:id="@+id/patronymic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin_half"
-                android:hint="Patronymic"/>
-
-            <EditText
-                android:id="@+id/last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin_half"
-                android:hint="Last name"/>
-
-            <EditText
-                android:id="@+id/birth_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin_half"
-                android:inputType="date"
-                android:hint="Birth date"
-                android:focusable="false" />
-
-            <EditText
-                android:id="@+id/country"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin_half"
-                android:hint="Country"/>
-
-            <EditText
-                android:id="@+id/height"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin_half"
-                android:hint="Height"/>
-
-            <EditText
-                android:id="@+id/weight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin_half"
-                android:hint="Weight"/>
-
-            <!--<androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/foot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>-->
-
-        </LinearLayout>
-    </ScrollView>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

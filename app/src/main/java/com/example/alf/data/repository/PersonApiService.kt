@@ -40,7 +40,7 @@ class PersonApiService {
 
     }*/
 
-    fun fetchPersonById(personLiveData: MutableLiveData<Person>, id: Int): LiveData<Person>? {
+    fun getPersonById(personLiveData: MutableLiveData<Person>, id: Int): LiveData<Person>? {
 
         personApiInterface.fetchPersonById(id).enqueue(object : Callback<Person> {
 
@@ -89,31 +89,20 @@ class PersonApiService {
         return data
     }
 
-    fun updatePerson(personLiveData: MutableLiveData<Person>, person: Person?): LiveData<Person>{
-
-        if (person == null) {
-            personLiveData.value = null
-            return personLiveData
-        }
-
-        // todo: think if response is needed and on failure state
+    fun updatePerson(resultLiveData: MutableLiveData<Boolean?>, person: Person): LiveData<Boolean?>{
 
         personApiInterface.updatePerson(person.id, person).enqueue(object : Callback<Person>{
             override fun onFailure(call: Call<Person>, t: Throwable) {
-                personLiveData.value = null
+                resultLiveData.value = false
             }
 
             override fun onResponse(call: Call<Person>, response: Response<Person>) {
-                val res = response.body()
-                if (response.code() == 200 && res!=null){
-                    personLiveData.value = res
-                } else {
-                    personLiveData.value = null
-                }
+                //onFailure(call, Exception("mgnvekrl"))
+                resultLiveData.value = response.code() == 200 || response.code() == 204
             }
         })
 
-        return personLiveData
+        return resultLiveData
     }
 
     fun deletePerson(personLiveData: MutableLiveData<Person>, person: Person) {
