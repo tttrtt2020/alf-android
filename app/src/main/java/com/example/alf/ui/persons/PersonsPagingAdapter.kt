@@ -24,13 +24,6 @@ class PersonsPagingAdapter(
 ) :
     PagingDataAdapter<Person, PersonsPagingAdapter.ViewHolder>(diffCallback) {
 
-    companion object {
-        const val personsImagesUrl: String = "https://storage.googleapis.com/alf-dev/person/"
-        const val flagsImagesUrl: String = "https://storage.googleapis.com/alf-dev/country/"
-        const val personsImagesExtension: String = ".jpg"
-        const val flagsImagesExtension: String = ".svg"
-    }
-
     private val dateFormat: SimpleDateFormat = SimpleDateFormat(
         AlfApplication.getProperty("dateFormat"),
         Locale.getDefault()
@@ -82,7 +75,7 @@ class PersonsPagingAdapter(
         holder.birthDateTextView?.text = if (person?.birthDate == null)
             "" else dateFormat.format(person.birthDate)
         // load photo
-        val photoImageUrl = personsImagesUrl + person?.id + personsImagesExtension
+        val photoImageUrl = AlfApplication.getProperty("url.image.person") + person?.id + AlfApplication.getProperty("extension.image.person")
         holder.photoImageView?.context?.let {
             Glide
                 .with(it)
@@ -92,8 +85,9 @@ class PersonsPagingAdapter(
                 .into(holder.photoImageView!!)
         }
         // load flag
-        val flagImageUrl =
-            flagsImagesUrl + person?.country?.name?.toLowerCase(Locale.ROOT) + flagsImagesExtension
+        val flagImageUrl = AlfApplication.getProperty("url.image.flag") +
+                person?.country?.name?.toLowerCase(Locale.ROOT) +
+                AlfApplication.getProperty("extension.image.flag")
         GlideToVectorYou.init().with(holder.photoImageView?.context).load(
             Uri.parse(flagImageUrl),
             holder.flagImageView
