@@ -2,6 +2,8 @@ package com.example.alf.ui.person
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.alf.AlfApplication
+import com.example.alf.data.model.Country
 import com.example.alf.data.model.Person
 import com.example.alf.data.repository.PersonApiService
 import java.util.*
@@ -13,19 +15,34 @@ class PersonViewModel(application: Application, id: Int) : AndroidViewModel(appl
 
     private var personService: PersonApiService = PersonApiService()
 
-    var personLiveData: MutableLiveData<Person> = MutableLiveData()
+    var personLiveData: MediatorLiveData<Person> = MediatorLiveData<Person>()
 
     var getPersonResultLiveData: MutableLiveData<Boolean?> = Transformations.map(personLiveData) { p -> p != null } as MutableLiveData<Boolean?>
+    var createPersonLiveData: MutableLiveData<Person> = MutableLiveData<Person>()
+    var createPersonResultLiveData: MutableLiveData<Boolean?> = Transformations.map(createPersonLiveData) { p -> p != null } as MutableLiveData<Boolean?>
     var updatePersonResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
     var deletePersonResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
     var personDataLiveData: LiveData<Boolean> = Transformations.map(personLiveData) { p -> p != null }
 
+    var photoUrlLiveData: LiveData<String> = Transformations.map(personLiveData) { p -> buildPhotoUrl(p) }
+
+    private fun buildPhotoUrl(person: Person): String {
+        return AlfApplication.getProperty("url.image.person") + person.id + AlfApplication.getProperty("extension.image.person")
+    }
+
     init {
         loadingInProgressLiveData.addSource(personLiveData) { loadingInProgressLiveData.value = false }
+        loadingInProgressLiveData.addSource(createPersonLiveData) { loadingInProgressLiveData.value = false }
         loadingInProgressLiveData.addSource(updatePersonResultLiveData) { loadingInProgressLiveData.value = false }
         loadingInProgressLiveData.addSource(deletePersonResultLiveData) { loadingInProgressLiveData.value = false }
+
+        personLiveData.addSource(createPersonLiveData) {
+            if (it != null) {
+                personLiveData.value!!.id = it.id
+            }
+        }
 
         getPersonById(id)
     }
@@ -33,12 +50,19 @@ class PersonViewModel(application: Application, id: Int) : AndroidViewModel(appl
     private fun getPersonById(id: Int) {
         loadingInProgressLiveData.value = true
         if (id == 0) {
+            // create new person
             personLiveData.value = Person(0,
                     "", null, "",
-                    null, null, null, null)
+                    null, Country(0, "nj", "mrep"), null, null)
         } else {
+            // get existing person
             personService.getPersonById(personLiveData, id)
         }
+    }
+
+    fun createPerson() {
+        loadingInProgressLiveData.value = true
+        personService.createPerson(createPersonLiveData, personLiveData.value!!)
     }
 
     fun updatePerson() {
@@ -48,7 +72,7 @@ class PersonViewModel(application: Application, id: Int) : AndroidViewModel(appl
 
     fun deletePerson() {
         loadingInProgressLiveData.value = true
-        personService.deletePerson(personLiveData, personLiveData.value!!)
+        personService.deletePerson(deletePersonResultLiveData, personLiveData.value!!)
     }
 
     fun getBirthDate(): Date? {
@@ -57,6 +81,14 @@ class PersonViewModel(application: Application, id: Int) : AndroidViewModel(appl
 
     fun setBirthDate(time: Date) {
         personLiveData.value?.birthDate = time
+    }
+
+    fun savePerson() {
+        if (personLiveData.value!!.id == 0) {
+            createPerson()
+        } else {
+            updatePerson()
+        }
     }
 
 }

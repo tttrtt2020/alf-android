@@ -65,28 +65,27 @@ class PersonApiService {
     }
 
     suspend fun fetchPersonsPage(query: String, nextPageNumber: Int): PersonsPage {
-        return personApiInterface.fetchPersonsPage(query, nextPageNumber)
+        return personApiInterface.fetchPersonsPage(query, nextPageNumber, "id,desc")
     }
 
-    fun createPerson(person: Person): LiveData<Person>{
-        val data = MutableLiveData<Person>()
+    fun createPerson(personLiveData: MutableLiveData<Person>, person: Person): LiveData<Person>{
 
         personApiInterface.createPerson(person).enqueue(object : Callback<Person>{
             override fun onFailure(call: Call<Person>, t: Throwable) {
-                data.value = null
+                personLiveData.value = null
             }
 
             override fun onResponse(call: Call<Person>, response: Response<Person>) {
                 val res = response.body()
-                if (response.code() == 201 && res!=null){
-                    data.value = res
+                if (response.code() == 201 && res != null) {
+                    personLiveData.value = res
                 } else {
-                    data.value = null
+                    personLiveData.value = null
                 }
             }
         })
 
-        return data
+        return personLiveData
     }
 
     fun updatePerson(resultLiveData: MutableLiveData<Boolean?>, person: Person): LiveData<Boolean?>{
@@ -97,25 +96,26 @@ class PersonApiService {
             }
 
             override fun onResponse(call: Call<Person>, response: Response<Person>) {
-                //onFailure(call, Exception("mgnvekrl"))
-                resultLiveData.value = response.code() == 200 || response.code() == 204
+                resultLiveData.value = (response.code() == 200 || response.code() == 204)
             }
         })
 
         return resultLiveData
     }
 
-    fun deletePerson(personLiveData: MutableLiveData<Person>, person: Person) {
+    fun deletePerson(resultLiveData: MutableLiveData<Boolean?>, person: Person): LiveData<Boolean?> {
 
-        personApiInterface.deletePerson(person.id).enqueue(object : Callback<Person> {
-            override fun onFailure(call: Call<Person>, t: Throwable) {
-                personLiveData.value = personLiveData.value
+        personApiInterface.deletePerson(person.id).enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                resultLiveData.value = false
             }
 
-            override fun onResponse(call: Call<Person>, response: Response<Person>) {
-                personLiveData.value = if (response.code() == 200) null else personLiveData.value
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                resultLiveData.value = (response.code() == 200 || response.code() == 204)
             }
         })
+
+        return resultLiveData
     }
 
 }

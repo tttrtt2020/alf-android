@@ -74,6 +74,13 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
         })
 
+        personViewModel.createPersonResultLiveData.observe(viewLifecycleOwner, {
+            if (it != null) {
+                onCreatePersonResult(it)
+                personViewModel.createPersonResultLiveData.value = null
+            }
+        })
+
         personViewModel.updatePersonResultLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
                 onUpdatePersonResult(it)
@@ -120,8 +127,12 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         if (success) showSnackBar(binding.root, "Get success") else showSnackBar(binding.root, "Get failed")
     }
 
+    private fun onCreatePersonResult(success: Boolean) {
+        if (success) showSnackBar(binding.root, "Create success") else showSnackBar(binding.root, "Create failed")
+    }
+
     private fun onUpdatePersonResult(success: Boolean) {
-        if (!success) /*showSnackBar(binding.root, "Update success") else*/ showSnackBar(binding.root, "Update failed")
+        if (success) showSnackBar(binding.root, "Update success") else showSnackBar(binding.root, "Update failed")
     }
 
     private fun onDeletePersonResult(success: Boolean) {
@@ -138,7 +149,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }*/ }
 
     private fun save() {
-        personViewModel.updatePerson()
+        personViewModel.savePerson()
     }
 
     private fun delete() {
