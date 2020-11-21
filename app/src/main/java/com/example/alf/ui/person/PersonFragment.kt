@@ -1,7 +1,10 @@
 package com.example.alf.ui.person
 
 import android.app.DatePickerDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
 import android.widget.DatePicker
 import android.widget.ImageView
@@ -140,13 +143,15 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun takePhoto() {
-        TODO("Not yet implemented")
-        /*val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
             startActivityForResult(takePictureIntent, 1)
         } catch (e: ActivityNotFoundException) {
             // display error state to the user
-        }*/ }
+            TODO("Not yet implemented")
+        }
+        TODO("Not yet implemented")
+    }
 
     private fun save() {
         personViewModel.savePerson()
