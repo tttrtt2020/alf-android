@@ -4,9 +4,12 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.DatePicker
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.databinding.FragmentPersonBinding
@@ -16,6 +19,22 @@ import java.util.*
 
 
 class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+
+    companion object {
+        @JvmStatic
+        @BindingAdapter("app:imageUrl")
+        fun loadImage(imageView: ImageView, url: String?) {
+
+            if (!url.isNullOrEmpty()) {
+                Glide
+                    .with(imageView.context)
+                    .load(url)
+                    .placeholder(android.R.color.darker_gray)
+                    .error(android.R.color.holo_red_dark)
+                    .into(imageView)
+            }
+        }
+    }
 
     private lateinit var binding: FragmentPersonBinding
 
@@ -96,30 +115,6 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    /*private fun onGetPersonSuccess(person: Person) {
-        binding.firstName.setText(person.firstName)
-        binding.patronymic.setText(person.patronymic)
-        binding.lastName.setText(person.lastName)
-        binding.birthDate.showSoftInputOnFocus = false
-        if (person.birthDate != null) {
-            binding.birthDate.setText(dateFormat.format(person.birthDate))
-        }
-        binding.birthDate.setOnClickListener { showDatePicker() }
-        binding.country.setText(person.country?.name)
-        binding.height.setText(person.height.toString())
-        binding.weight.setText(person.weight.toString())
-        // load photo
-        val photoImageUrl = PersonsPagingAdapter.personsImagesUrl + person.id + PersonsPagingAdapter.personsImagesExtension
-        context?.let { it1 ->
-            Glide
-                .with(it1)
-                .load(photoImageUrl)
-                .placeholder(android.R.color.darker_gray)
-                .error(android.R.color.holo_red_dark)
-                .into(binding.photo)
-        }
-    }*/
 
     private fun onGetPersonResult(success: Boolean) {
         if (success) showSnackBar(binding.root, "Get success") else showSnackBar(binding.root, "Get failed")

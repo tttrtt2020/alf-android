@@ -34,7 +34,8 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:imageUrl="@{personViewModel.photoUrlLiveData}" />
 
                 <EditText
                     android:id="@+id/first_name"
