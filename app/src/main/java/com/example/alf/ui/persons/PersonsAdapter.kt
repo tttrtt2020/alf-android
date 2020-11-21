@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.data.model.Person
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
@@ -26,6 +27,11 @@ class PersonsAdapter(var listener: PersonListener) :
     }
 
     private var persons: ArrayList<Person>? = null
+
+    private val dateFormat: SimpleDateFormat = SimpleDateFormat(
+        AlfApplication.getProperty("dateFormat"),
+        Locale.getDefault()
+    )
 
     interface PersonListener {
         fun onItemDeleted(person: Person, position: Int)
@@ -79,8 +85,8 @@ class PersonsAdapter(var listener: PersonListener) :
         holder.firstNameTextView?.text = person?.firstName
         holder.patronymicTextView?.text = person?.patronymic
         holder.lastNameTextView?.text = person?.lastName
-        holder.birthDateTextView?.text = if (person?.birthDate == null) "" else
-            SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(person.birthDate)
+        holder.birthDateTextView?.text = if (person?.birthDate == null)
+            "" else dateFormat.format(person.birthDate)
         // load photo
         val photoImageUrl = personsImagesUrl + person?.id + personsImagesExtension
         holder.photoImageView?.context?.let {

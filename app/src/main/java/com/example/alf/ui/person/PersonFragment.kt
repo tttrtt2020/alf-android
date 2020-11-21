@@ -7,6 +7,7 @@ import android.widget.DatePicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.databinding.FragmentPersonBinding
 import com.google.android.material.snackbar.Snackbar
@@ -23,7 +24,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val personViewModel: PersonViewModel by viewModels { PersonViewModelFactory(activity?.application!!, args.personId) }
 
     private val calendar: Calendar = Calendar.getInstance()
-    private val dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    private val dateFormat: SimpleDateFormat = SimpleDateFormat(AlfApplication.getProperty("dateFormat"), Locale.getDefault())
 
     private lateinit var saveMenuItem: MenuItem
 
