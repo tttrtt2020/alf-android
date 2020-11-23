@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.MatchModel
-import com.example.alf.data.model.match.MatchInfoModel
+import androidx.lifecycle.Transformations
+import com.example.alf.data.model.match.MatchInfo
 import com.example.alf.data.repository.MatchApiService
 
 class MatchViewModel(application: Application) : AndroidViewModel(application) {

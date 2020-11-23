@@ -1,6 +1,6 @@
 package com.example.alf.data.model.match
 
-data class MatchInfoModel (
+data class MatchInfo(
     var mainInfo: MainModel,
     var squadsInfo: SquadsModel
 )

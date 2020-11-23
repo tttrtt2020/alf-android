@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.Match
 import com.example.alf.data.model.MatchesPage
-import com.example.alf.data.model.match.MatchInfoModel
+import com.example.alf.data.model.match.MatchInfo
 import com.example.alf.data.model.match.SquadsModel
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
@@ -42,18 +42,18 @@ class MatchApiService {
 
     }
 
-    fun fetchMatchInfoById(id: Int): LiveData<MatchInfoModel>? {
-        val data = MutableLiveData<MatchInfoModel>()
+    fun fetchMatchInfoById(id: Int): LiveData<MatchInfo> {
+        val data = MutableLiveData<MatchInfo>()
 
-        matchApiInterface.fetchMatchInfoById(id).enqueue(object : Callback<MatchInfoModel> {
+        matchApiInterface.fetchMatchInfoById(id).enqueue(object : Callback<MatchInfo> {
 
-            override fun onFailure(call: Call<MatchInfoModel>, t: Throwable) {
+            override fun onFailure(call: Call<MatchInfo>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                call: Call<MatchInfoModel>,
-                response: Response<MatchInfoModel>
+                call: Call<MatchInfo>,
+                response: Response<MatchInfo>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {

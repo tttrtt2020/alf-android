@@ -60,7 +60,7 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPersonBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.personViewModel = personViewModel

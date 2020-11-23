@@ -1,6 +1,6 @@
 package com.example.alf.data.model.match
 
-class PlayerModel (
+class Player (
     var id: Int,
     var firstName: String,
     var patronymic: String?,

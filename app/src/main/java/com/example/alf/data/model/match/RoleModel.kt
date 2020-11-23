@@ -1,5 +1,5 @@
 package com.example.alf.data.model.match
 
-class RoleModel (
+class Role (
     var name: String
 )

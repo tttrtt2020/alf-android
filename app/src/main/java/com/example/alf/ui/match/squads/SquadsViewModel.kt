@@ -4,8 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.MatchModel
-import com.example.alf.data.model.match.MatchPersonModel
 import com.example.alf.data.model.match.SquadsModel
 import com.example.alf.data.repository.MatchApiService
 

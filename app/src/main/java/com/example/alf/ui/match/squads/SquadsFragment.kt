@@ -4,33 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.alf.R
-import com.example.alf.data.model.MatchModel
-import com.example.alf.data.model.match.MatchPersonModel
-import com.example.alf.databinding.FragmentMatchBinding
+import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentSquadsBinding
-import com.example.alf.ui.match.MatchFragmentArgs
 import com.example.alf.ui.match.MatchFragmentDirections
 import com.example.alf.ui.match.MatchViewModel
-import com.example.alf.ui.match.formations.FormationsFragment
-import com.example.alf.ui.matches.MatchesFragmentDirections
-import com.example.alf.ui.matches.MatchesPagingAdapter
-import com.example.alf.ui.matches.MatchesViewModel
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnClickListener {
@@ -72,7 +55,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
         /*squadsViewModel.matchPersonsModelLiveData?.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.matchPersonsRecyclerView.visibility = View.VISIBLE
-                viewAdapter.setMatchPersons(it.hostSquad.plus(it.guestSquad) as ArrayList<MatchPersonModel>)
+                viewAdapter.setMatchPersons(it.hostSquad.plus(it.guestSquad) as ArrayList<MatchPerson>)
             } else {
                 showToast("Something went wrong")
             }
@@ -84,7 +67,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
                 squadsViewModel.matchPersonsModelLiveData?.observe(viewLifecycleOwner, Observer {
                     if (it != null) {
                         binding.matchPersonsRecyclerView.visibility = View.VISIBLE
-                        viewAdapter.setMatchPersons(it.hostSquad.plus(it.guestSquad) as ArrayList<MatchPersonModel>)
+                        viewAdapter.setMatchPersons(it.hostSquad.plus(it.guestSquad) as ArrayList<MatchPerson>)
                     } else {
                         showToast("Something went wrong")
                     }
@@ -99,7 +82,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
         matchViewModel.matchModelLiveData?.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.matchPersonsRecyclerView.visibility = View.VISIBLE
-                viewAdapter.setMatchPersons(getTeam() as ArrayList<MatchPersonModel>)
+                viewAdapter.setMatchPersons(getTeam() as ArrayList<MatchPerson>)
 
                 binding.progressBar.visibility = View.GONE
             } else {
@@ -108,7 +91,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
         })
 
         /*binding.matchPersonsRecyclerView.visibility = View.VISIBLE
-        viewAdapter.setMatchPersons(matchViewModel.matchModelLiveData?.value?.squadsInfo?.hostSquad as ArrayList<MatchPersonModel>)
+        viewAdapter.setMatchPersons(matchViewModel.matchModelLiveData?.value?.squadsInfo?.hostSquad as ArrayList<MatchPerson>)
         binding.progressBar.visibility = View.GONE*/
 
 
@@ -121,7 +104,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
 
     }
 
-    private fun getTeam(): List<MatchPersonModel>? {
+    private fun getTeam(): List<MatchPerson>? {
         return when {
             requireArguments().get("team") == "host" -> matchViewModel.matchModelLiveData!!.value!!.squadsInfo.hostSquad
             requireArguments().get("team") == "guest" -> matchViewModel.matchModelLiveData!!.value!!.squadsInfo.guestSquad
@@ -133,11 +116,11 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onItemDeleted(matchPersonModel: MatchPersonModel, position: Int) {
+    override fun onItemDeleted(matchPerson: MatchPerson, position: Int) {
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(matchPersonModel: MatchPersonModel, position: Int) {
+    override fun onItemClick(matchPerson: MatchPerson, position: Int) {
         TODO("Not yet implemented")
     }
 

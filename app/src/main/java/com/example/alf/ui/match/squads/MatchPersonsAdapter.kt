@@ -8,22 +8,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.R
-import com.example.alf.data.model.match.MatchPersonModel
+import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.ui.persons.PersonsAdapter
 import java.util.*
 
 class MatchPersonsAdapter(var listener: SquadsListener) :
         RecyclerView.Adapter<MatchPersonsAdapter.ViewHolder>() {
 
-    private var matchPersons: ArrayList<MatchPersonModel>? = null
+    private var matchPersons: ArrayList<MatchPerson>? = null
 
     interface SquadsListener {
-        fun onItemDeleted(matchPersonModel: MatchPersonModel, position: Int)
+        fun onItemDeleted(matchPerson: MatchPerson, position: Int)
 
-        fun onItemClick(matchPersonModel: MatchPersonModel, position: Int)
+        fun onItemClick(matchPerson: MatchPerson, position: Int)
     }
 
-    fun setMatchPersons(list: ArrayList<MatchPersonModel>) {
+    fun setMatchPersons(list: ArrayList<MatchPerson>) {
         matchPersons = list
         notifyDataSetChanged()
     }
