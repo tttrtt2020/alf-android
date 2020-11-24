@@ -51,7 +51,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
         }
 
         //squadsViewModel.fetchMatchSquadsInfoById(args.matchId)
-        //squadsViewModel.fetchMatchSquadsInfoById(matchViewModel.matchModelLiveData?.value?.id!!)
+        //squadsViewModel.fetchMatchSquadsInfoById(matchViewModel.matchLiveData?.value?.id!!)
         /*squadsViewModel.matchPersonsModelLiveData?.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.matchPersonsRecyclerView.visibility = View.VISIBLE
@@ -61,7 +61,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
             }
             binding.progressBar.visibility = View.GONE
         })*/
-        /*matchViewModel.matchModelLiveData?.observe(viewLifecycleOwner, Observer {
+        /*matchViewModel.matchLiveData?.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 squadsViewModel.fetchMatchSquadsInfoById(it)
                 squadsViewModel.matchPersonsModelLiveData?.observe(viewLifecycleOwner, Observer {
@@ -79,7 +79,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
             }
         })*/
 
-        matchViewModel.matchModelLiveData?.observe(viewLifecycleOwner, Observer {
+        matchViewModel.matchLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.matchPersonsRecyclerView.visibility = View.VISIBLE
                 viewAdapter.setMatchPersons(getTeam() as ArrayList<MatchPerson>)
@@ -91,7 +91,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
         })
 
         /*binding.matchPersonsRecyclerView.visibility = View.VISIBLE
-        viewAdapter.setMatchPersons(matchViewModel.matchModelLiveData?.value?.squadsInfo?.hostSquad as ArrayList<MatchPerson>)
+        viewAdapter.setMatchPersons(matchViewModel.matchLiveData?.value?.squadsInfo?.hostSquad as ArrayList<MatchPerson>)
         binding.progressBar.visibility = View.GONE*/
 
 
@@ -106,8 +106,8 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
 
     private fun getTeam(): List<MatchPerson>? {
         return when {
-            requireArguments().get("team") == "host" -> matchViewModel.matchModelLiveData!!.value!!.squadsInfo.hostSquad
-            requireArguments().get("team") == "guest" -> matchViewModel.matchModelLiveData!!.value!!.squadsInfo.guestSquad
+            requireArguments().get("team") == "host" -> matchViewModel.matchLiveData.value!!.squadsInfo.hostSquad
+            requireArguments().get("team") == "guest" -> matchViewModel.matchLiveData.value!!.squadsInfo.guestSquad
             else -> null
         }
     }
@@ -125,7 +125,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
     }
 
     override fun onClick(v: View?) {
-        val matchId = matchViewModel.matchModelLiveData?.value?.mainInfo?.match?.id
+        val matchId = matchViewModel.matchLiveData.value?.mainInfo?.match?.id
         val action = matchId.let { MatchFragmentDirections.actionMatchFragmentToFormationsFragment() }
         findNavController().navigate(action)
     }

@@ -102,7 +102,7 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
 
     }
 
-    object MatchModelComparator : DiffUtil.ItemCallback<Match>() {
+    object MatchComparator : DiffUtil.ItemCallback<Match>() {
         override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {
             // Id is unique.
             return oldItem.id == newItem.id

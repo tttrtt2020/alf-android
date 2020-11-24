@@ -52,9 +52,8 @@ class MatchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //matchViewModel = ViewModelProvider(this)[MatchViewModel::class.java]
-        matchViewModel.fetchMatchById(args.matchId)
-        matchViewModel.matchModelLiveData?.observe(viewLifecycleOwner, {
+        matchViewModel.getMatchById(args.matchId)
+        matchViewModel.matchLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
                 binding.hostName.text = it.mainInfo.match.hostTeam.name
                 binding.guestName.text = it.mainInfo.match.guestTeam.name

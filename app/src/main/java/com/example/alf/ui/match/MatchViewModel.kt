@@ -10,28 +10,16 @@ import com.example.alf.data.repository.MatchApiService
 
 class MatchViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var matchApiService: MatchApiService? = null
-    var matchModelLiveData: LiveData<MatchInfoModel>? = null
-    /*var createMatchLiveData: LiveData<MatchModel>? = null
-    var deleteMatchLiveData: LiveData<Boolean>? = null*/
+    private var matchApiService: MatchApiService = MatchApiService()
+    var matchLiveData: MutableLiveData<MatchInfo> = MutableLiveData()
+    var hostTeamNameLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> m.mainInfo.match.hostTeam.name }
 
     init {
-        matchApiService = MatchApiService()
-        matchModelLiveData = MutableLiveData()
-        /*createMatchLiveData = MutableLiveData()
-        deleteMatchLiveData = MutableLiveData()*/
+
     }
 
-    fun fetchMatchById(id: Int) {
-        matchModelLiveData = matchApiService?.fetchMatchInfoById(id)
+    fun getMatchById(id: Int) {
+        matchApiService.getMatchInfoById(matchLiveData, id)
     }
-
-    /*fun createMatch(matchModel: MatchModel) {
-        createMatchLiveData = matchRepository?.createMatch(matchModel)
-    }
-
-    fun deleteMatch(id: Int) {
-        deleteMatchLiveData = matchRepository?.deleteMatch(id)
-    }*/
 
 }

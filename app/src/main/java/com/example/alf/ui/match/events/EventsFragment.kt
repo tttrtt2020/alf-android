@@ -37,12 +37,12 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
             adapter = viewAdapter
         }
 
-        matchViewModel.matchModelLiveData?.observe(viewLifecycleOwner, Observer {
+        matchViewModel.matchLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.eventsRecyclerView.visibility = View.VISIBLE
                 viewAdapter.setEvents(
-                        matchViewModel.matchModelLiveData!!.value!!.mainInfo.hostEvents.plus(
-                        matchViewModel.matchModelLiveData!!.value!!.mainInfo.hostEvents) as ArrayList<Event>
+                        matchViewModel.matchLiveData.value!!.mainInfo.hostEvents.plus(
+                        matchViewModel.matchLiveData.value!!.mainInfo.hostEvents) as ArrayList<Event>
                 )
 
                 binding.progressBar.visibility = View.GONE

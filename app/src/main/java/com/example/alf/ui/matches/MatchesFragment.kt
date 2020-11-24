@@ -40,7 +40,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewAdapter = MatchesPagingAdapter(MatchesPagingAdapter.MatchModelComparator, this)
+        viewAdapter = MatchesPagingAdapter(MatchesPagingAdapter.MatchComparator, this)
         binding.matchesRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = viewAdapter

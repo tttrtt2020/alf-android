@@ -20,8 +20,6 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
 
     private var matchApiService: MatchApiService? = null
     var matchListLiveData: LiveData<List<Match>>? = null
-    /*var createMatchLiveData: LiveData<MatchModel>? = null
-    var deleteMatchLiveData: LiveData<Boolean>? = null*/
 
     val flow = Pager(config = PagingConfig(
         pageSize = pageSize
@@ -32,24 +30,14 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     init {
         matchApiService = MatchApiService()
         matchListLiveData = MutableLiveData()
-        /*createMatchLiveData = MutableLiveData()
-        deleteMatchLiveData = MutableLiveData()*/
     }
 
     /*fun fetchAllMatches() {
-        matchModelListLiveData = matchRepository?.fetchAllMatches()
+        matchListLiveData = matchRepository?.fetchAllMatches()
     }*/
 
     fun fetchAllMatches() {
         matchListLiveData = matchApiService?.fetchMatches()
     }
-
-    /*fun createMatch(matchModel: MatchModel) {
-        createMatchLiveData = matchRepository?.createMatch(matchModel)
-    }
-
-    fun deleteMatch(id: Int) {
-        deleteMatchLiveData = matchRepository?.deleteMatch(id)
-    }*/
 
 }

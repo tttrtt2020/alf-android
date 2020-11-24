@@ -1,6 +1,6 @@
 package com.example.alf.data.model.match
 
-class SquadsModel (
+data class Squads (
     var hostSquad: List<MatchPerson>,
     var guestSquad: List<MatchPerson>
 )
