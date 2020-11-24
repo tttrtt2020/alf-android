@@ -9,6 +9,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.data.model.Match
 import java.text.SimpleDateFormat
@@ -16,11 +17,6 @@ import java.util.*
 
 class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var listener: MatchListener) :
     PagingDataAdapter<Match, MatchesPagingAdapter.ViewHolder>(diffCallback) {
-
-    companion object {
-        const val clubLogosUrl: String = "https://storage.googleapis.com/alf-dev/club/"
-        const val clubLogosExtension: String = ".png"
-    }
 
     interface MatchListener {
         fun onItemDeleted(match: Match, position: Int)
@@ -76,7 +72,9 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
             holder.timeTextView?.text = if (match.dateTime == null) "-" else
                 SimpleDateFormat("HH:mm", Locale.getDefault()).format(match.dateTime)
             // load logos
-            val hostLogoImageUrl = clubLogosUrl + match.hostMatchTeam.team.club.id + clubLogosExtension
+            val hostLogoImageUrl = AlfApplication.getProperty("url.image.club") +
+                    match.hostMatchTeam.team.club.id +
+                    AlfApplication.getProperty("extension.club")
             holder.hostLogoImageView?.context?.let {
                 Glide
                     .with(it)
@@ -85,7 +83,9 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
                     .error(android.R.color.holo_red_dark)
                     .into(holder.hostLogoImageView!!)
             }
-            val guestLogoImageUrl = clubLogosUrl + match.guestMatchTeam.team.club.id + clubLogosExtension
+            val guestLogoImageUrl = AlfApplication.getProperty("url.image.club") +
+                    match.guestMatchTeam.team.club.id +
+                    AlfApplication.getProperty("extension.club")
             holder.guestLogoImageView?.context?.let {
                 Glide
                     .with(it)

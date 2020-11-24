@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.example.alf.AlfApplication
 import com.example.alf.data.model.Match
 import com.example.alf.data.paging.MatchesBackendService
 import com.example.alf.data.paging.MatchesPagingSource
@@ -15,12 +16,16 @@ import com.example.alf.data.repository.MatchApiService
 
 class MatchesViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val pageSize = AlfApplication.getProperty("pagination.matches.pageSize").toInt()
+
     private var matchApiService: MatchApiService? = null
     var matchListLiveData: LiveData<List<Match>>? = null
     /*var createMatchLiveData: LiveData<MatchModel>? = null
     var deleteMatchLiveData: LiveData<Boolean>? = null*/
 
-    val flow = Pager(PagingConfig(pageSize = 20)) {
+    val flow = Pager(config = PagingConfig(
+        pageSize = pageSize
+    )) {
         MatchesPagingSource(MatchesBackendService())
     }.flow.cachedIn(viewModelScope)
 

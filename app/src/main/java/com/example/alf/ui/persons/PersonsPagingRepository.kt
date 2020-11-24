@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 class PersonsPagingRepository(private val service: PersonsService) {
 
-    private val networkPageSize = AlfApplication.getProperty("pagination.pageSize").toInt()
+    private val networkPageSize = AlfApplication.getProperty("pagination.persons.pageSize").toInt()
 
     fun getSearchResultStream(query: String): Flow<PagingData<Person>> {
         return Pager(

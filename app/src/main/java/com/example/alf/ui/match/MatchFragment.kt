@@ -17,6 +17,7 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.alf.AlfApplication
 import com.example.alf.databinding.FragmentMatchBinding
 import com.example.alf.ui.matches.MatchesAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -27,11 +28,6 @@ import java.util.*
 
 
 class MatchFragment : Fragment() {
-
-    companion object {
-        const val stadiumBackgroundsUrl: String = "https://storage.googleapis.com/alf-dev/stadium/background/"
-        const val stadiumBackgroundsExtension: String = ".jpg"
-    }
 
     private lateinit var binding: FragmentMatchBinding
 
@@ -76,8 +72,8 @@ class MatchFragment : Fragment() {
                     SimpleDateFormat("HH:mm", Locale.getDefault()).format(it.mainInfo.match.dateTime)
 
                 // load stadium background
-                val stadiumBackgroundUrl = stadiumBackgroundsUrl + (it.mainInfo.match.stadium?.id
-                        ?: "fallback") + stadiumBackgroundsExtension
+                val stadiumBackgroundUrl = AlfApplication.getProperty("url.image.stadium.background") + (it.mainInfo.match.stadium?.id
+                        ?: "fallback") + AlfApplication.getProperty("extension.stadium.background")
                 val multi = MultiTransformation<Bitmap>(
                         BlurTransformation(10),
                         GrayscaleTransformation(),

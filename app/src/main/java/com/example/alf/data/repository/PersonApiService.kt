@@ -17,15 +17,15 @@ class PersonApiService {
     /*fun fetchPersonsByQuery(query: String): LiveData<List<Person>> {
         val data = MutableLiveData<List<Person>>()
 
-        apiInterface?.fetchPersonsPageByQuery(query)?.enqueue(object : Callback<PersonsPageModel> {
+        apiInterface?.fetchPersonsPageByQuery(query)?.enqueue(object : Callback<PersonsPage> {
 
-            override fun onFailure(call: Call<PersonsPageModel>, t: Throwable) {
+            override fun onFailure(call: Call<PersonsPage>, t: Throwable) {
                 data.value = null
             }
 
             override fun onResponse(
-                    call: Call<PersonsPageModel>,
-                    response: Response<PersonsPageModel>
+                    call: Call<PersonsPage>,
+                    response: Response<PersonsPage>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {

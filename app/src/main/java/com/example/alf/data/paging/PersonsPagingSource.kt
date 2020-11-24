@@ -11,17 +11,17 @@ class PersonsPagingSource(
     private var query: String
 ) : PagingSource<Int, Person>() {
 
-    private val startingPageIndex = AlfApplication.getProperty("pagination.startIndex").toInt()
+    private val startingPageIndex = AlfApplication.getProperty("pagination.persons.startIndex").toInt()
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Person> {
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: startingPageIndex
-            val personsPageModel = service.searchPersonsPage(query, nextPageNumber)
+            val personsPage = service.searchPersonsPage(query, nextPageNumber)
             return LoadResult.Page(
-                data = personsPageModel.content,
-                prevKey = if (personsPageModel.number == startingPageIndex) null else personsPageModel.number - 1,
-                nextKey = if (personsPageModel.last) null else personsPageModel.number + 1
+                data = personsPage.content,
+                prevKey = if (personsPage.number == startingPageIndex) null else personsPage.number - 1,
+                nextKey = if (personsPage.last) null else personsPage.number + 1
             )
         } catch (e: IOException) {
             // IOException for network failures.

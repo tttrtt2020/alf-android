@@ -32,7 +32,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMatchesBinding.inflate(layoutInflater)
         return binding.root
     }
