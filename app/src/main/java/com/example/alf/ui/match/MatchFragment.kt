@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.alf.R
 import com.example.alf.databinding.FragmentMatchBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -84,7 +85,12 @@ class MatchFragment : Fragment() {
 
         binding.pager.adapter = MatchInfoAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
-            tab.text = if (position == 0) "Host team" else if (position == 1) "Events" else "Guest team"
+            tab.text = when (position) {
+                0 -> getString(R.string.tab_name_host_squad)
+                2 -> getString(R.string.tab_name_guest_squad)
+                1 -> getString(R.string.tab_name_events)
+                else -> null
+            }
         }.attach()
     }
 

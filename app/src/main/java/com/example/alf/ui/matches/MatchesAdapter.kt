@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.data.model.Match
 import java.text.SimpleDateFormat
@@ -14,11 +15,6 @@ import java.util.*
 
 class MatchesAdapter(var listener: MatchListener) :
         RecyclerView.Adapter<MatchesAdapter.ViewHolder>() {
-
-    companion object {
-        const val clubLogosUrl: String = "https://storage.googleapis.com/alf-dev/club/"
-        const val clubLogosExtension: String = ".png"
-    }
 
     private var matches: ArrayList<Match>? = null
 
@@ -83,7 +79,9 @@ class MatchesAdapter(var listener: MatchListener) :
         holder.dateTextView?.text = if (match?.dateTime == null) "-" else
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(match.dateTime)
         // load logos
-        val hostLogoImageUrl = clubLogosUrl + match?.hostMatchTeam?.team?.clubId + clubLogosExtension
+        val hostLogoImageUrl = AlfApplication.getProperty("url.logo.club") +
+                match?.hostMatchTeam?.team?.clubId +
+                AlfApplication.getProperty("extension.logo.club")
         holder.hostLogoImageView?.context?.let {
             Glide
                 .with(it)
@@ -92,7 +90,9 @@ class MatchesAdapter(var listener: MatchListener) :
                 .error(android.R.color.holo_red_dark)
                 .into(holder.hostLogoImageView!!)
         }
-        val guestLogoImageUrl = clubLogosUrl + match?.guestMatchTeam?.team?.clubId + clubLogosExtension
+        val guestLogoImageUrl = AlfApplication.getProperty("url.logo.club") +
+                match?.guestMatchTeam?.team?.clubId +
+                AlfApplication.getProperty("extension.logo.club")
         holder.guestLogoImageView?.context?.let {
             Glide
                 .with(it)

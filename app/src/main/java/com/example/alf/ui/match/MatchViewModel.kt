@@ -15,8 +15,8 @@ import java.util.*
 
 class MatchViewModel(application: Application, id: Int) : AndroidViewModel(application) {
 
-    private val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
-    private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("match.dateFormat"), Locale.getDefault())
+    private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("match.timeFormat"), Locale.getDefault())
 
     private var matchApiService: MatchApiService = MatchApiService()
 
