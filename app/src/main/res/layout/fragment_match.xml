@@ -1,138 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.match.MatchFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable name="matchViewModel" type="com.example.alf.ui.match.MatchViewModel" />
+    </data>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/main_info_frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/main_info_frame_layout_height"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/gray">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/dark_transparent_foreground"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/card_margin">
-
-                <LinearLayout
-                    android:id="@+id/result_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/card_margin"
-                    android:orientation="vertical"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/result"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="- : -"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"/>
-
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:text="Result"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"/>
-
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Result"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"/>
-
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/host_logo"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="@dimen/card_margin"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop" />
-
-                <ImageView
-                    android:id="@+id/guest_logo"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="@dimen/card_margin"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop" />
-
-                <TextView
-                    android:id="@+id/host_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/host_logo"
-                    android:layout_toStartOf="@id/result_layout"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:text="Host name"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"/>
-
-                <TextView
-                    android:id="@+id/guest_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/guest_logo"
-                    android:layout_toEndOf="@id/result_layout"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:text="Guest name"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"/>
-            </RelativeLayout>
-
-
-        </FrameLayout>
+        tools:context=".ui.match.MatchFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
+            <FrameLayout
+                android:id="@+id/main_info_frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="@dimen/main_info_frame_layout_height"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/gray"
+                app:backgroundImageUrl="@{matchViewModel.stadiumPhotoUrlLiveData}">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/pager"
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/dark_transparent_foreground"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/card_margin">
+
+                    <LinearLayout
+                        android:id="@+id/result_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/card_margin"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/result"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@{matchViewModel.resultLiveData}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"/>
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@{matchViewModel.dateLiveData}"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"/>
+
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{matchViewModel.timeLiveData}"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/host_logo"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="@dimen/card_margin"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:imageUrl="@{matchViewModel.hostTeamLogoUrlLiveData}"/>
+
+                    <ImageView
+                        android:id="@+id/guest_logo"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="@dimen/card_margin"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:imageUrl="@{matchViewModel.guestTeamLogoUrlLiveData}"/>
+
+                    <TextView
+                        android:id="@+id/host_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/host_logo"
+                        android:layout_toStartOf="@id/result_layout"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="@{matchViewModel.hostTeamNameLiveData}"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/guest_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/guest_logo"
+                        android:layout_toEndOf="@id/result_layout"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="@{matchViewModel.guestTeamNameLiveData}"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"/>
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            app:tint="@color/white"
+            app:backgroundTint="@color/gray"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

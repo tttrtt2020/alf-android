@@ -72,9 +72,9 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
             holder.timeTextView?.text = if (match.dateTime == null) "-" else
                 SimpleDateFormat("HH:mm", Locale.getDefault()).format(match.dateTime)
             // load logos
-            val hostLogoImageUrl = AlfApplication.getProperty("url.image.club") +
+            val hostLogoImageUrl = AlfApplication.getProperty("url.logo.club") +
                     match.hostMatchTeam.team.club.id +
-                    AlfApplication.getProperty("extension.club")
+                    AlfApplication.getProperty("extension.logo.club")
             holder.hostLogoImageView?.context?.let {
                 Glide
                     .with(it)
@@ -83,9 +83,9 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
                     .error(android.R.color.holo_red_dark)
                     .into(holder.hostLogoImageView!!)
             }
-            val guestLogoImageUrl = AlfApplication.getProperty("url.image.club") +
+            val guestLogoImageUrl = AlfApplication.getProperty("url.logo.club") +
                     match.guestMatchTeam.team.club.id +
-                    AlfApplication.getProperty("extension.club")
+                    AlfApplication.getProperty("extension.logo.club")
             holder.guestLogoImageView?.context?.let {
                 Glide
                     .with(it)

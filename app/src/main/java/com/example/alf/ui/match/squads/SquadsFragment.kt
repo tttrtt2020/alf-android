@@ -79,7 +79,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
             }
         })*/
 
-        matchViewModel.matchLiveData.observe(viewLifecycleOwner, Observer {
+        matchViewModel.matchInfoLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.matchPersonsRecyclerView.visibility = View.VISIBLE
                 viewAdapter.setMatchPersons(getTeam() as ArrayList<MatchPerson>)
@@ -106,8 +106,8 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, View.OnCl
 
     private fun getTeam(): List<MatchPerson>? {
         return when {
-            requireArguments().get("team") == "host" -> matchViewModel.matchLiveData.value!!.squadsInfo.hostSquad
-            requireArguments().get("team") == "guest" -> matchViewModel.matchLiveData.value!!.squadsInfo.guestSquad
+            requireArguments().get("team") == "host" -> matchViewModel.hostSquadLiveData.value
+            requireArguments().get("team") == "guest" -> matchViewModel.guestSquadLiveData.value
             else -> null
         }
     }
