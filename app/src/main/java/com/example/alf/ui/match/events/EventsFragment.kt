@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.alf.data.model.Event
 import com.example.alf.databinding.FragmentEventsBinding
@@ -19,8 +19,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private lateinit var viewAdapter: EventsAdapter
 
-    //private val args: MatchFragmentArgs by navArgs()
-    private val matchViewModel: MatchViewModel by activityViewModels()
+    private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,13 +36,10 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
             adapter = viewAdapter
         }
 
-        matchViewModel.matchLiveData.observe(viewLifecycleOwner, Observer {
+        matchViewModel.eventsLiveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.eventsRecyclerView.visibility = View.VISIBLE
-                viewAdapter.setEvents(
-                        matchViewModel.hostEventsLiveData.value!!.plus(
-                        matchViewModel.guestEventsLiveData.value) as ArrayList<Event>
-                )
+                viewAdapter.setEvents(matchViewModel.eventsLiveData.value!!)
 
                 binding.progressBar.visibility = View.GONE
             } else {

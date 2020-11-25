@@ -12,7 +12,7 @@ import java.util.*
 class EventsAdapter(var listener: EventsListener) :
         RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
-    private var events: ArrayList<Event>? = null
+    private var events: List<Event>? = null
 
     interface EventsListener {
         fun onItemDeleted(event: Event, position: Int)
@@ -20,7 +20,7 @@ class EventsAdapter(var listener: EventsListener) :
         fun onItemClick(event: Event, position: Int)
     }
 
-    fun setEvents(list: ArrayList<Event>) {
+    fun setEvents(list: List<Event>) {
         events = list
         notifyDataSetChanged()
     }

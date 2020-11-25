@@ -9,7 +9,9 @@ import com.example.alf.ui.match.squads.SquadsFragment
 class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     companion object {
-        const val ARG_OBJECT = "object"
+        const val ARG_TEAM = "team"
+        const val ARG_TEAM_HOST = "host"
+        const val ARG_TEAM_GUEST = "guest"
     }
 
     override fun getItemCount(): Int = 3
@@ -19,23 +21,26 @@ class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     }
 
     override fun createFragment(position: Int): Fragment {
-        // Return a NEW fragment instance in createFragment(int)
-
-        /*val fragment: Fragment = if (position == 0) {
-            SquadsFragment()
-        } else {
-            EventsFragment()
+        when (position) {
+            0 -> {
+                return SquadsFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_TEAM, ARG_TEAM_HOST)
+                    }
+                }
+            }
+            2 -> {
+                return SquadsFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_TEAM, ARG_TEAM_GUEST)
+                    }
+                }
+            }
+            1 -> {
+                return EventsFragment()
+            }
+            else -> throw IllegalArgumentException("position argument can only be one of (0, 1, 2)")
         }
-        fragment.*/
 
-        val fragment = if (position == 0) SquadsFragment() else if (position == 1) EventsFragment() else SquadsFragment()
-
-        //fragment.arguments.putString("team", if (position == 0) "host" else "guest")
-        fragment.arguments = Bundle().apply {
-            // Our object is just an integer :-P
-            putInt(ARG_OBJECT, position + 1)
-            putString("team", if (position == 0) "host" else if (position == 2) "guest" else "")
-        }
-        return fragment
     }
 }

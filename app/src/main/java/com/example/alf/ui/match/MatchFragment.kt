@@ -9,9 +9,8 @@ import android.widget.ImageView
 import androidx.annotation.Nullable
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -58,10 +57,7 @@ class MatchFragment : Fragment() {
 
     private lateinit var binding: FragmentMatchBinding
 
-    private lateinit var matchInfoAdapter: MatchInfoAdapter
-    private lateinit var viewPager: ViewPager2
-
-    private val matchViewModel: MatchViewModel by activityViewModels()
+    private val matchViewModel: MatchViewModel by viewModels { MatchViewModelFactory(activity?.application!!, args.matchId) }
 
     private val args: MatchFragmentArgs by navArgs()
 
@@ -79,21 +75,21 @@ class MatchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        matchViewModel.getMatchInfoById(args.matchId)
-        matchViewModel.matchInfoLiveData.observe(viewLifecycleOwner, {
+        matchViewModel.getMatchInfoResultLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
-            } else {
-                showSnackBar(binding.root ,"Something went wrong")
+                onGetMatchResult(it)
+                matchViewModel.getMatchInfoResultLiveData.value = null
             }
         })
 
-        matchInfoAdapter = MatchInfoAdapter(this)
-        viewPager = binding.pager
-        viewPager.adapter = matchInfoAdapter
-        val tabLayout = binding.tabLayout
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        binding.pager.adapter = MatchInfoAdapter(this)
+        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             tab.text = if (position == 0) "Host team" else if (position == 1) "Events" else "Guest team"
         }.attach()
+    }
+
+    private fun onGetMatchResult(success: Boolean) {
+        if (success) showSnackBar(binding.root, "Get success") else showSnackBar(binding.root, "Get failed")
     }
 
     private fun showSnackBar(view: View, msg: String) {

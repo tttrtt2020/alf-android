@@ -10,12 +10,11 @@ import com.bumptech.glide.Glide
 import com.example.alf.R
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.ui.persons.PersonsAdapter
-import java.util.*
 
 class MatchPersonsAdapter(var listener: SquadsListener) :
         RecyclerView.Adapter<MatchPersonsAdapter.ViewHolder>() {
 
-    private var matchPersons: ArrayList<MatchPerson>? = null
+    private var matchPersons: List<MatchPerson>? = null
 
     interface SquadsListener {
         fun onItemDeleted(matchPerson: MatchPerson, position: Int)
@@ -23,7 +22,7 @@ class MatchPersonsAdapter(var listener: SquadsListener) :
         fun onItemClick(matchPerson: MatchPerson, position: Int)
     }
 
-    fun setMatchPersons(list: ArrayList<MatchPerson>) {
+    fun setMatchPersons(list: List<MatchPerson>) {
         matchPersons = list
         notifyDataSetChanged()
     }

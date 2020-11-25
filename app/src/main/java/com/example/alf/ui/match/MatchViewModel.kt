@@ -1,10 +1,7 @@
 package com.example.alf.ui.match
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Event
 import com.example.alf.data.model.Team
@@ -16,7 +13,7 @@ import com.example.alf.data.repository.MatchApiService
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchViewModel(application: Application) : AndroidViewModel(application) {
+class MatchViewModel(application: Application, id: Int) : AndroidViewModel(application) {
 
     private val dateFormat = SimpleDateFormat("EEE, MMM d", Locale.getDefault())
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -36,6 +33,9 @@ class MatchViewModel(application: Application) : AndroidViewModel(application) {
     }
     var dateLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> dateFormat.format(m.dateTime) }
     var timeLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> timeFormat.format(m.dateTime) }
+    var eventsLiveData: LiveData<List<Event>> = Transformations.map(matchInfoLiveData) { mi ->
+        mi.mainInfo.hostEvents.plus(mi.mainInfo.guestEvents)
+    }
     var hostEventsLiveData: LiveData<List<Event>> = Transformations.map(matchInfoLiveData) { mi -> mi.mainInfo.hostEvents }
     var guestEventsLiveData: LiveData<List<Event>> = Transformations.map(matchInfoLiveData) { mi -> mi.mainInfo.guestEvents }
     var hostTeamLogoUrlLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> buildTeamLogoUrl(m.hostTeam) }
@@ -45,8 +45,12 @@ class MatchViewModel(application: Application) : AndroidViewModel(application) {
 
     var getMatchInfoResultLiveData: MutableLiveData<Boolean?> = Transformations.map(matchInfoLiveData) { mi -> mi != null } as MutableLiveData<Boolean?>
 
-    init {
+    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
+    init {
+        loadingInProgressLiveData.addSource(matchInfoLiveData) { loadingInProgressLiveData.value = false }
+
+        getMatchInfoById(id)
     }
 
     private fun buildStadiumPhotoUrl(stadium: Stadium): String {
@@ -59,6 +63,7 @@ class MatchViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getMatchInfoById(id: Int) {
+        loadingInProgressLiveData.value = true
         //matchInfoLiveData.value = null
         matchApiService.getMatchInfoById(matchInfoLiveData, id)
     }
