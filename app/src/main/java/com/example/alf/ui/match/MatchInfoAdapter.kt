@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.alf.ui.match.events.EventsFragment
-import com.example.alf.ui.match.squads.SquadsFragment
+import com.example.alf.ui.match.squad.SquadFragment
 
 class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
@@ -23,14 +23,14 @@ class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> {
-                return SquadsFragment().apply {
+                return SquadFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_TEAM, ARG_TEAM_HOST)
                     }
                 }
             }
             2 -> {
-                return SquadsFragment().apply {
+                return SquadFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_TEAM, ARG_TEAM_GUEST)
                     }

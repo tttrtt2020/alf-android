@@ -1,4 +1,4 @@
-package com.example.alf.ui.match.squads;
+package com.example.alf.ui.match.squad;
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +11,12 @@ import com.example.alf.R
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.ui.persons.PersonsAdapter
 
-class MatchPersonsAdapter(var listener: SquadsListener) :
+class MatchPersonsAdapter(var listener: SquadListener) :
         RecyclerView.Adapter<MatchPersonsAdapter.ViewHolder>() {
 
     private var matchPersons: List<MatchPerson>? = null
 
-    interface SquadsListener {
+    interface SquadListener {
         fun onItemDeleted(matchPerson: MatchPerson, position: Int)
 
         fun onItemClick(matchPerson: MatchPerson, position: Int)

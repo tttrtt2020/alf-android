@@ -1,4 +1,4 @@
-package com.example.alf.ui.match.squads
+package com.example.alf.ui.match.squad
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.example.alf.data.model.match.MatchPerson
-import com.example.alf.databinding.FragmentSquadsBinding
+import com.example.alf.databinding.FragmentSquadBinding
 import com.example.alf.ui.match.MatchFragmentDirections
 import com.example.alf.ui.match.MatchInfoAdapter
 import com.example.alf.ui.match.MatchViewModel
@@ -17,9 +17,9 @@ import com.example.alf.ui.match.formations.TeamFormationView
 import com.google.android.material.snackbar.Snackbar
 
 
-class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, TeamFormationView.OnChangeFormationClickListener {
+class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormationView.OnChangeFormationClickListener {
 
-    private lateinit var binding: FragmentSquadsBinding
+    private lateinit var binding: FragmentSquadBinding
 
     private lateinit var viewAdapter: MatchPersonsAdapter
 
@@ -30,7 +30,7 @@ class SquadsFragment : Fragment(), MatchPersonsAdapter.SquadsListener, TeamForma
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSquadsBinding.inflate(layoutInflater)
+        binding = FragmentSquadBinding.inflate(layoutInflater)
 
         binding.teamFormation.setOnChangeFormationClickListener(this)
 

@@ -20,4 +20,10 @@
     <string name="title_person">Person</string>
     <string name="title_match">Match</string>
     <string name="title_formations">Formations</string>
+
+    <string name="change_formation">Change formation</string>
+
+    <string name="tab_name_host_squad">Host squad</string>
+    <string name="tab_name_guest_squad">Guest squad</string>
+    <string name="tab_name_events">Events</string>
 </resources>
