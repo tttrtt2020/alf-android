@@ -3,7 +3,7 @@ package com.example.alf.ui.match
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.alf.AlfApplication
-import com.example.alf.data.model.Event
+import com.example.alf.data.model.event.Event
 import com.example.alf.data.model.Team
 import com.example.alf.data.model.match.Match
 import com.example.alf.data.model.match.MatchInfo

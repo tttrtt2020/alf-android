@@ -2,7 +2,7 @@ package com.example.alf.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.Event
+import com.example.alf.data.model.event.Event
 import com.example.alf.network.ApiClient
 import com.example.alf.network.EventApiInterface
 import retrofit2.Call

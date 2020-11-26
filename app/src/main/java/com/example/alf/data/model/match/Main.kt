@@ -1,6 +1,6 @@
 package com.example.alf.data.model.match
 
-import com.example.alf.data.model.Event
+import com.example.alf.data.model.event.Event
 
 data class Main (
         var match: Match,

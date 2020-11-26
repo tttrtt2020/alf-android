@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.R
-import com.example.alf.data.model.Event
-import java.util.*
+import com.example.alf.data.model.event.Event
 
 class EventsAdapter(var listener: EventsListener) :
         RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
