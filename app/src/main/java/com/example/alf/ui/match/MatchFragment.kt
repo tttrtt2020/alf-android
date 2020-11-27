@@ -10,12 +10,14 @@ import androidx.annotation.Nullable
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.alf.R
 import com.example.alf.databinding.FragmentMatchBinding
+import com.example.alf.ui.persons.PersonsFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -92,6 +94,8 @@ class MatchFragment : Fragment() {
                 else -> null
             }
         }.attach()
+
+        binding.fab.setOnClickListener { onFabClicked() }
     }
 
     private fun onGetMatchResult(success: Boolean) {
@@ -100,6 +104,11 @@ class MatchFragment : Fragment() {
 
     private fun showSnackBar(view: View, msg: String) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun onFabClicked() {
+        val action = MatchFragmentDirections.actionMatchFragmentToLiveEventTypesFragment()
+        findNavController().navigate(action)
     }
 
 }

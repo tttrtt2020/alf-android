@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.alf.data.model.event.LiveEventType
 import com.example.alf.databinding.FragmentLiveEventTypesBinding
 import com.google.android.material.snackbar.Snackbar
@@ -51,6 +52,7 @@ class LiveEventTypesFragment : Fragment(), LiveEventTypesAdapter.LiveEventTypesL
     }
 
     override fun onItemClick(liveEventType: LiveEventType, position: Int) {
-        TODO("Not yet implemented")
+        val action = liveEventType.id.let { LiveEventTypesFragmentDirections.actionLiveEventTypesFragmentToLiveEventFragment(liveEventTypeId = it) }
+        findNavController().navigate(action)
     }
 }

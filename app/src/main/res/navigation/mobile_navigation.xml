@@ -89,6 +89,22 @@
     <fragment
         android:id="@+id/liveEventTypesFragment"
         android:name="com.example.alf.ui.match.events.live.LiveEventTypesFragment"
-        android:label="LiveEventTypesFragment" />
+        android:label="@string/title_select_live_event_type" >
+        <action
+            android:id="@+id/action_liveEventTypesFragment_to_liveEventFragment"
+            app:destination="@id/liveEventFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/liveEventFragment"
+        android:name="com.example.alf.ui.match.events.live.LiveEventFragment"
+        android:label="LiveEventFragment" >
+        <argument
+            android:name="liveEventTypeId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
