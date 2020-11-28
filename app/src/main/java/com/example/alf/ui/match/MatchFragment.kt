@@ -9,15 +9,14 @@ import android.widget.ImageView
 import androidx.annotation.Nullable
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.alf.R
 import com.example.alf.databinding.FragmentMatchBinding
-import com.example.alf.ui.persons.PersonsFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -60,9 +59,11 @@ class MatchFragment : Fragment() {
 
     private lateinit var binding: FragmentMatchBinding
 
-    private val matchViewModel: MatchViewModel by viewModels { MatchViewModelFactory(activity?.application!!, args.matchId) }
-
     private val args: MatchFragmentArgs by navArgs()
+
+    private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment) {
+        MatchViewModelFactory(activity?.application!!, args.matchId)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -107,7 +108,7 @@ class MatchFragment : Fragment() {
     }
 
     private fun onFabClicked() {
-        val action = MatchFragmentDirections.actionMatchFragmentToLiveEventTypesFragment()
+        val action = MatchFragmentDirections.actionMatchFragmentToLiveEventTypesFragment(args.matchId)
         findNavController().navigate(action)
     }
 

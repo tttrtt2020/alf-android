@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.navGraphViewModels
+import com.example.alf.R
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentEventsBinding
 import com.example.alf.ui.match.MatchViewModel
@@ -19,7 +20,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private lateinit var viewAdapter: EventsAdapter
 
-    private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
+    //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
+    private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

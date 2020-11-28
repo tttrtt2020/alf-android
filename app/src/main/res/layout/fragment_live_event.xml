@@ -5,6 +5,7 @@
     <data>
         <import type="android.view.View" />
         <variable name="liveEventViewModel" type="com.example.alf.ui.match.events.live.LiveEventViewModel" />
+        <variable name="matchViewModel" type="com.example.alf.ui.match.MatchViewModel" />
     </data>
 
     <FrameLayout
@@ -18,28 +19,21 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="@dimen/card_margin"
+                android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="24sp"
                     android:text="@{liveEventViewModel.nameLiveData}"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/minute"/>
-
-                <NumberPicker
-                    android:id="@+id/minute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:text="@string/team"/>
-
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,16 +43,27 @@
                         android:id="@+id/radio_host"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{liveEventViewModel.hostTeamLabelLiveData}"
+                        android:text="@{matchViewModel.hostTeamNameLiveData}"
                         android:onClick="onRadioButtonClicked"/>
                     <RadioButton
                         android:id="@+id/radio_guest"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
-                        android:text="@{liveEventViewModel.guestTeamLiveData}"
+                        android:text="@{matchViewModel.guestTeamNameLiveData}"
                         android:onClick="onRadioButtonClicked"/>
                 </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="@string/minute"/>
+                <EditText
+                    android:id="@+id/minute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
 
             </LinearLayout>
         </ScrollView>

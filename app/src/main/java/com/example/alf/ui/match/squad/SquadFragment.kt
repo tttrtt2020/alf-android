@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.example.alf.R
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentSquadBinding
 import com.example.alf.ui.match.MatchFragmentDirections
@@ -23,7 +24,8 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
 
     private lateinit var viewAdapter: MatchPersonsAdapter
 
-    private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
+    //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
+    private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater,

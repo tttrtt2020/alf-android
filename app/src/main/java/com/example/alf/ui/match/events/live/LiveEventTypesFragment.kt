@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.alf.data.model.event.LiveEventType
 import com.example.alf.databinding.FragmentLiveEventTypesBinding
+import com.example.alf.ui.match.MatchFragmentArgs
 import com.google.android.material.snackbar.Snackbar
 
 class LiveEventTypesFragment : Fragment(), LiveEventTypesAdapter.LiveEventTypesListener {
@@ -17,6 +19,8 @@ class LiveEventTypesFragment : Fragment(), LiveEventTypesAdapter.LiveEventTypesL
     private lateinit var binding: FragmentLiveEventTypesBinding
 
     private lateinit var viewAdapter: LiveEventTypesAdapter
+
+    private val args: MatchFragmentArgs by navArgs()
 
     private val liveEventTypesViewModel: LiveEventTypesViewModel by viewModels()
 
@@ -52,7 +56,7 @@ class LiveEventTypesFragment : Fragment(), LiveEventTypesAdapter.LiveEventTypesL
     }
 
     override fun onItemClick(liveEventType: LiveEventType, position: Int) {
-        val action = liveEventType.id.let { LiveEventTypesFragmentDirections.actionLiveEventTypesFragmentToLiveEventFragment(liveEventTypeId = it) }
+        val action = liveEventType.id.let { LiveEventTypesFragmentDirections.actionLiveEventTypesFragmentToLiveEventFragment(matchId = args.matchId, liveEventTypeId = it) }
         findNavController().navigate(action)
     }
 }

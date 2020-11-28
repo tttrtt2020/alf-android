@@ -5,14 +5,19 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import com.example.alf.R
 import com.example.alf.databinding.FragmentLiveEventBinding
+import com.example.alf.ui.match.MatchViewModel
+import com.example.alf.ui.match.MatchViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 class LiveEventFragment : Fragment() {
 
     companion object {
         fun newInstance() = LiveEventFragment()
+
+        const val MAX_MINUTE: Int = 90
     }
 
     private lateinit var binding: FragmentLiveEventBinding
@@ -21,6 +26,9 @@ class LiveEventFragment : Fragment() {
 
     private val liveEventViewModel: LiveEventViewModel by viewModels {
         LiveEventViewModelFactory(args.liveEventTypeId)
+    }
+    private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment) {
+        MatchViewModelFactory(activity?.application!!, args.matchId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +42,7 @@ class LiveEventFragment : Fragment() {
         binding = FragmentLiveEventBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.liveEventViewModel = liveEventViewModel
+        binding.matchViewModel = matchViewModel
         return binding.root
     }
 

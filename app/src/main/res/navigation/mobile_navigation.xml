@@ -90,6 +90,9 @@
         android:id="@+id/liveEventTypesFragment"
         android:name="com.example.alf.ui.match.events.live.LiveEventTypesFragment"
         android:label="@string/title_select_live_event_type" >
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
         <action
             android:id="@+id/action_liveEventTypesFragment_to_liveEventFragment"
             app:destination="@id/liveEventFragment"
@@ -102,6 +105,9 @@
         android:id="@+id/liveEventFragment"
         android:name="com.example.alf.ui.match.events.live.LiveEventFragment"
         android:label="LiveEventFragment" >
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
         <argument
             android:name="liveEventTypeId"
             app:argType="integer" />
