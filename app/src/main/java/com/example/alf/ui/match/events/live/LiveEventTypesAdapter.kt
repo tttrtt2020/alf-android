@@ -23,11 +23,9 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //var minuteTextView: TextView? = null
         var nameTextView: TextView? = null
 
         init {
-            //minuteTextView = itemView.findViewById(R.id.minute)
             nameTextView = itemView.findViewById(R.id.name)
         }
     }
@@ -35,7 +33,6 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_live_event_type, parent, false) as View
-
         return ViewHolder(itemView)
     }
 
@@ -51,7 +48,6 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = liveEventTypes?.size ?: 0
 
 }

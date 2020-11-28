@@ -51,7 +51,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPersonsBinding.inflate(layoutInflater)
         return binding.root
     }

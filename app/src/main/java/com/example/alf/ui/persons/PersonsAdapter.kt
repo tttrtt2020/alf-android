@@ -26,7 +26,7 @@ class PersonsAdapter(var listener: PersonListener) :
         const val flagsImagesExtension: String = ".svg"
     }
 
-    private var persons: ArrayList<Person>? = null
+    private var persons: List<Person>? = null
 
     private val dateFormat: SimpleDateFormat = SimpleDateFormat(
         AlfApplication.getProperty("dateFormat"),
@@ -39,15 +39,11 @@ class PersonsAdapter(var listener: PersonListener) :
         fun onItemClick(person: Person, position: Int)
     }
 
-    fun setPersons(list: ArrayList<Person>) {
+    fun setPersons(list: List<Person>) {
         persons = list
         notifyDataSetChanged()
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder.
-    // Each data item is just a string in this case that is shown in a TextView.
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var photoImageView: ImageView? = null
         var firstNameTextView: TextView? = null
@@ -66,21 +62,13 @@ class PersonsAdapter(var listener: PersonListener) :
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create a new view
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_person, parent, false) as View
-        // set the view's size, margins, paddings and layout parameters
-        //val nameTextView = itemView.findViewById<TextView>(R.id.person_name)
-
         return ViewHolder(itemView)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         val person = persons?.get(position)
         holder.firstNameTextView?.text = person?.firstName
         holder.patronymicTextView?.text = person?.patronymic
@@ -108,7 +96,6 @@ class PersonsAdapter(var listener: PersonListener) :
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = persons?.size ?: 0
 
 }

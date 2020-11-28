@@ -27,10 +27,6 @@ class MatchPersonsAdapter(var listener: SquadListener) :
         notifyDataSetChanged()
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder.
-    // Each data item is just a string in this case that is shown in a TextView.
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var photoImageView: ImageView? = null
         var lastNameTextView: TextView? = null
@@ -45,22 +41,13 @@ class MatchPersonsAdapter(var listener: SquadListener) :
         }
     }
 
-
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create a new view
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_match_person, parent, false) as View
-        // set the view's size, margins, paddings and layout parameters
-        //val nameTextView = itemView.findViewById<TextView>(R.id.match_name)
-
         return ViewHolder(itemView)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         val matchPerson = matchPersons?.get(position)
 
         holder.lastNameTextView?.text = matchPerson?.player?.lastName
@@ -84,7 +71,6 @@ class MatchPersonsAdapter(var listener: SquadListener) :
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = matchPersons?.size ?: 0
 
 }

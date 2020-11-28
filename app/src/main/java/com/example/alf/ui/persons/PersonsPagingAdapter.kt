@@ -21,8 +21,7 @@ import java.util.*
 class PersonsPagingAdapter(
     diffCallback: DiffUtil.ItemCallback<Person>,
     private var listener: PersonListener
-) :
-    PagingDataAdapter<Person, PersonsPagingAdapter.ViewHolder>(diffCallback) {
+): PagingDataAdapter<Person, PersonsPagingAdapter.ViewHolder>(diffCallback) {
 
     private val dateFormat: SimpleDateFormat = SimpleDateFormat(
         AlfApplication.getProperty("dateFormat"),
@@ -35,10 +34,6 @@ class PersonsPagingAdapter(
         fun onItemClick(person: Person, position: Int)
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder.
-    // Each data item is just a string in this case that is shown in a TextView.
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var photoImageView: ImageView? = null
         var firstNameTextView: TextView? = null
@@ -57,17 +52,13 @@ class PersonsPagingAdapter(
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_row_person, parent, false) as View
         return ViewHolder(itemView)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         val person = getItem(position)
         holder.firstNameTextView?.text = person?.firstName
         holder.patronymicTextView?.text = person?.patronymic
