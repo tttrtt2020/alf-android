@@ -10,4 +10,8 @@ data class Match(
         var status: String,
         var resultHostGoals: Int?,
         var resultGuestGoals: Int?
-)
+) {
+    companion object {
+        const val STATUS_FINISHED: String = "FINISHED"
+    }
+}

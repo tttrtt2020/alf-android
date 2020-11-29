@@ -1,27 +1,30 @@
 package com.example.alf.ui.matches;
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.AlfApplication
-import com.example.alf.R
 import com.example.alf.data.model.Match
+import com.example.alf.data.model.Team
+import com.example.alf.databinding.ItemMatchBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class MatchesAdapter(var listener: MatchListener) :
-        RecyclerView.Adapter<MatchesAdapter.ViewHolder>() {
+class MatchesAdapter(var listener: MatchListener) : RecyclerView.Adapter<MatchesAdapter.ViewHolder>() {
 
-    private var matches: ArrayList<Match>? = null
+    private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("matches.dateFormat"), Locale.getDefault())
+    private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("matches.timeFormat"), Locale.getDefault())
+
+    private var matches: ArrayList<Match> = ArrayList()
 
     interface MatchListener {
         fun onItemDeleted(match: Match, position: Int)
 
-        fun onItemClick(match: Match, position: Int)
+        fun onItemClick(match: Match)
     }
 
     fun setMatches(list: ArrayList<Match>) {
@@ -29,73 +32,59 @@ class MatchesAdapter(var listener: MatchListener) :
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var hostLogoImageView: ImageView? = null
-        var guestLogoImageView: ImageView? = null
-        var hostNameTextView: TextView? = null
-        var guestNameTextView: TextView? = null
-        var resultTextView: TextView? = null
-        var dateTextView: TextView? = null
-        var timeTextView: TextView? = null
+    class ViewHolder(private val binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            hostLogoImageView = itemView.findViewById(R.id.host_logo)
-            guestLogoImageView = itemView.findViewById(R.id.guest_logo)
-            hostNameTextView = itemView.findViewById(R.id.host_name)
-            guestNameTextView = itemView.findViewById(R.id.guest_name)
-            resultTextView = itemView.findViewById(R.id.result)
-            dateTextView = itemView.findViewById(R.id.date)
-            timeTextView = itemView.findViewById(R.id.time)
+        companion object {
+            @JvmStatic
+            @BindingAdapter("app:imageUrl")
+            fun loadTeamLogo(imageView: ImageView, url: String?) {
+                if (!url.isNullOrEmpty()) {
+                    Glide
+                            .with(imageView.context)
+                            .load(url)
+                            .placeholder(android.R.color.darker_gray)
+                            .error(android.R.color.holo_red_dark)
+                            .into(imageView)
+                }
+            }
+        }
+
+        fun bind(match: Match) {
+            binding.match = match
+            binding.adapter = bindingAdapter as MatchesPagingAdapter?
+            binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recyclerview_row_match, parent, false) as View
-        return ViewHolder(itemView)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemMatchBinding.inflate(layoutInflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val match = matches?.get(position)
-        holder.hostNameTextView?.text = match?.hostMatchTeam?.team?.name
-        holder.guestNameTextView?.text = match?.guestMatchTeam?.team?.name
-        holder.resultTextView?.text = if (match?.status.equals("FINISHED"))
-            (match?.resultHostGoals.toString() + ":" + match?.resultGuestGoals.toString()) else "- : -"
-        holder.dateTextView?.text = if (match?.dateTime == null) "-" else
-            SimpleDateFormat("EEE, MMM d", Locale.getDefault()).format(match.dateTime)
-        holder.dateTextView?.text = if (match?.dateTime == null) "-" else
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(match.dateTime)
-        // load logos
-        val hostLogoImageUrl = AlfApplication.getProperty("url.logo.club") +
-                match?.hostMatchTeam?.team?.clubId +
-                AlfApplication.getProperty("extension.logo.club")
-        holder.hostLogoImageView?.context?.let {
-            Glide
-                .with(it)
-                .load(hostLogoImageUrl)
-                .placeholder(android.R.color.darker_gray)
-                .error(android.R.color.holo_red_dark)
-                .into(holder.hostLogoImageView!!)
-        }
-        val guestLogoImageUrl = AlfApplication.getProperty("url.logo.club") +
-                match?.guestMatchTeam?.team?.clubId +
-                AlfApplication.getProperty("extension.logo.club")
-        holder.guestLogoImageView?.context?.let {
-            Glide
-                .with(it)
-                .load(guestLogoImageUrl)
-                .placeholder(android.R.color.darker_gray)
-                .error(android.R.color.holo_red_dark)
-                .into(holder.guestLogoImageView!!)
-        }
-
-        holder.itemView.setOnClickListener {
-            if (match != null) {
-                listener.onItemClick(match, position)
-            }
-        }
+        val match = matches[position]
+        holder.bind(match)
     }
 
-    override fun getItemCount() = matches?.size ?: 0
+    override fun getItemCount() = matches.size
+
+    fun formatDate(date: Date): String {
+        return dateFormat.format(date)
+    }
+
+    fun formatTime(date: Date): String {
+        return timeFormat.format(date)
+    }
+
+    fun buildTeamLogoUrl(team: Team): String {
+        return AlfApplication.getProperty("url.logo.club") +
+                team.club.id +
+                AlfApplication.getProperty("extension.logo.club")
+    }
+
+    fun onMatchClick(match: Match) {
+        listener.onItemClick(match)
+    }
 
 }

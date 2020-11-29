@@ -85,7 +85,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(match: Match, position: Int) {
+    override fun onItemClick(match: Match) {
         val action = match.id.let { MatchesFragmentDirections.actionNavMatchesToMatchFragment(matchId = it) }
         findNavController().navigate(action)
     }
