@@ -22,6 +22,10 @@
     <string name="title_formations">Formations</string>
     <string name="title_select_live_event_type">Select event</string>
 
+    <string name="content_description_team_logo">Team logo</string>
+    <string name="content_description_person_photo">Person photo</string>
+    <string name="content_description_flag_image">Flag image</string>
+
     <string name="change_formation">Change formation</string>
 
     <string name="tab_name_host_squad">Host squad</string>
@@ -30,4 +34,6 @@
 
     <string name="minute">Minute</string>
     <string name="team">Team</string>
+    <string name="match_result_unknown">- : -</string>
+
 </resources>

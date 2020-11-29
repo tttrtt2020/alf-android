@@ -35,6 +35,7 @@
                     android:scaleType="centerCrop"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/content_description_person_photo"
                     app:imageUrl="@{personViewModel.photoUrlLiveData}" />
 
                 <EditText

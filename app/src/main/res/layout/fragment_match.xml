@@ -84,6 +84,7 @@
                         android:layout_centerVertical="true"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
+                        android:contentDescription="@string/content_description_team_logo"
                         app:imageUrl="@{matchViewModel.hostTeamLogoUrlLiveData}"/>
 
                     <ImageView
@@ -95,6 +96,7 @@
                         android:layout_centerVertical="true"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
+                        android:contentDescription="@string/content_description_team_logo"
                         app:imageUrl="@{matchViewModel.guestTeamLogoUrlLiveData}"/>
 
                     <TextView
