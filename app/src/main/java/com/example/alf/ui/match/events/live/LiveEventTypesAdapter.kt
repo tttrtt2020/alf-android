@@ -1,17 +1,15 @@
 package com.example.alf.ui.match.events.live;
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.alf.R
 import com.example.alf.data.model.event.LiveEventType
+import com.example.alf.databinding.ItemLiveEventTypeBinding
 
 class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
         RecyclerView.Adapter<LiveEventTypesAdapter.ViewHolder>() {
 
-    private var liveEventTypes: List<LiveEventType>? = null
+    private var liveEventTypes: List<LiveEventType> = ArrayList()
 
     interface LiveEventTypesListener {
         fun onItemClick(liveEventType: LiveEventType, position: Int)
@@ -22,32 +20,27 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var nameTextView: TextView? = null
-
-        init {
-            nameTextView = itemView.findViewById(R.id.name)
+    class ViewHolder(private val binding: ItemLiveEventTypeBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(liveEventType: LiveEventType) {
+            binding.liveEventType = liveEventType
+            binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recyclerview_row_live_event_type, parent, false) as View
-        return ViewHolder(itemView)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemLiveEventTypeBinding.inflate(layoutInflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val liveEventType = liveEventTypes?.get(position)
-
-        holder.nameTextView?.text = liveEventType?.name
-
+        val liveEventType = liveEventTypes[position]
+        holder.bind(liveEventType)
         holder.itemView.setOnClickListener {
-            if (liveEventType != null) {
-                listener.onItemClick(liveEventType, position)
-            }
+            listener.onItemClick(liveEventType, position)
         }
     }
 
-    override fun getItemCount() = liveEventTypes?.size ?: 0
+    override fun getItemCount() = liveEventTypes.size
 
 }
