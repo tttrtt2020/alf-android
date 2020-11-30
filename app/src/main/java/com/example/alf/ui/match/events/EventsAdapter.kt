@@ -1,10 +1,15 @@
 package com.example.alf.ui.match.events;
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.alf.AlfApplication
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.ItemEventBinding
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
 class EventsAdapter(var listener: EventsListener) :
         RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
@@ -23,8 +28,23 @@ class EventsAdapter(var listener: EventsListener) :
     }
 
     class ViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        companion object {
+            @JvmStatic
+            @BindingAdapter("app:imageUrl")
+            fun loadEventIcon(imageView: ImageView, url: String?) {
+                if (!url.isNullOrEmpty()) {
+                    GlideToVectorYou.init().with(imageView.context).load(
+                            Uri.parse(url),
+                            imageView
+                    )
+                }
+            }
+        }
+
         fun bind(event: Event) {
             binding.event = event
+            binding.adapter = bindingAdapter as EventsAdapter?
             binding.executePendingBindings()
         }
     }
@@ -41,6 +61,12 @@ class EventsAdapter(var listener: EventsListener) :
         holder.itemView.setOnClickListener {
             listener.onItemClick(event)
         }
+    }
+
+    fun buildEventIconUrl(event: Event): String {
+        return AlfApplication.getProperty("url.icon.event") +
+                event.eventType.id +
+                AlfApplication.getProperty("extension.icon.event")
     }
 
     override fun getItemCount() = events.size
