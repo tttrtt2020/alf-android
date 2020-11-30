@@ -11,6 +11,6 @@
     <dimen name="card_margin_double">16dp</dimen>
     <dimen name="main_info_frame_layout_height">96dp</dimen>
 
-    <dimen name="edit_live_event_header_text_size">24sp</dimen>
+    <dimen name="edit_live_event_header_text_size">18sp</dimen>
     <dimen name="edit_live_event_text_size">24sp</dimen>
 </resources>

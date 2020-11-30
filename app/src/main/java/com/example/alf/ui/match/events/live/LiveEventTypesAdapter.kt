@@ -12,7 +12,7 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
     private var liveEventTypes: List<LiveEventType> = ArrayList()
 
     interface LiveEventTypesListener {
-        fun onItemClick(liveEventType: LiveEventType, position: Int)
+        fun onItemClick(liveEventType: LiveEventType)
     }
 
     fun setLiveEventTypes(list: List<LiveEventType>) {
@@ -37,7 +37,7 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
         val liveEventType = liveEventTypes[position]
         holder.bind(liveEventType)
         holder.itemView.setOnClickListener {
-            listener.onItemClick(liveEventType, position)
+            listener.onItemClick(liveEventType)
         }
     }
 

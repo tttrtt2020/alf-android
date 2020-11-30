@@ -51,11 +51,13 @@ class LiveEventFragment : Fragment() {
     private val args: LiveEventFragmentArgs by navArgs()
 
     private val liveEventViewModel: LiveEventViewModel by viewModels {
-        LiveEventViewModelFactory(args.liveEventTypeId)
+        LiveEventViewModelFactory(args.liveEventTypeId, args.liveEventType)
     }
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment) {
         MatchViewModelFactory(activity?.application!!, args.matchId)
     }
+
+    private lateinit var saveMenuItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +74,20 @@ class LiveEventFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        liveEventViewModel.nameLiveData.observe(viewLifecycleOwner, {
+            (activity as AppCompatActivity).supportActionBar?.title = it
+        })
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.live_event, menu)
+
+        saveMenuItem = menu.findItem(R.id.action_save)
+        liveEventViewModel.saveEnabledLiveData.observe(viewLifecycleOwner, {
+            saveMenuItem.isEnabled = it
+        })
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 

@@ -111,6 +111,9 @@
         <argument
             android:name="liveEventTypeId"
             app:argType="integer" />
+        <argument
+            android:name="liveEventType"
+            app:argType="com.example.alf.data.model.event.LiveEventType" />
     </fragment>
 
 </navigation>

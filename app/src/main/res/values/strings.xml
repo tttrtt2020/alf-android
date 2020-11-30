@@ -34,9 +34,11 @@
 
     <string name="minute">Minute</string>
     <string name="team">Team</string>
+    <string name="person">Person</string>
     <string name="match_result_unknown">- : -</string>
 
     <string name="hint_minute">25</string>
+    <string name="hint_person">Ivanov Ivan Ivanovich</string>
     <string name="postfix_minute">\"</string>
 
 </resources>

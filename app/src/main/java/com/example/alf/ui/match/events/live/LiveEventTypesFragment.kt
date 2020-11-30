@@ -55,8 +55,12 @@ class LiveEventTypesFragment : Fragment(), LiveEventTypesAdapter.LiveEventTypesL
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onItemClick(liveEventType: LiveEventType, position: Int) {
-        val action = liveEventType.id.let { LiveEventTypesFragmentDirections.actionLiveEventTypesFragmentToLiveEventFragment(matchId = args.matchId, liveEventTypeId = it) }
+    override fun onItemClick(liveEventType: LiveEventType) {
+        val action = liveEventType.id.let { LiveEventTypesFragmentDirections.actionLiveEventTypesFragmentToLiveEventFragment(
+                matchId = args.matchId,
+                liveEventTypeId = it,
+                liveEventType = liveEventType
+        ) }
         findNavController().navigate(action)
     }
 }
