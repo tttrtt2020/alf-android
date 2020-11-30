@@ -1,11 +1,19 @@
 package com.example.alf.ui.match.events.live
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import android.widget.RadioButton
+import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.alf.R
 import com.example.alf.databinding.FragmentLiveEventBinding
 import com.example.alf.ui.match.MatchViewModel
@@ -18,6 +26,24 @@ class LiveEventFragment : Fragment() {
         fun newInstance() = LiveEventFragment()
 
         const val MAX_MINUTE: Int = 90
+
+        @JvmStatic
+        @BindingAdapter("app:buttonImageUrl")
+        fun loadTeamLogoImage(radioButton: RadioButton, url: String?) {
+
+            if (!url.isNullOrEmpty()) {
+                Glide
+                        .with(radioButton.context)
+                        .load(url)
+                        .into(object : CustomTarget<Drawable?>() {
+                            override fun onResourceReady(resource: Drawable, @Nullable transition: Transition<in Drawable?>?) {
+                                radioButton.buttonDrawable = resource
+                            }
+
+                            override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                        })
+            }
+        }
     }
 
     private lateinit var binding: FragmentLiveEventBinding

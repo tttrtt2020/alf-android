@@ -36,4 +36,7 @@
     <string name="team">Team</string>
     <string name="match_result_unknown">- : -</string>
 
+    <string name="hint_minute">25</string>
+    <string name="postfix_minute">\"</string>
+
 </resources>
