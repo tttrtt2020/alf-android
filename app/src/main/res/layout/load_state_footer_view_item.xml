@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <!-- todo: change text size -->
     <TextView
         android:id="@+id/error_msg"
         android:textColor="?android:textColorPrimary"

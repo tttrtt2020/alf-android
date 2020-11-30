@@ -51,27 +51,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:text="@{matchViewModel.resultLiveData}"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/text_size_medium"
                             android:textStyle="bold"
-                            android:textColor="@color/white"/>
+                            android:textColor="@color/white"
+                            android:text="@{matchViewModel.resultLiveData}" />
 
                         <TextView
                             android:id="@+id/date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
-                            android:text="@{matchViewModel.dateLiveData}"
-                            android:textSize="12sp"
-                            android:textColor="@color/white"/>
+                            android:textSize="@dimen/text_size_small"
+                            android:textColor="@color/white"
+                            android:text="@{matchViewModel.dateLiveData}" />
 
                         <TextView
                             android:id="@+id/time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{matchViewModel.timeLiveData}"
-                            android:textSize="12sp"
-                            android:textColor="@color/white"/>
+                            android:textSize="@dimen/text_size_small"
+                            android:textColor="@color/white"
+                            android:text="@{matchViewModel.timeLiveData}" />
 
                     </LinearLayout>
 
@@ -107,9 +107,9 @@
                         android:layout_toStartOf="@id/result_layout"
                         android:layout_centerVertical="true"
                         android:gravity="center"
-                        android:text="@{matchViewModel.hostTeamNameLiveData}"
-                        android:textSize="16sp"
-                        android:textColor="@color/white"/>
+                        android:textSize="@dimen/text_size_medium"
+                        android:textColor="@color/white"
+                        android:text="@{matchViewModel.hostTeamNameLiveData}" />
 
                     <TextView
                         android:id="@+id/guest_name"
@@ -119,9 +119,9 @@
                         android:layout_toEndOf="@id/result_layout"
                         android:layout_centerVertical="true"
                         android:gravity="center"
-                        android:text="@{matchViewModel.guestTeamNameLiveData}"
-                        android:textSize="16sp"
-                        android:textColor="@color/white"/>
+                        android:textSize="@dimen/text_size_medium"
+                        android:textColor="@color/white"
+                        android:text="@{matchViewModel.guestTeamNameLiveData}" />
                 </RelativeLayout>
 
             </FrameLayout>

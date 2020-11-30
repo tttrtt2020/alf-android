@@ -44,30 +44,30 @@
                 android:id="@+id/last_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Last name"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:text="Last name" />
 
             <TextView
                 android:id="@+id/first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="First name"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_medium"
+                android:text="First name" />
 
             <TextView
                 android:id="@+id/patronymic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Patronymic"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_medium"
+                android:text="Patronymic" />
 
             <TextView
                 android:id="@+id/birth_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Birth date"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_medium"
+                android:text="Birth date" />
 
         </LinearLayout>
 

@@ -31,21 +31,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_medium" />
 
             <TextView
                 android:id="@+id/first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_size_small" />
 
         </LinearLayout>
 

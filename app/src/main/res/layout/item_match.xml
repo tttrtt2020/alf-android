@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold"
                     android:text="@{match.status.equalsIgnoreCase(match.STATUS_FINISHED) ? (match.resultHostGoals.toString() + ` : ` + match.resultGuestGoals.toString()) : @string/match_result_unknown}" />
 
@@ -43,14 +43,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_small"
                     android:text="@{adapter.formatDate(match.dateTime)}" />
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_size_small"
                     android:text="@{adapter.formatTime(match.dateTime)}" />
 
             </LinearLayout>
@@ -87,7 +87,7 @@
                 android:layout_toStartOf="@id/result_layout"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_medium"
                 android:text="@{match.hostMatchTeam.team.name}" />
 
             <TextView
@@ -98,7 +98,7 @@
                 android:layout_toEndOf="@id/result_layout"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_medium"
                 android:text="@{match.guestMatchTeam.team.name}" />
 
         </RelativeLayout>
