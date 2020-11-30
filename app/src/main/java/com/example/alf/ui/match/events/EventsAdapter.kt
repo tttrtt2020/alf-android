@@ -1,22 +1,20 @@
 package com.example.alf.ui.match.events;
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.alf.R
 import com.example.alf.data.model.event.Event
+import com.example.alf.databinding.ItemEventBinding
 
 class EventsAdapter(var listener: EventsListener) :
         RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
-    private var events: List<Event>? = null
+    private var events: List<Event> = ArrayList()
 
     interface EventsListener {
         fun onItemDeleted(event: Event, position: Int)
 
-        fun onItemClick(event: Event, position: Int)
+        fun onItemClick(event: Event)
     }
 
     fun setEvents(list: List<Event>) {
@@ -24,35 +22,27 @@ class EventsAdapter(var listener: EventsListener) :
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var minuteTextView: TextView? = null
-        var nameTextView: TextView? = null
-
-        init {
-            minuteTextView = itemView.findViewById(R.id.minute)
-            nameTextView = itemView.findViewById(R.id.name)
+    class ViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(event: Event) {
+            binding.event = event
+            binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recyclerview_row_event, parent, false) as View
-        return ViewHolder(itemView)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemEventBinding.inflate(layoutInflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val event = events?.get(position)
-
-        holder.minuteTextView?.text = event?.minute
-        holder.nameTextView?.text = event?.name
-
+        val event = events[position]
+        holder.bind(event)
         holder.itemView.setOnClickListener {
-            if (event != null) {
-                listener.onItemClick(event, position)
-            }
+            listener.onItemClick(event)
         }
     }
 
-    override fun getItemCount() = events?.size ?: 0
+    override fun getItemCount() = events.size
 
 }

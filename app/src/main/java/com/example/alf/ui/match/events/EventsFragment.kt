@@ -59,7 +59,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(event: Event, position: Int) {
+    override fun onItemClick(event: Event) {
         TODO("Not yet implemented")
     }
 }
