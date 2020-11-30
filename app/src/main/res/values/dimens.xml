@@ -12,5 +12,7 @@
     <dimen name="main_info_frame_layout_height">96dp</dimen>
 
     <dimen name="edit_live_event_header_text_size">18sp</dimen>
-    <dimen name="edit_live_event_text_size">24sp</dimen>
+    <dimen name="edit_live_event_text_size">22sp</dimen>
+    <dimen name="event_minute_text_size">18sp</dimen>
+    <dimen name="event_type_name_text_size">22sp</dimen>
 </resources>

@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.event.Event
+import com.example.alf.data.model.event.EventType
 import com.example.alf.databinding.ItemEventBinding
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
@@ -63,12 +64,12 @@ class EventsAdapter(var listener: EventsListener) :
         }
     }
 
-    fun buildEventIconUrl(event: Event): String {
+    override fun getItemCount() = events.size
+
+    fun buildEventTypeIconUrl(eventType: EventType): String {
         return AlfApplication.getProperty("url.icon.event") +
-                event.eventType.id +
+                eventType.id +
                 AlfApplication.getProperty("extension.icon.event")
     }
-
-    override fun getItemCount() = events.size
 
 }
