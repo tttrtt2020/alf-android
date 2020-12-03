@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.alf.R
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentSquadBinding
 import com.example.alf.ui.match.MatchFragmentDirections
-import com.example.alf.ui.match.MatchInfoAdapter
 import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.match.formations.TeamFormationView
 import com.google.android.material.snackbar.Snackbar
@@ -20,12 +19,27 @@ import com.google.android.material.snackbar.Snackbar
 
 class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormationView.OnChangeFormationClickListener {
 
+    companion object {
+        const val ARG_MATCH_ID = "matchId"
+        const val ARG_TEAM_SIDE = "teamSide"
+        const val ARG_TEAM_SIDE_HOST = "host"
+        const val ARG_TEAM_SIDE_GUEST = "guest"
+        const val ARG_TEAM_ID = "teamId"
+    }
+
     private lateinit var binding: FragmentSquadBinding
 
     private lateinit var viewAdapter: MatchPersonsAdapter
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
+    private val squadViewModel: SquadViewModel by viewModels {
+        SquadViewModelFactory(
+                requireActivity().application!!,
+                requireArguments().getInt(ARG_MATCH_ID),
+                requireArguments().getInt(ARG_TEAM_ID)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,34 +59,16 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
             adapter = viewAdapter
         }
 
-        getSquadLiveData().observe(viewLifecycleOwner, {
+        squadViewModel.squadLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
                 binding.matchPersonsRecyclerView.visibility = View.VISIBLE
-                viewAdapter.setMatchPersons(getSquadLiveData().value!!)
+                viewAdapter.setMatchPersons(squadViewModel.squadLiveData.value!!)
 
                 binding.progressBar.visibility = View.GONE
-
-                binding.teamFormation.setMatchPersons(it)
             } else {
-                showSnackBar(binding.root, "Get squad error")
+                showSnackBar(binding.root, "Get squad failed")
             }
         })
-    }
-
-    private fun getSquadLiveData(): LiveData<List<MatchPerson>>{
-        return when {
-            requireArguments().get(MatchInfoAdapter.ARG_TEAM) == MatchInfoAdapter.ARG_TEAM_HOST ->
-                matchViewModel.hostSquadLiveData
-            requireArguments().get(MatchInfoAdapter.ARG_TEAM) == MatchInfoAdapter.ARG_TEAM_GUEST ->
-                matchViewModel.guestSquadLiveData
-            else -> throw IllegalArgumentException(
-                MatchInfoAdapter.ARG_TEAM
-                        + " argument should have "
-                        + MatchInfoAdapter.ARG_TEAM_HOST
-                        + " or "
-                        + MatchInfoAdapter.ARG_TEAM_GUEST + " value"
-            )
-        }
     }
 
     private fun showSnackBar(view: View, msg: String) {

@@ -14,4 +14,8 @@ interface EventApiInterface {
 
     @DELETE("events/{id}")
     fun deleteEvent(@Path("id") id: Int): Call<Unit>
+
+    @GET("matches/{matchId}/events")
+    fun fetchMatchEvents(@Path("matchId") matchId: Int): Call<List<Event>>
+
 }

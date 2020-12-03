@@ -12,8 +12,11 @@ import com.example.alf.data.model.event.EventType
 import com.example.alf.databinding.ItemEventBinding
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
-class EventsAdapter(var listener: EventsListener) :
-        RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
+class EventsAdapter(
+        var hostTeamId: Int,
+        var guestTeamId: Int,
+        var listener: EventsListener
+        ) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
     private var events: List<Event> = ArrayList()
 
@@ -45,6 +48,8 @@ class EventsAdapter(var listener: EventsListener) :
 
         fun bind(event: Event) {
             binding.event = event
+            binding.hostTeamId = (bindingAdapter as EventsAdapter).hostTeamId
+            binding.guestTeamId = (bindingAdapter as EventsAdapter).guestTeamId
             binding.adapter = bindingAdapter as EventsAdapter?
             binding.executePendingBindings()
         }

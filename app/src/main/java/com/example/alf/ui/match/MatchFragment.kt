@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.alf.R
+import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentMatchBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -79,14 +80,19 @@ class MatchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        matchViewModel.getMatchInfoResultLiveData.observe(viewLifecycleOwner, {
+        matchViewModel.getMatchResultLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
                 onGetMatchResult(it)
-                matchViewModel.getMatchInfoResultLiveData.value = null
+                matchViewModel.getMatchResultLiveData.value = null
             }
         })
 
-        binding.pager.adapter = MatchInfoAdapter(this)
+        binding.pager.adapter = MatchInfoAdapter(
+                this,
+                args.matchId,
+                args.hostTeamId,
+                args.guestTeamId
+        )
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.tab_name_host_squad)
@@ -109,6 +115,15 @@ class MatchFragment : Fragment() {
 
     private fun onFabClicked() {
         val action = MatchFragmentDirections.actionMatchFragmentToLiveEventTypesFragment(args.matchId)
+        findNavController().navigate(action)
+    }
+
+    fun onEventClicked(event: Event) {
+        val action = MatchFragmentDirections.actionMatchFragmentToEventFragment(
+                args.matchId,
+                event.id,
+                event
+        )
         findNavController().navigate(action)
     }
 

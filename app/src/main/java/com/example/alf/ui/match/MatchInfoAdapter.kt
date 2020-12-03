@@ -6,13 +6,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.alf.ui.match.events.EventsFragment
 import com.example.alf.ui.match.squad.SquadFragment
 
-class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-
-    companion object {
-        const val ARG_TEAM = "team"
-        const val ARG_TEAM_HOST = "host"
-        const val ARG_TEAM_GUEST = "guest"
-    }
+class MatchInfoAdapter(
+        fragment: Fragment,
+        val matchId: Int,
+        val hostTeamId: Int,
+        val guestTeamId: Int
+        ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3
 
@@ -25,19 +24,27 @@ class MatchInfoAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
             0 -> {
                 return SquadFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_TEAM, ARG_TEAM_HOST)
+                        putString(SquadFragment.ARG_TEAM_SIDE, SquadFragment.ARG_TEAM_SIDE_HOST)
+                        putInt(SquadFragment.ARG_MATCH_ID, matchId)
+                        putInt(SquadFragment.ARG_TEAM_ID, hostTeamId)
                     }
                 }
             }
             2 -> {
                 return SquadFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_TEAM, ARG_TEAM_GUEST)
+                        putString(SquadFragment.ARG_TEAM_SIDE, SquadFragment.ARG_TEAM_SIDE_GUEST)
+                        putInt(SquadFragment.ARG_MATCH_ID, matchId)
+                        putInt(SquadFragment.ARG_TEAM_ID, guestTeamId)
                     }
                 }
             }
             1 -> {
-                return EventsFragment()
+                return EventsFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt(EventsFragment.ARG_MATCH_ID, matchId)
+                    }
+                }
             }
             else -> throw IllegalArgumentException("position argument can only be one of (0, 1, 2)")
         }

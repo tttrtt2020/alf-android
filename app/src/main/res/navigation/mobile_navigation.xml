@@ -62,6 +62,12 @@
         <argument
             android:name="matchId"
             app:argType="integer" />
+        <argument
+            android:name="hostTeamId"
+            app:argType="integer" />
+        <argument
+            android:name="guestTeamId"
+            app:argType="integer" />
         <!--<action
             android:id="@+id/action_matchFragment_to_squadsFragment"
             app:destination="@id/squadsFragment" />-->

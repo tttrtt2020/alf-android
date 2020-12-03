@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
         <variable name="event" type="com.example.alf.data.model.event.Event" />
+        <variable name="hostTeamId" type="Integer" />
+        <variable name="guestTeamId" type="Integer" />
         <variable name="adapter" type="com.example.alf.ui.match.events.EventsAdapter" />
     </data>
 
@@ -17,7 +20,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/card_margin">
+            android:padding="@dimen/card_margin"
+            android:layoutDirection="@{event.team.id == hostTeamId ? View.LAYOUT_DIRECTION_LTR : View.LAYOUT_DIRECTION_RTL}">
 
             <ImageView
                 android:id="@+id/icon"
@@ -26,6 +30,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/card_margin_half"
+                android:contentDescription="@string/content_description_event_type"
                 app:imageUrl="@{adapter.buildEventTypeIconUrl(event.eventType)}"/>
 
             <LinearLayout
@@ -51,7 +56,15 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/event_type_name_text_size"
-                    android:text="@{event.name}" />
+                    android:text="@{event.eventType.name}" />
+
+                <TextView
+                    android:id="@+id/person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/event_type_name_text_size"
+                    android:text="@{event.person.lastName}" />
 
             </LinearLayout>
         </RelativeLayout>

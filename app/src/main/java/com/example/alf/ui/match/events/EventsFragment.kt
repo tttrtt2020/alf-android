@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.viewModels
 import androidx.navigation.navGraphViewModels
 import com.example.alf.R
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentEventsBinding
+import com.example.alf.ui.match.MatchFragment
 import com.example.alf.ui.match.MatchViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class EventsFragment : Fragment(), EventsAdapter.EventsListener {
+
+    companion object {
+        const val ARG_MATCH_ID = "matchId"
+    }
 
     private lateinit var binding: FragmentEventsBinding
 
@@ -22,6 +27,12 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
+    private val eventsViewModel: EventsViewModel by viewModels {
+        EventsViewModelFactory(
+                requireActivity().application!!,
+                requireArguments().getInt(ARG_MATCH_ID)
+        )
+    }
 
 
     override fun onCreateView(
@@ -34,25 +45,29 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewAdapter = EventsAdapter(this)
+        viewAdapter = EventsAdapter(
+                matchViewModel.matchLiveData.value!!.hostTeam.id,
+                matchViewModel.matchLiveData.value!!.guestTeam.id,
+                this
+        )
         binding.eventsRecyclerView.apply {
             adapter = viewAdapter
         }
 
-        matchViewModel.eventsLiveData.observe(viewLifecycleOwner, Observer {
+        eventsViewModel.eventsLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
                 binding.eventsRecyclerView.visibility = View.VISIBLE
-                viewAdapter.setEvents(matchViewModel.eventsLiveData.value!!)
+                viewAdapter.setEvents(eventsViewModel.eventsLiveData.value!!)
 
                 binding.progressBar.visibility = View.GONE
             } else {
-                showToast("Something went wrong")
+                showSnackBar(binding.root, "Get events failed")
             }
         })
     }
 
-    private fun showToast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    private fun showSnackBar(view: View, msg: String) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onItemDeleted(event: Event, position: Int) {
@@ -60,6 +75,6 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onItemClick(event: Event) {
-        TODO("Not yet implemented")
+        (parentFragment as MatchFragment).onEventClicked(event)
     }
 }

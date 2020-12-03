@@ -36,7 +36,7 @@
                     android:layout_marginBottom="4dp"
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold"
-                    android:text="@{match.status.equalsIgnoreCase(match.STATUS_FINISHED) ? (match.resultHostGoals.toString() + ` : ` + match.resultGuestGoals.toString()) : @string/match_result_unknown}" />
+                    android:text="@{match.status.equalsIgnoreCase(match.STATUS_FINISHED) ? (match.resultHostGoals + ` : ` + match.resultGuestGoals) : @string/match_result_unknown}" />
 
                 <TextView
                     android:id="@+id/date"
@@ -65,7 +65,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/content_description_team_logo"
-                app:imageUrl="@{adapter.buildTeamLogoUrl(match.hostMatchTeam.team)}"/>
+                app:imageUrl="@{adapter.buildTeamLogoUrl(match.hostTeam)}"/>
 
             <ImageView
                 android:id="@+id/guest_logo"
@@ -77,7 +77,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/content_description_team_logo"
-                app:imageUrl="@{adapter.buildTeamLogoUrl(match.guestMatchTeam.team)}" />
+                app:imageUrl="@{adapter.buildTeamLogoUrl(match.guestTeam)}" />
 
             <TextView
                 android:id="@+id/host_name"
@@ -88,7 +88,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_medium"
-                android:text="@{match.hostMatchTeam.team.name}" />
+                android:text="@{match.hostTeam.name}" />
 
             <TextView
                 android:id="@+id/guest_name"
@@ -99,7 +99,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_medium"
-                android:text="@{match.guestMatchTeam.team.name}" />
+                android:text="@{match.guestTeam.name}" />
 
         </RelativeLayout>
 

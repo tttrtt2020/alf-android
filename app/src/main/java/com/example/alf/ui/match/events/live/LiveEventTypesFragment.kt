@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.alf.data.model.event.LiveEventType
 import com.example.alf.databinding.FragmentLiveEventTypesBinding
-import com.example.alf.ui.match.MatchFragmentArgs
 import com.google.android.material.snackbar.Snackbar
 
 class LiveEventTypesFragment : Fragment(), LiveEventTypesAdapter.LiveEventTypesListener {
@@ -20,7 +19,7 @@ class LiveEventTypesFragment : Fragment(), LiveEventTypesAdapter.LiveEventTypesL
 
     private lateinit var viewAdapter: LiveEventTypesAdapter
 
-    private val args: MatchFragmentArgs by navArgs()
+    private val args: LiveEventTypesFragmentArgs by navArgs()
 
     private val liveEventTypesViewModel: LiveEventTypesViewModel by viewModels()
 

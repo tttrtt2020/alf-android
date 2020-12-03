@@ -1,4 +1,4 @@
-package com.example.alf.data.model.match
+package com.example.alf.data.model
 
 data class Stadium(
     var id: Int,
