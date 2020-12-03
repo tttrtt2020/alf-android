@@ -21,11 +21,16 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     private var matchApiService: MatchApiService? = null
     var matchListLiveData: LiveData<List<Match>>? = null
 
-    val flow = Pager(config = PagingConfig(
-        pageSize = pageSize
-    )) {
+    val flow = Pager(
+            config = PagingConfig(
+                    pageSize = pageSize
+            )
+    ) {
         MatchesPagingSource(MatchesBackendService())
     }.flow.cachedIn(viewModelScope)
+
+    // todo: rework to MediatorLiveData depending on flow or similar
+    var loadingInProgressLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(true)
 
     init {
         matchApiService = MatchApiService()

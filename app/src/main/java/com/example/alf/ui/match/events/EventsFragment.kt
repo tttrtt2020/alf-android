@@ -23,8 +23,6 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private lateinit var binding: FragmentEventsBinding
 
-    private lateinit var viewAdapter: EventsAdapter
-
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
     private val eventsViewModel: EventsViewModel by viewModels {
@@ -34,6 +32,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         )
     }
 
+    private lateinit var viewAdapter: EventsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,

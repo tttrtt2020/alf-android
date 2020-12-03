@@ -21,10 +21,10 @@ class EventsViewModel(application: Application, id: Int) : AndroidViewModel(appl
     init {
         loadingInProgressLiveData.addSource(eventsLiveData) { loadingInProgressLiveData.value = false }
 
-        getMatchById(id)
+        getEvents(id)
     }
 
-    fun getMatchById(id: Int) {
+    private fun getEvents(id: Int) {
         loadingInProgressLiveData.value = true
         //eventsLiveData.value = null
         eventApiService.fetchMatchEvents(eventsLiveData, id)

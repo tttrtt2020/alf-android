@@ -18,7 +18,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
 
     private lateinit var binding: FragmentMatchesBinding
 
-    private val matchesViewModel by viewModels<MatchesViewModel>()
+    private val matchesViewModel: MatchesViewModel by viewModels()
 
     private lateinit var viewAdapter: MatchesPagingAdapter
 
@@ -34,6 +34,8 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
             savedInstanceState: Bundle?
     ): View {
         binding = FragmentMatchesBinding.inflate(layoutInflater)
+        /*binding.lifecycleOwner = this
+        binding.matchesViewModel = matchesViewModel*/
         return binding.root
     }
 
@@ -70,8 +72,10 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
     }
 
     private fun showMatches(showOnlyFinished: Boolean) {
+        matchesViewModel.loadingInProgressLiveData.value = true
         viewLifecycleOwner.lifecycleScope.launch {
             matchesViewModel.flow.collectLatest { pagingData ->
+                matchesViewModel.loadingInProgressLiveData.value = false
                 viewAdapter.submitData(pagingData)
             }
         }
@@ -93,6 +97,5 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
         ) }
         findNavController().navigate(action)
     }
-
 
 }
