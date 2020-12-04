@@ -18,4 +18,16 @@ interface EventApiInterface {
     @GET("matches/{matchId}/events")
     fun fetchMatchEvents(@Path("matchId") matchId: Int): Call<List<Event>>
 
+    @GET("matches/{matchId}/events/{eventId}")
+    fun fetchMatchEvent(@Path("matchId") matchId: Int, @Path("eventId") eventId: Int): Call<List<Event>>
+
+    /*@POST("matches/{matchId}/events")
+    fun createMatchEvent(@Path("matchId") matchId: Int, @Body event: Event): Call<Event>*/
+
+    @PUT("matches/{matchId}/events/{eventId}")
+    fun updateMatchEvent(@Path("matchId") matchId: Int, @Path("eventId") eventId: Int, @Body event: Event): Call<Event>
+
+    /*@DELETE("events/{id}")
+    fun deleteMatchEvent(@Path("id") id: Int): Call<Unit>*/
+
 }

@@ -57,7 +57,22 @@ class EventApiService {
         return resultLiveData
     }
 
-    fun deleteEvent(resultLiveData: MutableLiveData<Boolean?>, event: Event): LiveData<Boolean?> {
+    fun updateMatchEvent(resultLiveData: MutableLiveData<Boolean?>, matchId: Int, event: Event): LiveData<Boolean?>{
+
+        eventApiInterface.updateMatchEvent(matchId, event.id, event).enqueue(object : Callback<Event>{
+            override fun onFailure(call: Call<Event>, t: Throwable) {
+                resultLiveData.value = false
+            }
+
+            override fun onResponse(call: Call<Event>, response: Response<Event>) {
+                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+            }
+        })
+
+        return resultLiveData
+    }
+
+    /*fun deleteEvent(resultLiveData: MutableLiveData<Boolean?>, event: Event): LiveData<Boolean?> {
 
         eventApiInterface.deleteEvent(event.id).enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
@@ -70,7 +85,7 @@ class EventApiService {
         })
 
         return resultLiveData
-    }
+    }*/
 
     fun fetchMatchEvents(eventsLiveData: MutableLiveData<List<Event>>, matchId: Int): LiveData<List<Event>> {
 

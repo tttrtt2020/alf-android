@@ -33,10 +33,12 @@ class PersonViewModel(application: Application, id: Int) : AndroidViewModel(appl
     }
 
     init {
-        loadingInProgressLiveData.addSource(personLiveData) { loadingInProgressLiveData.value = false }
-        loadingInProgressLiveData.addSource(createPersonLiveData) { loadingInProgressLiveData.value = false }
-        loadingInProgressLiveData.addSource(updatePersonResultLiveData) { loadingInProgressLiveData.value = false }
-        loadingInProgressLiveData.addSource(deletePersonResultLiveData) { loadingInProgressLiveData.value = false }
+        loadingInProgressLiveData.apply {
+            addSource(personLiveData) { loadingInProgressLiveData.value = false }
+            addSource(createPersonLiveData) { loadingInProgressLiveData.value = false }
+            addSource(updatePersonResultLiveData) { loadingInProgressLiveData.value = false }
+            addSource(deletePersonResultLiveData) { loadingInProgressLiveData.value = false }
+        }
 
         personLiveData.addSource(createPersonLiveData) {
             if (it != null) {

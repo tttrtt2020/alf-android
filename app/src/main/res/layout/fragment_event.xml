@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+        <variable name="eventViewModel" type="com.example.alf.ui.match.event.EventViewModel" />
+        <variable name="matchViewModel" type="com.example.alf.ui.match.MatchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.match.event.EventFragment">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="@dimen/card_margin_half"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/card_margin"
+                android:layout_marginVertical="@dimen/card_margin_half">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/card_margin_half"
+                    android:paddingHorizontal="@dimen/card_margin"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/minute_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/card_margin_half"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/card_margin_quarter"
+                            android:textSize="@dimen/edit_event_header_text_size"
+                            android:text="@string/minute"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/card_margin_quarter"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/minute"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:textSize="@dimen/edit_event_text_size"
+                                android:hint="@string/hint_minute"
+                                android:maxLength="3"
+                                android:inputType="number"
+                                android:text="@={eventViewModel.eventLiveData.minute}"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/edit_event_text_size"
+                                android:text="@string/postfix_minute"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/team_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/card_margin_half"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/card_margin_quarter"
+                            android:textSize="@dimen/edit_event_header_text_size"
+                            android:text="@string/team"/>
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/card_margin_quarter"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+                            <RadioButton
+                                android:id="@+id/radio_host"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:drawableTint="@null"
+                                android:backgroundTint="@null"
+                                android:foregroundTint="@null"
+                                android:buttonTint="@null"
+                                style="@null"
+                                android:textSize="@dimen/text_size_small"
+                                android:text="@{matchViewModel.hostTeamNameLiveData}"
+                                app:buttonImageUrl="@{matchViewModel.hostTeamLogoUrlLiveData}"/>
+                            <RadioButton
+                                android:id="@+id/radio_guest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:drawableTint="@null"
+                                android:backgroundTint="@null"
+                                android:foregroundTint="@null"
+                                android:buttonTint="@null"
+                                style="@null"
+                                android:textSize="@dimen/text_size_small"
+                                android:text="@{matchViewModel.guestTeamNameLiveData}"
+                                app:buttonImageUrl="@{matchViewModel.guestTeamLogoUrlLiveData}"/>
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/person_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/card_margin_half"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/card_margin_quarter"
+                            android:textSize="@dimen/edit_event_header_text_size"
+                            android:text="@string/person"/>
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/card_margin_quarter"
+                            android:layout_gravity="center"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:hint="@string/hint_person"
+                            android:focusable="false"
+                            android:text="@={eventViewModel.eventLiveData.person.lastName}"
+                            android:textSize="@dimen/edit_event_text_size"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{eventViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
