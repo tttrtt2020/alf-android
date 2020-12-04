@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
-import com.example.alf.R
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentSquadBinding
 import com.example.alf.ui.match.MatchFragmentDirections
-import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.match.formations.TeamFormationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -32,7 +29,7 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
     private lateinit var viewAdapter: MatchPersonsAdapter
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
-    private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
+    //private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
     private val squadViewModel: SquadViewModel by viewModels {
         SquadViewModelFactory(
                 requireActivity().application!!,
@@ -84,8 +81,7 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
     }
 
     override fun setOnChangeFormationClickListener() {
-        val matchId = matchViewModel.matchLiveData.value?.id
-        val action = matchId.let { MatchFragmentDirections.actionMatchFragmentToFormationsFragment() }
+        val action = MatchFragmentDirections.actionMatchFragmentToFormationsFragment()
         findNavController().navigate(action)
     }
 }

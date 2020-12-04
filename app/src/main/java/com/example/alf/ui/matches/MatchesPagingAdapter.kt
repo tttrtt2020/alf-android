@@ -18,6 +18,21 @@ import java.util.*
 class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var listener: MatchListener) :
     PagingDataAdapter<Match, MatchesPagingAdapter.ViewHolder>(diffCallback) {
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter("app:imageUrl")
+        fun loadTeamLogo(imageView: ImageView, url: String?) {
+            if (!url.isNullOrEmpty()) {
+                Glide
+                        .with(imageView.context)
+                        .load(url)
+                        .placeholder(android.R.color.darker_gray)
+                        .error(android.R.color.holo_red_dark)
+                        .into(imageView)
+            }
+        }
+    }
+
     private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("matches.dateFormat"), Locale.getDefault())
     private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("matches.timeFormat"), Locale.getDefault())
 
@@ -27,26 +42,11 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
         fun onItemClick(match: Match)
     }
 
-    class ViewHolder(private val binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        companion object {
-            @JvmStatic
-            @BindingAdapter("app:imageUrl")
-            fun loadTeamLogo(imageView: ImageView, url: String?) {
-                if (!url.isNullOrEmpty()) {
-                    Glide
-                            .with(imageView.context)
-                            .load(url)
-                            .placeholder(android.R.color.darker_gray)
-                            .error(android.R.color.holo_red_dark)
-                            .into(imageView)
-                }
-            }
-        }
+    inner class ViewHolder(private val binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(match: Match) {
             binding.match = match
-            binding.adapter = bindingAdapter as MatchesPagingAdapter?
+            binding.adapter = this@MatchesPagingAdapter
             binding.executePendingBindings()
         }
     }

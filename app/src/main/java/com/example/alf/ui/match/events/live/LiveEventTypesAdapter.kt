@@ -14,6 +14,19 @@ import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
         RecyclerView.Adapter<LiveEventTypesAdapter.ViewHolder>() {
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter("app:imageUrl")
+        fun loadEventIcon(imageView: ImageView, url: String?) {
+            if (!url.isNullOrEmpty()) {
+                GlideToVectorYou.init().with(imageView.context).load(
+                        Uri.parse(url),
+                        imageView
+                )
+            }
+        }
+    }
+
     private var liveEventTypes: List<LiveEventType> = ArrayList()
 
     interface LiveEventTypesListener {
@@ -25,24 +38,11 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding: ItemLiveEventTypeBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        companion object {
-            @JvmStatic
-            @BindingAdapter("app:imageUrl")
-            fun loadEventIcon(imageView: ImageView, url: String?) {
-                if (!url.isNullOrEmpty()) {
-                    GlideToVectorYou.init().with(imageView.context).load(
-                            Uri.parse(url),
-                            imageView
-                    )
-                }
-            }
-        }
+    inner class ViewHolder(private val binding: ItemLiveEventTypeBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(liveEventType: LiveEventType) {
             binding.liveEventType = liveEventType
-            binding.adapter = bindingAdapter as LiveEventTypesAdapter?
+            binding.adapter = this@LiveEventTypesAdapter
             binding.executePendingBindings()
         }
     }

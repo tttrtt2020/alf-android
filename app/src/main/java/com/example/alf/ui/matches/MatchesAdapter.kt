@@ -16,6 +16,21 @@ import kotlin.collections.ArrayList
 
 class MatchesAdapter(var listener: MatchListener) : RecyclerView.Adapter<MatchesAdapter.ViewHolder>() {
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter("app:imageUrl")
+        fun loadTeamLogo(imageView: ImageView, url: String?) {
+            if (!url.isNullOrEmpty()) {
+                Glide
+                        .with(imageView.context)
+                        .load(url)
+                        .placeholder(android.R.color.darker_gray)
+                        .error(android.R.color.holo_red_dark)
+                        .into(imageView)
+            }
+        }
+    }
+
     private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("matches.dateFormat"), Locale.getDefault())
     private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("matches.timeFormat"), Locale.getDefault())
 
@@ -34,24 +49,9 @@ class MatchesAdapter(var listener: MatchListener) : RecyclerView.Adapter<Matches
 
     class ViewHolder(private val binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        companion object {
-            @JvmStatic
-            @BindingAdapter("app:imageUrl")
-            fun loadTeamLogo(imageView: ImageView, url: String?) {
-                if (!url.isNullOrEmpty()) {
-                    Glide
-                            .with(imageView.context)
-                            .load(url)
-                            .placeholder(android.R.color.darker_gray)
-                            .error(android.R.color.holo_red_dark)
-                            .into(imageView)
-                }
-            }
-        }
-
         fun bind(match: Match) {
             binding.match = match
-            binding.adapter = bindingAdapter as MatchesPagingAdapter?
+            binding.adapter = bindingAdapter as MatchesPagingAdapter? // todo: should use MatchesAdapter!
             binding.executePendingBindings()
         }
     }

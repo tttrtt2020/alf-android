@@ -6,12 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.navGraphViewModels
-import com.example.alf.R
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentEventsBinding
 import com.example.alf.ui.match.MatchFragment
-import com.example.alf.ui.match.MatchViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -19,12 +16,14 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     companion object {
         const val ARG_MATCH_ID = "matchId"
+        const val ARG_HOST_TEAM_ID = "hostTeamId"
+        const val ARG_GUEST_TEAM_ID = "guestTeamId"
     }
 
     private lateinit var binding: FragmentEventsBinding
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
-    private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
+    //private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
     private val eventsViewModel: EventsViewModel by viewModels {
         EventsViewModelFactory(
                 requireActivity().application!!,
@@ -45,8 +44,8 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewAdapter = EventsAdapter(
-                matchViewModel.matchLiveData.value!!.hostTeam.id,
-                matchViewModel.matchLiveData.value!!.guestTeam.id,
+                requireArguments().getInt(ARG_HOST_TEAM_ID),
+                requireArguments().getInt(ARG_GUEST_TEAM_ID),
                 this
         )
         binding.eventsRecyclerView.apply {

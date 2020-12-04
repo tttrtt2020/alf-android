@@ -19,9 +19,9 @@ import java.util.*
 
 
 class PersonsPagingAdapter(
-    diffCallback: DiffUtil.ItemCallback<Person>,
-    private var listener: PersonListener
-): PagingDataAdapter<Person, PersonsPagingAdapter.ViewHolder>(diffCallback) {
+        diffCallback: DiffUtil.ItemCallback<Person>,
+        private var listener: PersonListener
+        ): PagingDataAdapter<Person, PersonsPagingAdapter.ViewHolder>(diffCallback) {
 
     private val dateFormat: SimpleDateFormat = SimpleDateFormat(
         AlfApplication.getProperty("dateFormat"),

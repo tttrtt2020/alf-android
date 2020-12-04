@@ -18,6 +18,19 @@ class EventsAdapter(
         var listener: EventsListener
         ) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter("app:imageUrl")
+        fun loadEventIcon(imageView: ImageView, url: String?) {
+            if (!url.isNullOrEmpty()) {
+                GlideToVectorYou.init().with(imageView.context).load(
+                        Uri.parse(url),
+                        imageView
+                )
+            }
+        }
+    }
+
     private var events: List<Event> = ArrayList()
 
     interface EventsListener {
@@ -31,25 +44,12 @@ class EventsAdapter(
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        companion object {
-            @JvmStatic
-            @BindingAdapter("app:imageUrl")
-            fun loadEventIcon(imageView: ImageView, url: String?) {
-                if (!url.isNullOrEmpty()) {
-                    GlideToVectorYou.init().with(imageView.context).load(
-                            Uri.parse(url),
-                            imageView
-                    )
-                }
-            }
-        }
+    inner class ViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(event: Event) {
             binding.event = event
-            binding.hostTeamId = (bindingAdapter as EventsAdapter).hostTeamId
-            binding.guestTeamId = (bindingAdapter as EventsAdapter).guestTeamId
+            binding.hostTeamId = hostTeamId
+            binding.guestTeamId = guestTeamId
             binding.adapter = bindingAdapter as EventsAdapter?
             binding.executePendingBindings()
         }
