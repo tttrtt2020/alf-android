@@ -85,10 +85,17 @@ class EventFragment : Fragment() {
                 eventViewModel.updateEventResultLiveData.value = null
             }
         })
+
+        eventViewModel.deleteEventResultLiveData.observe(viewLifecycleOwner, {
+            if (it != null) {
+                onDeleteEventResult(it)
+                eventViewModel.deleteEventResultLiveData.value = null
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.live_event, menu)
+        inflater.inflate(R.menu.event, menu)
 
         saveMenuItem = menu.findItem(R.id.action_save)
         /*eventViewModel.saveEnabledLiveData.observe(viewLifecycleOwner, {
@@ -104,6 +111,10 @@ class EventFragment : Fragment() {
                 save()
                 true
             }
+            R.id.action_delete -> {
+                delete()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -112,8 +123,16 @@ class EventFragment : Fragment() {
         if (success) showSnackBar(binding.root, "Update success") else showSnackBar(binding.root, "Update failed")
     }
 
+    private fun onDeleteEventResult(success: Boolean) {
+        if (success) showSnackBar(binding.root, "Delete success") else showSnackBar(binding.root, "Delete failed")
+    }
+
     private fun save() {
         eventViewModel.saveEvent()
+    }
+
+    private fun delete() {
+        eventViewModel.deleteEvent()
     }
 
     private fun showPersonPicker() {

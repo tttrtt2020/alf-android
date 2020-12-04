@@ -12,6 +12,7 @@ class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewMod
     //var saveEnabledLiveData: LiveData<Boolean> = Transformations.map(eventLiveData) { li -> li != null }
 
     var updateEventResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
+    var deleteEventResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
@@ -19,12 +20,8 @@ class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewMod
         loadingInProgressLiveData.apply {
             addSource(eventLiveData) { loadingInProgressLiveData.value = false }
             addSource(updateEventResultLiveData) { loadingInProgressLiveData.value = false }
+            addSource(deleteEventResultLiveData) { loadingInProgressLiveData.value = false }
         }
-    }
-
-    fun updateEvent() {
-        loadingInProgressLiveData.value = true
-        eventService.updateMatchEvent(updateEventResultLiveData, matchId, eventLiveData.value!!)
     }
 
     fun saveEvent() {
@@ -33,6 +30,16 @@ class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewMod
         } else {
             updateEvent()
         }
+    }
+
+    fun updateEvent() {
+        loadingInProgressLiveData.value = true
+        eventService.updateMatchEvent(updateEventResultLiveData, matchId, eventLiveData.value!!)
+    }
+
+    fun deleteEvent() {
+        loadingInProgressLiveData.value = true
+        eventService.deleteEvent(deleteEventResultLiveData, eventLiveData.value!!)
     }
 
 }
