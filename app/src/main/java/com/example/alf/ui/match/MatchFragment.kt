@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.Nullable
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -101,6 +103,16 @@ class MatchFragment : Fragment() {
                 else -> null
             }
         }.attach()
+
+        binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person_add))
+                    2 -> binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person_add))
+                    1 -> binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_event_add))
+                }
+            }
+        })
 
         binding.fab.setOnClickListener { onFabClicked() }
     }
