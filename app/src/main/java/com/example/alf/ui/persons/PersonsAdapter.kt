@@ -64,7 +64,7 @@ class PersonsAdapter(var listener: PersonListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recyclerview_row_person, parent, false) as View
+            .inflate(R.layout.item_person, parent, false) as View // todo: should use PersonsAdapter!
         return ViewHolder(itemView)
     }
 
