@@ -76,7 +76,7 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(matchPerson: MatchPerson, position: Int) {
+    override fun onItemClick(matchPerson: MatchPerson) {
         TODO("Not yet implemented")
     }
 
