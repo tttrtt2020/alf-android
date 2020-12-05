@@ -11,11 +11,12 @@ import java.util.*
 /**
  * ViewModel for the person create/edit screen.
  */
-class PersonViewModel(application: Application, id: Int) : AndroidViewModel(application) {
+class PersonViewModel(application: Application, personId: Int, person: Person?) : AndroidViewModel(application) {
 
     private var personService: PersonApiService = PersonApiService()
 
     var personLiveData: MediatorLiveData<Person> = MediatorLiveData<Person>()
+    //var personLiveData: MutableLiveData<Person> = MutableLiveData<Person>(person)
 
     var getPersonResultLiveData: MutableLiveData<Boolean?> = Transformations.map(personLiveData) { p -> p != null } as MutableLiveData<Boolean?>
     var createPersonLiveData: MutableLiveData<Person> = MutableLiveData<Person>()
@@ -46,7 +47,7 @@ class PersonViewModel(application: Application, id: Int) : AndroidViewModel(appl
             }
         }
 
-        getPersonById(id)
+        getPersonById(personId)
     }
 
     private fun getPersonById(id: Int) {

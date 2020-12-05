@@ -150,20 +150,22 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(person: Person, position: Int) {
+    override fun onItemClick(person: Person) {
         openPerson(person)
     }
 
     private fun openPerson(person: Person) {
         val action = person.id.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(
-            personId = it
+                personId = it,
+                person = person
         ) }
         findNavController().navigate(action)
     }
 
     private fun openCreateNewPerson() {
         val action = PersonsFragmentDirections.actionNavPersonsToPersonFragment(
-            personId = 0
+                personId = 0,
+                person = null
         )
         findNavController().navigate(action)
     }

@@ -53,6 +53,10 @@
         <argument
             android:name="personId"
             app:argType="integer" />
+        <argument
+            android:name="person"
+            app:argType="com.example.alf.data.model.Person"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/matchFragment"

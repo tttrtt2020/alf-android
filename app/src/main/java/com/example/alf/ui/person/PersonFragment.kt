@@ -43,7 +43,13 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private val args: PersonFragmentArgs by navArgs()
 
-    private val personViewModel: PersonViewModel by viewModels { PersonViewModelFactory(activity?.application!!, args.personId) }
+    private val personViewModel: PersonViewModel by viewModels {
+        PersonViewModelFactory(
+                requireActivity().application,
+                args.personId,
+                args.person
+        )
+    }
 
     private val calendar: Calendar = Calendar.getInstance()
     private val dateFormat: SimpleDateFormat = SimpleDateFormat(AlfApplication.getProperty("dateFormat"), Locale.getDefault())
