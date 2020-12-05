@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -24,10 +25,29 @@ class PersonsPagingAdapter(
         ): PagingDataAdapter<Person, PersonsPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
+
+        private val dateFormat = SimpleDateFormat(
+                AlfApplication.getProperty("dateFormat"),
+                Locale.getDefault()
+        )
+
+        private fun buildPersonPhotoUrl(person: Person): String {
+            return AlfApplication.getProperty("url.image.person") +
+                    person.id +
+                    AlfApplication.getProperty("extension.image.person")
+        }
+
+        private fun buildFlagImageUrl(person: Person): String {
+            return AlfApplication.getProperty("url.image.flag") +
+                    person.country?.name?.toLowerCase(Locale.ROOT) +
+                    AlfApplication.getProperty("extension.image.flag")
+        }
+
         @JvmStatic
-        @BindingAdapter("app:imageUrl")
-        fun loadPersonPhoto(imageView: ImageView, url: String?) {
-            if (!url.isNullOrEmpty()) {
+        @BindingAdapter("app:imageSrc")
+        fun loadPersonPhoto(imageView: ImageView, person: Person) {
+            val url = buildPersonPhotoUrl(person)
+            if (url.isNotEmpty()) {
                 Glide
                         .with(imageView.context)
                         .load(url)
@@ -38,18 +58,23 @@ class PersonsPagingAdapter(
         }
 
         @JvmStatic
-        @BindingAdapter("app:vectorImageUrl")
-        fun loadFlagImage(imageView: ImageView, url: String?) {
-            if (!url.isNullOrEmpty()) {
+        @BindingAdapter("app:vectorImageSrc")
+        fun loadFlagImage(imageView: ImageView, person: Person) {
+            val url = buildFlagImageUrl(person)
+            if (url.isNotEmpty()) {
                 GlideToVectorYou.init().with(imageView.context).load(
                         Uri.parse(url),
                         imageView
                 )
             }
         }
-    }
 
-    private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("dateFormat"), Locale.getDefault())
+        @JvmStatic
+        @BindingAdapter("app:date")
+        fun setDate(textView: TextView, date: Date?) {
+            textView.text = if (date != null) dateFormat.format(date) else ""
+        }
+    }
 
     interface PersonListener {
         fun onItemDeleted(person: Person, position: Int)
@@ -61,7 +86,6 @@ class PersonsPagingAdapter(
 
         fun bind(person: Person) {
             binding.person = person
-            binding.adapter = this@PersonsPagingAdapter
             binding.executePendingBindings()
         }
     }
@@ -76,27 +100,8 @@ class PersonsPagingAdapter(
         val person = getItem(position)
         if (person != null) {
             holder.bind(person)
+            holder.itemView.setOnClickListener { listener.onItemClick(person) }
         }
-    }
-
-    fun onPersonClick(person: Person) {
-        listener.onItemClick(person)
-    }
-
-    fun formatDate(date: Date?): String {
-        return if (date != null) dateFormat.format(date) else ""
-    }
-
-    fun buildPersonPhotoUrl(person: Person): String {
-        return AlfApplication.getProperty("url.image.person") +
-                person.id +
-                AlfApplication.getProperty("extension.image.person")
-    }
-
-    fun buildFlagImageUrl(person: Person): String {
-        return AlfApplication.getProperty("url.image.flag") +
-                person.country?.name?.toLowerCase(Locale.ROOT) +
-                AlfApplication.getProperty("extension.image.flag")
     }
 
     object PersonComparator : DiffUtil.ItemCallback<Person>() {

@@ -15,10 +15,18 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
         RecyclerView.Adapter<LiveEventTypesAdapter.ViewHolder>() {
 
     companion object {
+
+        private fun buildEventTypeIconUrl(liveEventType: LiveEventType): String {
+            return AlfApplication.getProperty("url.icon.event") +
+                    liveEventType.id +
+                    AlfApplication.getProperty("extension.icon.event")
+        }
+
         @JvmStatic
-        @BindingAdapter("app:imageUrl")
-        fun loadEventIcon(imageView: ImageView, url: String?) {
-            if (!url.isNullOrEmpty()) {
+        @BindingAdapter("app:imageSrc")
+        fun loadEventIcon(imageView: ImageView, liveEventType: LiveEventType) {
+            val url = buildEventTypeIconUrl(liveEventType)
+            if (url.isNotEmpty()) {
                 GlideToVectorYou.init().with(imageView.context).load(
                         Uri.parse(url),
                         imageView
@@ -42,7 +50,6 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
 
         fun bind(liveEventType: LiveEventType) {
             binding.liveEventType = liveEventType
-            binding.adapter = this@LiveEventTypesAdapter
             binding.executePendingBindings()
         }
     }
@@ -62,11 +69,5 @@ class LiveEventTypesAdapter(var listener: LiveEventTypesListener) :
     }
 
     override fun getItemCount() = liveEventTypes.size
-
-    fun buildEventTypeIconUrl(liveEventType: LiveEventType): String {
-        return AlfApplication.getProperty("url.icon.event") +
-                liveEventType.id +
-                AlfApplication.getProperty("extension.icon.event")
-    }
 
 }

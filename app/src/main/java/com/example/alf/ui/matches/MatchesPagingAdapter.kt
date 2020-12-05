@@ -3,6 +3,7 @@ package com.example.alf.ui.matches
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -19,10 +20,21 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
     PagingDataAdapter<Match, MatchesPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
+
+        private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("matches.dateFormat"), Locale.getDefault())
+        private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("matches.timeFormat"), Locale.getDefault())
+
+        private fun buildTeamLogoUrl(team: Team): String {
+            return AlfApplication.getProperty("url.logo.club") +
+                    team.club.id +
+                    AlfApplication.getProperty("extension.logo.club")
+        }
+
         @JvmStatic
-        @BindingAdapter("app:imageUrl")
-        fun loadTeamLogo(imageView: ImageView, url: String?) {
-            if (!url.isNullOrEmpty()) {
+        @BindingAdapter("app:imageSrc")
+        fun loadTeamLogo(imageView: ImageView, team: Team) {
+            val url = buildTeamLogoUrl(team)
+            if (url.isNotEmpty()) {
                 Glide
                         .with(imageView.context)
                         .load(url)
@@ -31,10 +43,19 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
                         .into(imageView)
             }
         }
-    }
 
-    private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("matches.dateFormat"), Locale.getDefault())
-    private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("matches.timeFormat"), Locale.getDefault())
+        @JvmStatic
+        @BindingAdapter("app:date")
+        fun setDate(textView: TextView, dateTime: Date?) {
+            textView.text = if (dateTime != null) dateFormat.format(dateTime) else ""
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:time")
+        fun setTime(textView: TextView, dateTime: Date?) {
+            textView.text = if (dateTime != null) timeFormat.format(dateTime) else ""
+        }
+    }
 
     interface MatchListener {
         fun onItemDeleted(match: Match, position: Int)
@@ -46,7 +67,6 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
 
         fun bind(match: Match) {
             binding.match = match
-            binding.adapter = this@MatchesPagingAdapter
             binding.executePendingBindings()
         }
     }
@@ -61,25 +81,8 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
         val match = getItem(position)
         if (match != null) {
             holder.bind(match)
+            holder.itemView.setOnClickListener { listener.onItemClick(match) }
         }
-    }
-
-    fun formatDate(date: Date): String {
-        return dateFormat.format(date)
-    }
-
-    fun formatTime(date: Date): String {
-        return timeFormat.format(date)
-    }
-
-    fun buildTeamLogoUrl(team: Team): String {
-        return AlfApplication.getProperty("url.logo.club") +
-                team.club.id +
-                AlfApplication.getProperty("extension.logo.club")
-    }
-
-    fun onMatchClick(match: Match) {
-        listener.onItemClick(match)
     }
 
     object MatchComparator : DiffUtil.ItemCallback<Match>() {

@@ -51,7 +51,6 @@ class MatchesAdapter(var listener: MatchListener) : RecyclerView.Adapter<Matches
 
         fun bind(match: Match) {
             binding.match = match
-            binding.adapter = bindingAdapter as MatchesPagingAdapter? // todo: should use MatchesAdapter!
             binding.executePendingBindings()
         }
     }

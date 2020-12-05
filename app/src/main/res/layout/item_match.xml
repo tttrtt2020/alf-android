@@ -5,15 +5,13 @@
 
     <data>
         <variable name="match" type="com.example.alf.data.model.Match" />
-        <variable name="adapter" type="com.example.alf.ui.matches.MatchesPagingAdapter"/>
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/card_margin"
-        android:layout_marginVertical="@dimen/card_margin_half"
-        android:onClick="@{() -> adapter.onMatchClick(match)}">
+        android:layout_marginVertical="@dimen/card_margin_half">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,14 +43,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:textSize="@dimen/text_size_small"
-                    android:text="@{adapter.formatDate(match.dateTime)}" />
+                    app:date="@{match.dateTime}" />
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_small"
-                    android:text="@{adapter.formatTime(match.dateTime)}" />
+                    app:time="@{match.dateTime}" />
 
             </LinearLayout>
 
@@ -66,7 +64,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/content_description_team_logo"
-                app:imageUrl="@{adapter.buildTeamLogoUrl(match.hostTeam)}"/>
+                app:imageSrc="@{match.hostTeam}"/>
 
             <ImageView
                 android:id="@+id/guest_logo"
@@ -78,7 +76,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/content_description_team_logo"
-                app:imageUrl="@{adapter.buildTeamLogoUrl(match.guestTeam)}" />
+                app:imageSrc="@{match.guestTeam}" />
 
             <TextView
                 android:id="@+id/host_name"

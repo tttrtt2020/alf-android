@@ -8,7 +8,6 @@
         <variable name="event" type="com.example.alf.data.model.event.Event" />
         <variable name="hostTeamId" type="Integer" />
         <variable name="guestTeamId" type="Integer" />
-        <variable name="adapter" type="com.example.alf.ui.match.events.EventsAdapter" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -31,7 +30,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/card_margin_half"
                 android:contentDescription="@string/content_description_event_type"
-                app:imageUrl="@{adapter.buildEventTypeIconUrl(event.eventType)}"/>
+                app:imageUrl="@{event}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

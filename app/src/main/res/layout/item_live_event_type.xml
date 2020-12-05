@@ -5,7 +5,6 @@
 
     <data>
         <variable name="liveEventType" type="com.example.alf.data.model.event.LiveEventType" />
-        <variable name="adapter" type="com.example.alf.ui.match.events.live.LiveEventTypesAdapter" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -26,7 +25,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/card_margin_half"
-                app:imageUrl="@{adapter.buildEventTypeIconUrl(liveEventType)}"/>
+                android:contentDescription="@string/content_description_event_type"
+                app:imageSrc="@{liveEventType}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

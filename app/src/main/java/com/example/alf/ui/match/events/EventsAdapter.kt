@@ -19,10 +19,18 @@ class EventsAdapter(
         ) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
     companion object {
+
+        private fun buildEventTypeIconUrl(eventType: EventType): String {
+            return AlfApplication.getProperty("url.icon.event") +
+                    eventType.id +
+                    AlfApplication.getProperty("extension.icon.event")
+        }
+
         @JvmStatic
         @BindingAdapter("app:imageUrl")
-        fun loadEventIcon(imageView: ImageView, url: String?) {
-            if (!url.isNullOrEmpty()) {
+        fun loadEventIcon(imageView: ImageView, event: Event) {
+            val url = buildEventTypeIconUrl(event.eventType)
+            if (url.isNotEmpty()) {
                 GlideToVectorYou.init().with(imageView.context).load(
                         Uri.parse(url),
                         imageView
@@ -50,7 +58,6 @@ class EventsAdapter(
             binding.event = event
             binding.hostTeamId = hostTeamId
             binding.guestTeamId = guestTeamId
-            binding.adapter = bindingAdapter as EventsAdapter?
             binding.executePendingBindings()
         }
     }
@@ -70,11 +77,5 @@ class EventsAdapter(
     }
 
     override fun getItemCount() = events.size
-
-    fun buildEventTypeIconUrl(eventType: EventType): String {
-        return AlfApplication.getProperty("url.icon.event") +
-                eventType.id +
-                AlfApplication.getProperty("extension.icon.event")
-    }
 
 }
