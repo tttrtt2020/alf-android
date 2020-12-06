@@ -1,51 +1,49 @@
 package com.example.alf.ui.match.formations;
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.alf.R
-import com.example.alf.data.model.match.FormationModel
-import kotlin.collections.ArrayList
+import com.example.alf.data.model.match.Formation
+import com.example.alf.databinding.ItemFormationBinding
 
 class FormationsAdapter(var listener: FormationsListener) :
         RecyclerView.Adapter<FormationsAdapter.ViewHolder>() {
 
-    private var formations: ArrayList<FormationModel>? = null
+    private var formations: ArrayList<Formation> = ArrayList()
 
     interface FormationsListener {
-        fun onItemClick(formationModel: FormationModel, position: Int)
+        fun onItemClick(formation: Formation)
     }
 
-    fun setFormations(list: ArrayList<FormationModel>) {
+    fun setFormations(list: ArrayList<Formation>) {
         formations = list
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var nameTextView: TextView = itemView.findViewById(R.id.name)
-        var formationView: FormationView = itemView.findViewById(R.id.formation)
-    }
+    inner class ViewHolder(private val binding: ItemFormationBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recyclerview_row_formation, parent, false) as View
-        return ViewHolder(itemView)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val formation = formations?.get(position)
-
-        holder.nameTextView.text = formation!!.name
-
-        holder.formationView.fieldPositions = formation.fieldPositions
-
-        holder.itemView.setOnClickListener {
-            formation.let { it1 -> listener.onItemClick(it1, position) }
+        fun bind(formation: Formation) {
+            binding.formation = formation
+            //binding.formation.fieldPositions = formation.fieldPositions
+            binding.executePendingBindings()
         }
     }
 
-    override fun getItemCount() = formations?.size ?: 0
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemFormationBinding.inflate(layoutInflater, parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val formation = formations[position]
+
+        holder.bind(formation)
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(formation)
+        }
+    }
+
+    override fun getItemCount() = formations.size
 
 }

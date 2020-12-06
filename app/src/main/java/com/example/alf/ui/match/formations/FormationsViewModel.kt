@@ -4,21 +4,21 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.match.FormationModel
+import com.example.alf.data.model.match.Formation
 import com.example.alf.data.repository.FormationApiService
 
 class FormationsViewModel(application: Application) : AndroidViewModel(application) {
 
     private var formationApiService: FormationApiService? = null
-    var formationPersonsModelLiveData: LiveData<List<FormationModel>>? = null
+    var formationPersonsLiveData: LiveData<List<Formation>>? = null
 
     init {
         formationApiService = FormationApiService()
-        formationPersonsModelLiveData = MutableLiveData()
+        formationPersonsLiveData = MutableLiveData()
     }
 
     fun fetchFormations() {
-        formationPersonsModelLiveData = formationApiService?.fetchFormations()
+        formationPersonsLiveData = formationApiService?.fetchFormations()
     }
 
 }

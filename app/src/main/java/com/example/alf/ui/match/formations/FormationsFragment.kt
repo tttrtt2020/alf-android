@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.example.alf.data.model.match.FormationModel
+import com.example.alf.data.model.match.Formation
 import com.example.alf.databinding.FragmentFormationsBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 class FormationsFragment : Fragment(), FormationsAdapter.FormationsListener {
@@ -38,24 +38,24 @@ class FormationsFragment : Fragment(), FormationsAdapter.FormationsListener {
         }
 
         formationsViewModel.fetchFormations()
-        formationsViewModel.formationPersonsModelLiveData?.observe(viewLifecycleOwner, Observer {
+        formationsViewModel.formationPersonsLiveData?.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.formationsRecyclerView.visibility = View.VISIBLE
-                viewAdapter.setFormations(it as ArrayList<FormationModel>)
+                viewAdapter.setFormations(it as ArrayList<Formation>)
 
                 binding.progressBar.visibility = View.GONE
             } else {
-                showToast("Something went wrong")
+                showSnackBar(view, "Something went wrong")
             }
         })
 
     }
 
-    private fun showToast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    private fun showSnackBar(view: View, msg: String) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onItemClick(formationModel: FormationModel, position: Int) {
+    override fun onItemClick(formation: Formation) {
         TODO("Not yet implemented")
     }
 }
