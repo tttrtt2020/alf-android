@@ -26,7 +26,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     //private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
     private val eventsViewModel: EventsViewModel by viewModels {
         EventsViewModelFactory(
-                requireActivity().application!!,
+                requireActivity().application,
                 requireArguments().getInt(ARG_MATCH_ID)
         )
     }
@@ -38,7 +38,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentEventsBinding.inflate(layoutInflater)
+        binding = FragmentEventsBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.eventsViewModel = eventsViewModel
         return binding.root
     }
 
@@ -54,10 +56,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
         eventsViewModel.eventsLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
-                binding.eventsRecyclerView.visibility = View.VISIBLE
                 viewAdapter.setEvents(eventsViewModel.eventsLiveData.value!!)
-
-                binding.progressBar.visibility = View.GONE
             } else {
                 showSnackBar(binding.root, "Get events failed")
             }

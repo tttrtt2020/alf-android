@@ -28,7 +28,6 @@ class EventsViewModel(application: Application, id: Int) : AndroidViewModel(appl
         loadingInProgressLiveData.value = true
         //eventsLiveData.value = null
         eventApiService.fetchMatchEvents(eventsLiveData, id)
-        eventsLiveData.value = ArrayList()
     }
 
 }
