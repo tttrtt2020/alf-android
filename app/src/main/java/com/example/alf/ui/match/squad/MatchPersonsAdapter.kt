@@ -3,16 +3,18 @@ package com.example.alf.ui.match.squad;
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.AlfApplication
 import com.example.alf.R
+import com.example.alf.data.model.Format
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.data.model.match.Player
 import com.example.alf.databinding.ItemMatchPersonBinding
 
-class MatchPersonsAdapter(var listener: SquadListener) :
+class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
         RecyclerView.Adapter<MatchPersonsAdapter.ViewHolder>() {
 
     companion object {
@@ -36,6 +38,17 @@ class MatchPersonsAdapter(var listener: SquadListener) :
                         .into(imageView)
             }
         }
+
+        @JvmStatic
+        @BindingAdapter("android:src")
+        fun setBackground(imageView: ImageView, inStart: Boolean) {
+            imageView.setImageDrawable(
+                    ContextCompat.getDrawable(
+                            imageView.context,
+                            if (inStart) R.drawable.ic_run else R.drawable.ic_seat
+                    )
+            )
+        }
     }
 
     private var matchPersons: List<MatchPerson> = ArrayList()
@@ -53,8 +66,9 @@ class MatchPersonsAdapter(var listener: SquadListener) :
 
     inner class ViewHolder(private val binding: ItemMatchPersonBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(matchPerson: MatchPerson) {
+        fun bind(matchPerson: MatchPerson, inStart: Boolean) {
             binding.matchPerson = matchPerson
+            binding.inStart = inStart
             binding.executePendingBindings()
         }
     }
@@ -67,7 +81,7 @@ class MatchPersonsAdapter(var listener: SquadListener) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val matchPerson = matchPersons[position]
-        holder.bind(matchPerson)
+        holder.bind(matchPerson, position < format.playerCount)
         holder.itemView.setOnClickListener { listener.onItemClick(matchPerson) }
     }
 

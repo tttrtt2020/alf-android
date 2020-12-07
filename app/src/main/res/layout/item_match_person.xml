@@ -6,6 +6,7 @@
     <data>
         <import type="android.view.View" />
         <variable name="matchPerson" type="com.example.alf.data.model.match.MatchPerson" />
+        <variable name="inStart" type="Boolean" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -29,17 +30,29 @@
                 android:scaleType="centerCrop"
                 app:imageSrc="@{matchPerson.player}"/>
 
+            <ImageView
+                android:id="@+id/start_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="@dimen/card_margin"
+                android:layout_marginTop="@dimen/card_margin"
+                android:layout_marginBottom="@dimen/card_margin_half"
+                android:contentDescription="@string/content_description_event_type"
+                android:src="@{inStart}"/>
+
             <TextView
                 android:id="@+id/field_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/start_icon"
                 android:layout_marginEnd="@dimen/card_margin"
-                android:gravity="center"
+                android:layout_marginBottom="@dimen/card_margin"
+                android:layout_marginTop="@dimen/card_margin_half"
                 android:textSize="@dimen/text_size_medium"
-                android:background="@color/red"
-                android:textColor="@color/white"
                 android:padding="4dp"
                 android:visibility="@{matchPerson.fieldPosition != null ? View.VISIBLE : View.GONE}"
                 android:text="@={matchPerson.fieldPosition.shortName}"/>

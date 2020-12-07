@@ -25,6 +25,8 @@
     <string name="content_description_team_logo">Team logo</string>
     <string name="content_description_person_photo">Person photo</string>
     <string name="content_description_flag_image">Flag image</string>
+    <string name="content_description_event_type">Event type</string>
+    <string name="content_description_in_start">In start icon</string>
 
     <string name="change_formation">Change formation</string>
 

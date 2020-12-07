@@ -5,6 +5,7 @@ import java.util.*
 
 data class Match(
         var id: Int,
+        var format: Format,
         var dateTime: Date?,
         var stadium: Stadium?,
         var hostTeam: Team,
