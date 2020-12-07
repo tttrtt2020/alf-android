@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.example.alf.R
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentSquadBinding
 import com.example.alf.ui.match.MatchFragmentDirections
+import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.match.formations.TeamFormationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -29,10 +32,10 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
     private lateinit var viewAdapter: MatchPersonsAdapter
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
-    //private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
+    private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
     private val squadViewModel: SquadViewModel by viewModels {
         SquadViewModelFactory(
-                requireActivity().application!!,
+                requireActivity().application,
                 requireArguments().getInt(ARG_MATCH_ID),
                 requireArguments().getInt(ARG_TEAM_ID)
         )
@@ -43,25 +46,30 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSquadBinding.inflate(layoutInflater)
-
-        binding.teamFormation.setOnChangeFormationClickListener(this)
-
+        binding = FragmentSquadBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.squadViewModel = squadViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewAdapter = MatchPersonsAdapter(this)
-        binding.matchPersonsRecyclerView.apply {
-            adapter = viewAdapter
-        }
+        binding.teamFormation.setOnChangeFormationClickListener(this)
 
+        matchViewModel.matchLiveData.observe(viewLifecycleOwner, {
+            if (it != null) {
+                loadSquad()
+            }
+        })
+    }
+
+    private fun loadSquad() {
         squadViewModel.squadLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
-                binding.matchPersonsRecyclerView.visibility = View.VISIBLE
+                viewAdapter = MatchPersonsAdapter(this, matchViewModel.matchLiveData.value!!.format)
                 viewAdapter.setMatchPersons(squadViewModel.squadLiveData.value!!)
-
-                binding.progressBar.visibility = View.GONE
+                binding.matchPersonsRecyclerView.apply {
+                    adapter = viewAdapter
+                }
             } else {
                 showSnackBar(binding.root, "Get squad failed")
             }
