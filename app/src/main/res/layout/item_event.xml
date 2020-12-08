@@ -24,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/card_margin_half"
@@ -47,15 +47,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/event_minute_text_size"
-                    android:text="@{event.minute}" />
-
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="@dimen/event_type_name_text_size"
-                    android:text="@{event.eventType.name}" />
+                    android:text="@{event.team.id == hostTeamId ? event.minute + ` ` + event.eventType.name : event.eventType.name + ` ` + event.minute}" />
 
                 <TextView
                     android:id="@+id/person"
