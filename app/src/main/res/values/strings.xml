@@ -39,6 +39,9 @@
     <string name="person">Person</string>
     <string name="match_result_unknown">- : -</string>
 
+    <string name="in_for">In for: %s</string>
+    <string name="out_for">Out for: %s</string>
+
     <string name="hint_minute">25</string>
     <string name="hint_person">Ivanov Ivan Ivanovich</string>
     <string name="postfix_minute">\"</string>

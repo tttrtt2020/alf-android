@@ -43,19 +43,45 @@
                 android:src="@{inStart}"/>
 
             <TextView
+                android:id="@+id/in_for"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/start_icon"
+                android:layout_marginEnd="@dimen/card_margin"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="@{matchPerson.inForPlayer != null ? View.VISIBLE : View.GONE}"
+                android:text="@{String.format(@string/in_for, matchPerson.inForPlayer.lastName)}"
+                app:drawableEndCompat="@drawable/ic_substitution_in"/>
+
+            <TextView
+                android:id="@+id/out_for"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/in_for"
+                android:layout_marginEnd="@dimen/card_margin"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="@{matchPerson.outForPlayer != null ? View.VISIBLE : View.GONE}"
+                android:text="@{String.format(@string/out_for, matchPerson.outForPlayer.lastName)}"
+                app:drawableEndCompat="@drawable/ic_substitution_out"/>
+
+            <TextView
                 android:id="@+id/field_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_below="@id/start_icon"
+                android:layout_below="@id/out_for"
                 android:layout_marginEnd="@dimen/card_margin"
                 android:layout_marginBottom="@dimen/card_margin"
                 android:layout_marginTop="@dimen/card_margin_half"
                 android:textSize="@dimen/text_size_medium"
                 android:padding="4dp"
                 android:visibility="@{matchPerson.fieldPosition != null ? View.VISIBLE : View.GONE}"
-                android:text="@={matchPerson.fieldPosition.shortName}"/>
+                android:text="@{matchPerson.fieldPosition.shortName}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_medium"
-                    android:text="@={matchPerson.player.lastName}"/>
+                    android:text="@{matchPerson.player.lastName}"/>
 
                 <TextView
                     android:id="@+id/first_name"
@@ -79,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_small"
-                    android:text="@={matchPerson.player.firstName}"/>
+                    android:text="@{matchPerson.player.firstName}"/>
 
                 <TextView
                     android:id="@+id/role"
@@ -87,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_small"
-                    android:text="@={matchPerson.role.name}"/>
+                    android:text="@{matchPerson.playerRole.name}"/>
 
             </LinearLayout>
 
