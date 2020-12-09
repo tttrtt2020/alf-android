@@ -96,6 +96,13 @@
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right"/>
+        <action
+            android:id="@+id/action_matchFragment_to_matchRefereesFragment"
+            app:destination="@id/matchRefereesFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
     <fragment
         android:id="@+id/formationsFragment"
@@ -145,6 +152,15 @@
         <argument
             android:name="event"
             app:argType="com.example.alf.data.model.event.Event" />
+    </fragment>
+    <fragment
+        android:id="@+id/matchRefereesFragment"
+        android:name="com.example.alf.ui.match.referees.MatchRefereesFragment"
+        android:label="@string/title_match_referees"
+        tools:layout="@layout/fragment_match_referees" >
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

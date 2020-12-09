@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.Match
 import com.example.alf.data.model.MatchesPage
+import com.example.alf.data.model.Referee
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
@@ -107,6 +108,30 @@ class MatchApiService {
         return data
 
     }*/
+
+    fun fetchMatchReferees(matchRefereesLiveData: MutableLiveData<List<Referee>>, matchId: Int): LiveData<List<Referee>> {
+
+        matchApiInterface.fetchMatchReferees(matchId).enqueue(object : Callback<List<Referee>> {
+
+            override fun onFailure(call: Call<List<Referee>>, t: Throwable) {
+                matchRefereesLiveData.value = null
+            }
+
+            override fun onResponse(
+                    call: Call<List<Referee>>,
+                    response: Response<List<Referee>>
+            ) {
+                val res = response.body()
+                if (response.code() == 200 && res != null) {
+                    matchRefereesLiveData.value = res
+                } else {
+                    matchRefereesLiveData.value = null
+                }
+            }
+        })
+
+        return matchRefereesLiveData
+    }
 
     fun fetchMatchTeamSquad(squadLiveData: MutableLiveData<List<MatchPerson>>, matchId: Int, teamId: Int): LiveData<List<MatchPerson>> {
 
