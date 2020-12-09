@@ -24,7 +24,6 @@ class FormationsAdapter(var listener: FormationsListener) :
 
         fun bind(formation: Formation) {
             binding.formation = formation
-            //binding.formation.fieldPositions = formation.fieldPositions
             binding.executePendingBindings()
         }
     }

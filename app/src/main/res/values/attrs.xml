@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FormationView">
-        <attr name="playerColor" format="reference|color" />
-        <attr name="playerRadius" format="dimension" />
+        <attr name="player_color" format="reference|color" />
+        <attr name="player_form">
+            <enum name="circle" value="0"/>
+            <enum name="square" value="1"/>
+        </attr>
+        <attr name="player_radius" format="dimension" />
         <attr name="orientation">
             <enum name="vertical" value="0"/>
             <enum name="horizontal" value="1"/>

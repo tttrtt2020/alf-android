@@ -33,9 +33,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/green"
-                app:playerColor="@color/white"
-                app:playerRadius="8dp"
-                app:orientation="vertical" />
+                app:player_color="@color/white"
+                app:player_form="circle"
+                app:player_radius="16dp"
+                app:orientation="vertical"
+                app:formation="@{formation}"/>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
