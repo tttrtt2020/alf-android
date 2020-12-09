@@ -1,6 +1,7 @@
 package com.example.alf.ui.match.referees;
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -55,6 +56,8 @@ class MatchRefereesAdapter(var listener: MatchRefereeListener) :
         fun onItemDeleted(referee: Referee, position: Int)
 
         fun onItemClick(referee: Referee)
+
+        fun onItemLongClick(view: View, referee: Referee, position: Int): Boolean
     }
 
     fun setReferees(list: List<Referee>) {
@@ -80,6 +83,7 @@ class MatchRefereesAdapter(var listener: MatchRefereeListener) :
         val referee = referees[position]
         holder.bind(referee)
         holder.itemView.setOnClickListener { listener.onItemClick(referee) }
+        holder.itemView.setOnLongClickListener { listener.onItemLongClick(it, referee, position) }
     }
 
     override fun getItemCount() = referees.size
