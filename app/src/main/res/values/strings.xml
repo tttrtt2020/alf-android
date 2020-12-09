@@ -9,6 +9,7 @@
     <string name="action_photo">Take photo</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
+    <string name="action_open_referees">Referees</string>
     <string name="show_only_finished">Show only finished</string>
 
     <string name="menu_home">Home</string>
@@ -46,5 +47,6 @@
     <string name="hint_minute">25</string>
     <string name="hint_person">Ivanov Ivan Ivanovich</string>
     <string name="postfix_minute">\"</string>
+    <string name="empty_collection_referees">No referees</string>
 
 </resources>

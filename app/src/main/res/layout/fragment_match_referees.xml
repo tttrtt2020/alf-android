@@ -30,6 +30,16 @@
             android:layout_gravity="center"
             android:visibility="@{matchRefereesViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"/>
 
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin_double"
+            android:layout_gravity="center"
+            android:textSize="@dimen/text_size_large"
+            android:text="@string/empty_collection_referees"
+            android:visibility="@{matchRefereesViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
+
         <Button
             android:id="@+id/retry_button"
             android:layout_width="wrap_content"

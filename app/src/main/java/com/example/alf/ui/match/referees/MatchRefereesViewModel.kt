@@ -15,8 +15,21 @@ class MatchRefereesViewModel(application: Application, matchId: Int) : AndroidVi
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
+    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+
     init {
         loadingInProgressLiveData.addSource(matchRefereesLiveData) { loadingInProgressLiveData.value = false }
+
+        emptyCollectionLiveData.apply {
+            fun update() {
+                value = loadingInProgressLiveData.value == false && matchRefereesLiveData.value?.isEmpty() ?: false
+            }
+
+            addSource(loadingInProgressLiveData) { update() }
+            addSource(matchRefereesLiveData) { update() }
+
+            update()
+        }
 
         getRefereesByMatchId(matchId)
     }
