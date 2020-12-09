@@ -17,9 +17,20 @@ class EventsViewModel(application: Application, id: Int) : AndroidViewModel(appl
     var getEventsResultLiveData: MutableLiveData<Boolean?> = Transformations.map(eventsLiveData) { es -> es != null } as MutableLiveData<Boolean?>
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(eventsLiveData) { loadingInProgressLiveData.value = false }
+        emptyCollectionLiveData.apply {
+            fun update() {
+                value = loadingInProgressLiveData.value == false && eventsLiveData.value?.isEmpty() ?: false
+            }
+
+            addSource(loadingInProgressLiveData) { update() }
+            addSource(eventsLiveData) { update() }
+
+            update()
+        }
 
         getEvents(id)
     }

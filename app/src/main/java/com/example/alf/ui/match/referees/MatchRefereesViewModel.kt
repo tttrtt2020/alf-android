@@ -14,12 +14,10 @@ class MatchRefereesViewModel(application: Application, matchId: Int) : AndroidVi
     var matchRefereesLiveData: MutableLiveData<List<Referee>> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
-
     var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(matchRefereesLiveData) { loadingInProgressLiveData.value = false }
-
         emptyCollectionLiveData.apply {
             fun update() {
                 value = loadingInProgressLiveData.value == false && matchRefereesLiveData.value?.isEmpty() ?: false

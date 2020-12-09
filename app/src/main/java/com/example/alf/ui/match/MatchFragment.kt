@@ -2,9 +2,7 @@ package com.example.alf.ui.match
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
@@ -68,6 +66,13 @@ class MatchFragment : Fragment() {
         MatchViewModelFactory(activity?.application!!, args.matchId)
     }
 
+    private lateinit var openRefereesMenuItem: MenuItem
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -117,8 +122,29 @@ class MatchFragment : Fragment() {
         binding.fab.setOnClickListener { onFabClicked() }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.match, menu)
+        openRefereesMenuItem = menu.findItem(R.id.action_open_referees)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_open_referees -> {
+                openMatchReferees()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun onGetMatchResult(success: Boolean) {
         if (success) showSnackBar(binding.root, "Get success") else showSnackBar(binding.root, "Get failed")
+    }
+
+    private fun openMatchReferees() {
+        val action = MatchFragmentDirections.actionMatchFragmentToMatchRefereesFragment(args.matchId)
+        findNavController().navigate(action)
     }
 
     private fun showSnackBar(view: View, msg: String) {

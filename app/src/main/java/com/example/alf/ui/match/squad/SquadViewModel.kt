@@ -17,9 +17,20 @@ class SquadViewModel(application: Application, matchId: Int, teamId: Int) : Andr
     var getSquadResultLiveData: MutableLiveData<Boolean?> = Transformations.map(squadLiveData) { s -> s != null } as MutableLiveData<Boolean?>
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(squadLiveData) { loadingInProgressLiveData.value = false }
+        emptyCollectionLiveData.apply {
+            fun update() {
+                value = loadingInProgressLiveData.value == false && squadLiveData.value?.matchPlayers?.isEmpty() ?: false
+            }
+
+            addSource(loadingInProgressLiveData) { update() }
+            addSource(squadLiveData) { update() }
+
+            update()
+        }
 
         getSquadByMatchIdAndTeamId(matchId, teamId)
     }
