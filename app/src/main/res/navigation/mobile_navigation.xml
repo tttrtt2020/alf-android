@@ -113,7 +113,7 @@
     <fragment
         android:id="@+id/liveEventTypesFragment"
         android:name="com.example.alf.ui.match.events.live.LiveEventTypesFragment"
-        android:label="@string/title_select_live_event_type" >
+        android:label="@string/title_live_event_type_selection" >
         <argument
             android:name="matchId"
             app:argType="integer" />
@@ -161,6 +161,18 @@
         <argument
             android:name="matchId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_matchRefereesFragment_to_refereesFragment"
+            app:destination="@id/refereesFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
     </fragment>
+    <fragment
+        android:id="@+id/refereesFragment"
+        android:name="com.example.alf.ui.referees.RefereeSelectionFragment"
+        android:label="@string/title_referee_selection"
+        tools:layout="@layout/fragment_referee_selection"/>
 
 </navigation>

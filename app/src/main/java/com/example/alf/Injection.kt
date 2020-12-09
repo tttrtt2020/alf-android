@@ -18,8 +18,11 @@ package com.example.alf
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.alf.data.paging.PersonsService
+import com.example.alf.data.paging.RefereesService
 import com.example.alf.ui.persons.PersonsPagingRepository
-import com.example.alf.ui.persons.ViewModelFactory
+import com.example.alf.ui.persons.PersonsViewModelFactory
+import com.example.alf.ui.referees.RefereesPagingRepository
+import com.example.alf.ui.referees.RefereesViewModelFactory
 
 /**
  * Class that handles object creation.
@@ -37,10 +40,26 @@ object Injection {
     }
 
     /**
+     * Creates an instance of [RefereesRepository] based on the [RefereesService] and a
+     * [RefereesLocalCache]
+     */
+    private fun provideRefereesRepository(): RefereesPagingRepository {
+        return RefereesPagingRepository(RefereesService())
+    }
+
+    /**
      * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
      * [ViewModel] objects.
      */
-    fun provideViewModelFactory(): ViewModelProvider.Factory {
-        return ViewModelFactory(providePersonsRepository())
+    fun providePersonsViewModelFactory(): ViewModelProvider.Factory {
+        return PersonsViewModelFactory(providePersonsRepository())
+    }
+
+    /**
+     * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
+     * [ViewModel] objects.
+     */
+    fun provideRefereesViewModelFactory(): ViewModelProvider.Factory {
+        return RefereesViewModelFactory(provideRefereesRepository())
     }
 }

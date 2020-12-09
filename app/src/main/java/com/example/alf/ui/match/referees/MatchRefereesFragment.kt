@@ -5,6 +5,8 @@ import android.view.*
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
 import com.example.alf.data.model.Referee
@@ -44,17 +46,38 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        initFab()
+
         matchRefereesViewModel.matchRefereesLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
                 viewAdapter = MatchRefereesAdapter(this)
                 viewAdapter.setReferees(it)
-                binding.matchPersonsRecyclerView.apply {
+                binding.refereesRecyclerView.apply {
                     adapter = viewAdapter
                 }
             } else {
                 showSnackBar(binding.root, "Get match referees failed")
             }
         })
+    }
+
+    private fun initFab() {
+        binding.fab.setOnClickListener { openRefereeSelection() }
+        binding.refereesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    binding.fab.hide()
+                } else {
+                    binding.fab.show()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+    }
+
+    private fun openRefereeSelection() {
+        val action = MatchRefereesFragmentDirections.actionMatchRefereesFragmentToRefereesFragment()
+        findNavController().navigate(action)
     }
 
     private fun showSnackBar(view: View, msg: String) {

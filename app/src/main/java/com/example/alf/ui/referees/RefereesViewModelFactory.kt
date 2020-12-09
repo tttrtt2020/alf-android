@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.alf.ui.persons
+package com.example.alf.ui.referees
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,12 +22,12 @@ import androidx.lifecycle.ViewModelProvider
 /**
  * Factory for ViewModels
  */
-class ViewModelFactory(private val repository: PersonsPagingRepository) : ViewModelProvider.Factory {
+class RefereesViewModelFactory(private val repository: RefereesPagingRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchPersonsViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(SearchRefereesViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchPersonsViewModel(repository) as T
+            return SearchRefereesViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

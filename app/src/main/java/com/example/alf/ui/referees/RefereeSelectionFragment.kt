@@ -1,23 +1,20 @@
-package com.example.alf.ui.persons
+package com.example.alf.ui.referees
 
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.Injection
 import com.example.alf.R
-import com.example.alf.data.model.Person
-import com.example.alf.databinding.FragmentPersonsBinding
-import com.example.alf.ui.PersonsLoadStateAdapter
+import com.example.alf.data.model.Referee
+import com.example.alf.databinding.FragmentRefereeSelectionBinding
+import com.example.alf.ui.RefereesLoadStateAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -27,16 +24,16 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 
-class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagingAdapter.PersonListener {
+class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, RefereesPagingAdapter.RefereeListener {
 
     companion object {
         private const val LAST_SEARCH_QUERY: String = "last_search_query"
         private const val DEFAULT_QUERY = ""
     }
 
-    private lateinit var binding: FragmentPersonsBinding
-    private lateinit var personsViewModel: SearchPersonsViewModel
-    private val viewAdapter = PersonsPagingAdapter(PersonsPagingAdapter.PersonComparator, this)
+    private lateinit var binding: FragmentRefereeSelectionBinding
+    private lateinit var refereesViewModel: SearchRefereesViewModel
+    private val viewAdapter = RefereesPagingAdapter(RefereesPagingAdapter.RefereeComparator, this)
 
     private lateinit var searchView: SearchView
     private var searchJob: Job? = null
@@ -52,7 +49,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPersonsBinding.inflate(layoutInflater)
+        binding = FragmentRefereeSelectionBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -60,11 +57,10 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         super.onViewCreated(view, savedInstanceState)
 
         // get the view model
-        personsViewModel = ViewModelProvider(this, Injection.providePersonsViewModelFactory()).get(
-            SearchPersonsViewModel::class.java
+        refereesViewModel = ViewModelProvider(this, Injection.provideRefereesViewModelFactory()).get(
+            SearchRefereesViewModel::class.java
         )
 
-        initFab()
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         search(query)
@@ -72,7 +68,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.persons, menu)
+        inflater.inflate(R.menu.referees, menu)
 
         // Associate searchable configuration with the SearchView
         val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -85,28 +81,14 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun initFab() {
-        binding.fab.setOnClickListener { openCreateNewPerson() }
-        binding.personsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    binding.fab.hide()
-                } else {
-                    binding.fab.show()
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
-    }
-
     private fun initAdapter() {
-        binding.personsRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
-            header = PersonsLoadStateAdapter { viewAdapter.retry() },
-            footer = PersonsLoadStateAdapter { viewAdapter.retry() }
+        binding.refereesRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
+            header = RefereesLoadStateAdapter { viewAdapter.retry() },
+            footer = RefereesLoadStateAdapter { viewAdapter.retry() }
         )
         viewAdapter.addLoadStateListener { loadState ->
             // Only show the list if refresh succeeds.
-            binding.personsRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+            binding.refereesRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
             // Show loading spinner during initial load or refresh.
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails.
@@ -128,35 +110,19 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
     }
 
-    override fun onItemDeleted(person: Person, position: Int) {
+    override fun onItemClick(referee: Referee) {
+        selectReferee(referee)
+    }
+
+    private fun selectReferee(referee: Referee) {
         TODO("Not yet implemented")
-    }
-
-    override fun onItemClick(person: Person) {
-        openPerson(person)
-    }
-
-    private fun openPerson(person: Person) {
-        val action = person.id.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(
-                personId = it,
-                person = person
-        ) }
-        findNavController().navigate(action)
-    }
-
-    private fun openCreateNewPerson() {
-        val action = PersonsFragmentDirections.actionNavPersonsToPersonFragment(
-                personId = 0,
-                person = null
-        )
-        findNavController().navigate(action)
     }
 
     private fun search(query: String) {
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            personsViewModel.searchPersons(query).collectLatest {
+            refereesViewModel.searchReferees(query).collectLatest {
                 viewAdapter.submitData(it)
             }
         }
@@ -173,14 +139,14 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
                 .distinctUntilChangedBy { it.refresh }
                 // Only react to cases where REFRESH completes i.e., NotLoading.
                 .filter { it.refresh is LoadState.NotLoading }
-                .collect { binding.personsRecyclerView.scrollToPosition(0) }
+                .collect { binding.refereesRecyclerView.scrollToPosition(0) }
         }
     }
 
     private fun doSearch(query: String) {
         query.trim().let {
             if (it.isNotEmpty()) {
-                binding.personsRecyclerView.scrollToPosition(0)
+                binding.refereesRecyclerView.scrollToPosition(0)
                 search(it)
             }
         }
@@ -194,7 +160,6 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-
         return true
     }
 
