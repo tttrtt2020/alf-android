@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
@@ -113,7 +114,8 @@
     <fragment
         android:id="@+id/liveEventTypesFragment"
         android:name="com.example.alf.ui.match.events.live.LiveEventTypesFragment"
-        android:label="@string/title_live_event_type_selection" >
+        android:label="@string/title_live_event_type_selection"
+        tools:layout="@layout/fragment_live_event_types">
         <argument
             android:name="matchId"
             app:argType="integer" />
@@ -128,7 +130,8 @@
     <fragment
         android:id="@+id/liveEventFragment"
         android:name="com.example.alf.ui.match.events.live.LiveEventFragment"
-        android:label="LiveEventFragment" >
+        android:label="LiveEventFragment"
+        tools:layout="@layout/fragment_live_event">
         <argument
             android:name="matchId"
             app:argType="integer" />
@@ -142,7 +145,8 @@
     <fragment
         android:id="@+id/eventFragment"
         android:name="com.example.alf.ui.match.event.EventFragment"
-        android:label="EventFragment" >
+        android:label="EventFragment"
+        tools:layout="@layout/fragment_event">
         <argument
             android:name="matchId"
             app:argType="integer" />
