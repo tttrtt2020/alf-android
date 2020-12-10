@@ -1,13 +1,9 @@
 package com.example.alf.network
 
-import com.example.alf.data.model.Match
-import com.example.alf.data.model.MatchesPage
-import com.example.alf.data.model.Referee
+import com.example.alf.data.model.*
 import com.example.alf.data.model.match.MatchPerson
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MatchApiInterface {
 
@@ -22,6 +18,9 @@ interface MatchApiInterface {
 
     @GET("matches/{matchId}/referees")
     fun fetchMatchReferees(@Path("matchId") matchId: Int): Call<List<Referee>>
+
+    @POST("matches/{matchId}/referees")
+    fun addMatchReferee(@Path("matchId") matchId: Int, @Body referee: Referee): Call<Referee>
 
     @GET("matches/{matchId}/{teamId}/squad")
     fun fetchMatchTeamSquad(@Path("matchId") matchId: Int, @Path("teamId") teamId: Int): Call<List<MatchPerson>>

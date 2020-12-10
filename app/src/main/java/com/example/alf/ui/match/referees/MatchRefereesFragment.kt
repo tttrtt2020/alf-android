@@ -6,11 +6,13 @@ import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
 import com.example.alf.data.model.Referee
 import com.example.alf.databinding.FragmentMatchRefereesBinding
+import com.example.alf.ui.match.event.EventFragmentArgs
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -21,6 +23,8 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     private lateinit var binding: FragmentMatchRefereesBinding
+
+    private val args: EventFragmentArgs by navArgs()
 
     private lateinit var viewAdapter: MatchRefereesAdapter
 
@@ -76,7 +80,9 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     private fun openRefereeSelection() {
-        val action = MatchRefereesFragmentDirections.actionMatchRefereesFragmentToRefereesFragment()
+        val action = MatchRefereesFragmentDirections.actionMatchRefereesFragmentToRefereeSelectionFragment(
+            requireArguments().getInt(ARG_MATCH_ID)
+        )
         findNavController().navigate(action)
     }
 

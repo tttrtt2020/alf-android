@@ -51,7 +51,7 @@ class EventFragment : Fragment() {
     private val args: EventFragmentArgs by navArgs()
 
     private val eventViewModel: EventViewModel by viewModels {
-        EventViewModelFactory(args.eventId, args.matchId, args.event)
+        EventViewModelFactory(args.matchId, args.eventId, args.event)
     }
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment) {
         MatchViewModelFactory(activity?.application!!, args.matchId)

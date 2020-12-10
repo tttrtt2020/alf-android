@@ -2,7 +2,6 @@ package com.example.alf.ui.matches
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alf.R
 import com.example.alf.data.model.Match
 import com.example.alf.databinding.FragmentMatchesBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -81,8 +81,8 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
         }
     }
 
-    private fun showToast(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    private fun showSnackBar(view: View, msg: String) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onItemDeleted(match: Match, position: Int) {

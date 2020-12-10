@@ -9,12 +9,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import com.example.alf.Injection
 import com.example.alf.R
 import com.example.alf.data.model.Referee
 import com.example.alf.databinding.FragmentRefereeSelectionBinding
 import com.example.alf.ui.RefereesLoadStateAdapter
+import com.example.alf.ui.match.event.EventFragmentArgs
+import com.example.alf.ui.match.referees.MatchRefereesFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -32,7 +36,10 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     }
 
     private lateinit var binding: FragmentRefereeSelectionBinding
-    private lateinit var refereesViewModel: SearchRefereesViewModel
+
+    private val args: EventFragmentArgs by navArgs()
+
+    private lateinit var refereeSelectionViewModel: SearchRefereesViewModel
     private val viewAdapter = RefereesPagingAdapter(RefereesPagingAdapter.RefereeComparator, this)
 
     private lateinit var searchView: SearchView
@@ -57,7 +64,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         super.onViewCreated(view, savedInstanceState)
 
         // get the view model
-        refereesViewModel = ViewModelProvider(this, Injection.provideRefereesViewModelFactory()).get(
+        refereeSelectionViewModel = ViewModelProvider(this, Injection.provideRefereesViewModelFactory()).get(
             SearchRefereesViewModel::class.java
         )
 
@@ -65,6 +72,13 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         search(query)
         initSearch(query)
+
+        refereeSelectionViewModel.addRefereeToMatchLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                onAddMatchRefereeResult(it)
+                refereeSelectionViewModel.addRefereeToMatchLiveData.value = null
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -115,14 +129,34 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     }
 
     private fun selectReferee(referee: Referee) {
-        TODO("Not yet implemented")
+        refereeSelectionViewModel.addRefereeToMatch(
+            requireArguments().getInt(MatchRefereesFragment.ARG_MATCH_ID),
+            //args.matchId,
+            referee
+        )
     }
+
+    private fun onAddMatchRefereeResult(success: Boolean) {
+        if (success) {
+            //showSnackBar(binding.root, "Add match referee success")
+            goBack()
+        } else showSnackBar(binding.root, "Add match referee failed")
+    }
+
+    private fun goBack() {
+        val action = RefereeSelectionFragmentDirections.actionRefereeSelectionFragmentToMatchRefereesFragment(
+            requireArguments().getInt(MatchRefereesFragment.ARG_MATCH_ID)
+            //args.matchId
+        )
+        findNavController().navigate(action)
+    }
+
 
     private fun search(query: String) {
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            refereesViewModel.searchReferees(query).collectLatest {
+            refereeSelectionViewModel.searchReferees(query).collectLatest {
                 viewAdapter.submitData(it)
             }
         }
