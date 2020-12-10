@@ -110,7 +110,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     override fun onItemClick(referee: Referee) {
-        TODO("Not yet implemented")
+        showSnackBar(binding.root, "Not used")
     }
 
     override fun onItemLongClick(view: View, referee: Referee, position: Int): Boolean {
