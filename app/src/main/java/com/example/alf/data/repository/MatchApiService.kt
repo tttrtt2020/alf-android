@@ -152,6 +152,21 @@ class MatchApiService {
         return addRefereeToMatchLiveData
     }
 
+    fun deleteMatchReferee(resultLiveData: MutableLiveData<Boolean?>, matchId: Int, referee: Referee): LiveData<Boolean?> {
+
+        matchApiInterface.deleteMatchReferee(matchId, referee.id).enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                resultLiveData.value = false
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+            }
+        })
+
+        return resultLiveData
+    }
+
     fun fetchMatchTeamSquad(squadLiveData: MutableLiveData<List<MatchPerson>>, matchId: Int, teamId: Int): LiveData<List<MatchPerson>> {
 
         matchApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object : Callback<List<MatchPerson>> {

@@ -63,6 +63,21 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
                 showSnackBar(binding.root, "Get match referees failed")
             }
         })
+
+        matchRefereesViewModel.deleteMatchRefereeLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                onDeleteMatchRefereeResult(it)
+                matchRefereesViewModel.deleteMatchRefereeLiveData.value = null
+            }
+        }
+    }
+
+    private fun onDeleteMatchRefereeResult(success: Boolean) {
+        if (success) {
+            matchRefereesViewModel.getRefereesByMatchId(requireArguments().getInt(ARG_MATCH_ID))
+            //viewAdapter.deleteReferee(referee) todo: should do this but requires referee or position
+            showSnackBar(binding.root, "Delete match referee success")
+        } else showSnackBar(binding.root, "Delete match referee failed")
     }
 
     private fun initFab() {
@@ -152,5 +167,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private fun deleteReferee(referee: Referee, position: Int) {
         showSnackBar(binding.root, "Delete $referee $position")
+
+        matchRefereesViewModel.deleteMatchReferee(requireArguments().getInt(ARG_MATCH_ID), referee)
     }
 }

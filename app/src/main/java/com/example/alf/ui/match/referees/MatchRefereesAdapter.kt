@@ -50,7 +50,7 @@ class MatchRefereesAdapter(var listener: MatchRefereeListener) :
         }
     }
 
-    private var referees: List<Referee> = ArrayList()
+    private var referees: ArrayList<Referee> = ArrayList()
 
     interface MatchRefereeListener {
         fun onItemDeleted(referee: Referee, position: Int)
@@ -61,7 +61,12 @@ class MatchRefereesAdapter(var listener: MatchRefereeListener) :
     }
 
     fun setReferees(list: List<Referee>) {
-        referees = list
+        referees = if (list is ArrayList) list else ArrayList(list)
+        notifyDataSetChanged()
+    }
+
+    fun deleteReferee(referee: Referee) {
+        referees.remove(referee)
         notifyDataSetChanged()
     }
 

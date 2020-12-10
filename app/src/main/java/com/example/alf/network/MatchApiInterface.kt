@@ -22,6 +22,9 @@ interface MatchApiInterface {
     @POST("matches/{matchId}/referees")
     fun addMatchReferee(@Path("matchId") matchId: Int, @Body referee: Referee): Call<Referee>
 
+    @DELETE("matches/{matchId}/referees/{refereeId}")
+    fun deleteMatchReferee(@Path("matchId") matchId: Int, @Path("refereeId") refereeId: Int): Call<Unit>
+
     @GET("matches/{matchId}/{teamId}/squad")
     fun fetchMatchTeamSquad(@Path("matchId") matchId: Int, @Path("teamId") teamId: Int): Call<List<MatchPerson>>
 

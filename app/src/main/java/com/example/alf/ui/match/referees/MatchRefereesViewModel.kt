@@ -13,8 +13,11 @@ class MatchRefereesViewModel(application: Application, matchId: Int) : AndroidVi
 
     var matchRefereesLiveData: MutableLiveData<List<Referee>> = MutableLiveData()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
     var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+
+    var deleteMatchRefereeLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+
+    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(matchRefereesLiveData) { loadingInProgressLiveData.value = false }
@@ -32,9 +35,14 @@ class MatchRefereesViewModel(application: Application, matchId: Int) : AndroidVi
         getRefereesByMatchId(matchId)
     }
 
-    private fun getRefereesByMatchId(matchId: Int) {
+    fun getRefereesByMatchId(matchId: Int) {
         loadingInProgressLiveData.value = true
         matchApiService.fetchMatchReferees(matchRefereesLiveData, matchId)
+    }
+
+    fun deleteMatchReferee(matchId: Int, referee: Referee) {
+        loadingInProgressLiveData.value = true
+        matchApiService.deleteMatchReferee(deleteMatchRefereeLiveData, matchId, referee)
     }
 
 }
