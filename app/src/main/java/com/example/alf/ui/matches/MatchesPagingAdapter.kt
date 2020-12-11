@@ -58,8 +58,6 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
     }
 
     interface MatchListener {
-        fun onItemDeleted(match: Match, position: Int)
-
         fun onItemClick(match: Match)
     }
 

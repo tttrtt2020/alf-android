@@ -85,10 +85,6 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onItemDeleted(match: Match, position: Int) {
-        TODO("Not yet implemented")
-    }
-
     override fun onItemClick(match: Match) {
         val action = match.id.let { MatchesFragmentDirections.actionNavMatchesToMatchFragment(
                 matchId = it,
