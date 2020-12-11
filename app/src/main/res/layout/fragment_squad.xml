@@ -17,10 +17,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.example.alf.ui.match.formations.TeamFormationView
-                android:id="@+id/team_formation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/change_formation"
+                android:layout_height="wrap_content"
+                android:layout_width="256dp"
+                android:layout_margin="@dimen/card_margin"
+                android:layout_gravity="center_horizontal"
+                app:icon="@drawable/ic_formation"
+                android:text="@{squadViewModel.formationLiveData == null ? @string/change_formation : squadViewModel.formationLiveData.name}"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/match_persons_recycler_view"
