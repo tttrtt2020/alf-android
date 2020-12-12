@@ -2,9 +2,7 @@ package com.example.alf.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.Match
-import com.example.alf.data.model.MatchesPage
-import com.example.alf.data.model.Referee
+import com.example.alf.data.model.*
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
@@ -66,8 +64,8 @@ class MatchApiService {
         return matchLiveData
     }
 
-    suspend fun fetchMatchesPage(nextPageNumber: Int): MatchesPage {
-        return matchApiInterface.fetchMatchesPage(nextPageNumber)
+    suspend fun fetchMatchesPage(query: String, nextPageNumber: Int): MatchesPage {
+        return matchApiInterface.fetchMatchesPage(query, nextPageNumber)
     }
 
     /*fun createMatch(personModel: Match):LiveData<Match>{
