@@ -1,26 +1,44 @@
 package com.example.alf.ui.matches
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.paging.LoadState
+import com.example.alf.Injection
 import com.example.alf.R
 import com.example.alf.data.model.Match
 import com.example.alf.databinding.FragmentMatchesBinding
+import com.example.alf.ui.MatchesLoadStateAdapter
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
-class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
+class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchView.OnQueryTextListener {
+
+    companion object {
+        private const val LAST_SEARCH_QUERY: String = "last_search_query"
+        private const val DEFAULT_QUERY = ""
+    }
 
     private lateinit var binding: FragmentMatchesBinding
 
-    private val matchesViewModel: MatchesViewModel by viewModels()
+    private lateinit var matchesViewModel: MatchesViewModel
 
-    private lateinit var viewAdapter: MatchesPagingAdapter
+    private val viewAdapter = MatchesPagingAdapter(MatchesPagingAdapter.MatchComparator, this)
+
+    private lateinit var searchView: SearchView
+    private var searchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,17 +60,27 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewAdapter = MatchesPagingAdapter(MatchesPagingAdapter.MatchComparator, this)
-        binding.matchesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = viewAdapter
-        }
+        // get the view model
+        matchesViewModel = ViewModelProvider(this, Injection.provideMatchesViewModelFactory()).get(
+                MatchesViewModel::class.java
+        )
 
-        showMatches(false)
+        initAdapter()
+        val query = savedInstanceState?.getString(MatchesFragment.LAST_SEARCH_QUERY) ?: MatchesFragment.DEFAULT_QUERY
+        search(query)
+        initSearch(query)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.matches, menu)
+
+        // Associate searchable configuration with the SearchView
+        val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView = menu.findItem(R.id.search).actionView as SearchView
+        searchView.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+        }
+        searchView.setOnQueryTextListener(this)
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -60,8 +88,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.show_only_finished -> {
-                showMatches(true)
-                true
+                TODO("Not yet implemented")
             }
             /*R.id.help -> {
                 showHelp()
@@ -71,12 +98,60 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
         }
     }
 
-    private fun showMatches(showOnlyFinished: Boolean) {
-        matchesViewModel.loadingInProgressLiveData.value = true
-        viewLifecycleOwner.lifecycleScope.launch {
-            matchesViewModel.flow.collectLatest { pagingData ->
-                matchesViewModel.loadingInProgressLiveData.value = false
-                viewAdapter.submitData(pagingData)
+    private fun search(query: String) {
+        // Make sure we cancel the previous job before creating a new one
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            matchesViewModel.searchMatches(query).collectLatest {
+                viewAdapter.submitData(it)
+            }
+        }
+    }
+
+    private fun initSearch(query: String) {
+        //...
+        // First part of the method is unchanged
+
+        // Scroll to top when the list is refreshed from network.
+        lifecycleScope.launch {
+            viewAdapter.loadStateFlow
+                    // Only emit when REFRESH LoadState changes.
+                    .distinctUntilChangedBy { it.refresh }
+                    // Only react to cases where REFRESH completes i.e., NotLoading.
+                    .filter { it.refresh is LoadState.NotLoading }
+                    .collect { binding.matchesRecyclerView.scrollToPosition(0) }
+        }
+    }
+
+    private fun doSearch(query: String) {
+        query.trim().let {
+            if (it.isNotEmpty()) {
+                binding.matchesRecyclerView.scrollToPosition(0)
+                search(it)
+            }
+        }
+    }
+
+    private fun initAdapter() {
+        binding.matchesRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
+                header = MatchesLoadStateAdapter { viewAdapter.retry() },
+                footer = MatchesLoadStateAdapter { viewAdapter.retry() }
+        )
+        viewAdapter.addLoadStateListener { loadState ->
+            // Only show the list if refresh succeeds.
+            binding.matchesRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+            // Show loading spinner during initial load or refresh.
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            // Show the retry state if initial load or refresh fails.
+            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
+            // Show exception on any error, regardless of whether it came from RemoteMediator or PagingSource
+            val errorState = loadState.source.append as? LoadState.Error
+                    ?: loadState.source.prepend as? LoadState.Error
+                    ?: loadState.append as? LoadState.Error
+                    ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                showSnackBar(binding.root, it.error.stackTraceToString())
             }
         }
     }
@@ -92,6 +167,17 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener {
                 guestTeamId = match.guestTeam.id
         ) }
         findNavController().navigate(action)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query != null) {
+            doSearch(query)
+        }
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return true;
     }
 
 }

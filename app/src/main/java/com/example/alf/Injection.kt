@@ -17,8 +17,11 @@
 package com.example.alf
 
 import androidx.lifecycle.ViewModelProvider
+import com.example.alf.data.paging.MatchesService
 import com.example.alf.data.paging.PersonsService
 import com.example.alf.data.paging.RefereesService
+import com.example.alf.ui.matches.MatchesPagingRepository
+import com.example.alf.ui.matches.MatchesViewModelFactory
 import com.example.alf.ui.persons.PersonsPagingRepository
 import com.example.alf.ui.persons.PersonsViewModelFactory
 import com.example.alf.ui.referees.RefereesPagingRepository
@@ -40,6 +43,14 @@ object Injection {
     }
 
     /**
+     * Creates an instance of [PersonsRepository] based on the [PersonsService] and a
+     * [PersonsLocalCache]
+     */
+    private fun provideMatchesRepository(): MatchesPagingRepository {
+        return MatchesPagingRepository(MatchesService())
+    }
+
+    /**
      * Creates an instance of [RefereesRepository] based on the [RefereesService] and a
      * [RefereesLocalCache]
      */
@@ -53,6 +64,14 @@ object Injection {
      */
     fun providePersonsViewModelFactory(): ViewModelProvider.Factory {
         return PersonsViewModelFactory(providePersonsRepository())
+    }
+
+    /**
+     * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
+     * [ViewModel] objects.
+     */
+    fun provideMatchesViewModelFactory(): ViewModelProvider.Factory {
+        return MatchesViewModelFactory(provideMatchesRepository())
     }
 
     /**

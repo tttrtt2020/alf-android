@@ -1,33 +1,36 @@
 package com.example.alf.ui.matches
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Match
-import com.example.alf.data.paging.MatchesBackendService
-import com.example.alf.data.paging.MatchesPagingSource
 import com.example.alf.data.repository.MatchApiService
+import kotlinx.coroutines.flow.Flow
 
-class MatchesViewModel(application: Application) : AndroidViewModel(application) {
+class MatchesViewModel(
+        private val matchesPagingRepository: MatchesPagingRepository
+) : ViewModel() {
 
     private val pageSize = AlfApplication.getProperty("pagination.matches.pageSize").toInt()
 
     private var matchApiService: MatchApiService? = null
     var matchListLiveData: LiveData<List<Match>>? = null
 
-    val flow = Pager(
+    private var currentQueryValue: String? = null
+
+    private var currentSearchResult: Flow<PagingData<Match>>? = null
+
+    /*val flow = Pager(
             config = PagingConfig(
                     pageSize = pageSize
             )
     ) {
-        MatchesPagingSource(MatchesBackendService())
-    }.flow.cachedIn(viewModelScope)
+        MatchesPagingSource(MatchesService())
+    }.flow.cachedIn(viewModelScope)*/
 
     // todo: rework to MediatorLiveData depending on flow or similar
     var loadingInProgressLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(true)
@@ -35,6 +38,19 @@ class MatchesViewModel(application: Application) : AndroidViewModel(application)
     init {
         matchApiService = MatchApiService()
         matchListLiveData = MutableLiveData()
+    }
+
+    fun searchMatches(queryString: String): Flow<PagingData<Match>> {
+        val lastResult = currentSearchResult
+        if (queryString == currentQueryValue && lastResult != null) {
+            return lastResult
+        }
+        currentQueryValue = queryString
+        val newResult: Flow<PagingData<Match>> = matchesPagingRepository
+                .getSearchResultStream(queryString)
+                .cachedIn(viewModelScope)
+        currentSearchResult = newResult
+        return newResult
     }
 
     /*fun fetchAllMatches() {
