@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.annotation.Nullable
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -19,7 +17,6 @@ import com.example.alf.R
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentMatchBinding
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayoutMediator
 
 
 class MatchFragment : Fragment() {
@@ -94,7 +91,7 @@ class MatchFragment : Fragment() {
 
         //setupViewPager()
 
-        binding.fab.setOnClickListener { onFabClicked() }
+        setupFab()
         binding.hostLayout.setOnClickListener { onHostClicked() }
         binding.guestLayout.setOnClickListener { onGuestClicked() }
     }
@@ -143,6 +140,21 @@ class MatchFragment : Fragment() {
 
     private fun onGetMatchResult(success: Boolean) {
         if (success) showSnackBar(binding.root, "Get success") else showSnackBar(binding.root, "Get failed")
+    }
+
+    private fun setupFab() {
+        binding.fab.setOnClickListener { onFabClicked() }
+        // todo: uncomment below code and attach recycler view
+        /*binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    binding.fab.hide()
+                } else {
+                    binding.fab.show()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })*/
     }
 
     private fun openMatchReferees() {

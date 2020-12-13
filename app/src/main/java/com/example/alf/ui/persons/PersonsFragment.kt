@@ -63,7 +63,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
             SearchPersonsViewModel::class.java
         )
 
-        initFab()
+        setupFab()
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         search(query)
@@ -84,7 +84,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun initFab() {
+    private fun setupFab() {
         binding.fab.setOnClickListener { openCreateNewPerson() }
         binding.personsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

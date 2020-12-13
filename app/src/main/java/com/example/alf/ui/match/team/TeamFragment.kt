@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
 import com.example.alf.data.model.match.MatchPerson
@@ -59,13 +60,14 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     ): View {
         binding = FragmentTeamBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.lifecycleOwner = this
+        binding.squadViewModel = squadViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setTitle()
         loadTeam()
+        setupFab()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -101,9 +103,28 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         })
     }
 
+    private fun setupFab() {
+        binding.fab.setOnClickListener { onFabClicked() }
+        binding.matchPersonsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    binding.fab.hide()
+                } else {
+                    binding.fab.show()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+    }
+
     private fun openFormations() {
         val action = TeamFragmentDirections.actionTeamFragmentToFormationsFragment()
         findNavController().navigate(action)
+    }
+
+    private fun onFabClicked() {
+        /*val action = TeamFragmentDirections.actionMatchFragmentToLiveEventTypesFragment(args.matchId)
+        findNavController().navigate(action)*/
     }
 
     private fun showSnackBar(view: View, msg: String) {
