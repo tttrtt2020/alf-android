@@ -66,8 +66,6 @@ class MatchFragment : Fragment() {
         MatchViewModelFactory(activity?.application!!, args.matchId)
     }
 
-    private lateinit var openRefereesMenuItem: MenuItem
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -94,6 +92,14 @@ class MatchFragment : Fragment() {
             }
         })
 
+        //setupViewPager()
+
+        binding.fab.setOnClickListener { onFabClicked() }
+        binding.hostLayout.setOnClickListener { onHostClicked() }
+        binding.guestLayout.setOnClickListener { onGuestClicked() }
+    }
+
+    /*private fun setupViewPager() {
         binding.pager.adapter = MatchInfoAdapter(
                 this,
                 args.matchId,
@@ -118,15 +124,10 @@ class MatchFragment : Fragment() {
                 }
             }
         })
-
-        binding.fab.setOnClickListener { onFabClicked() }
-        binding.hostLayout.setOnClickListener { onHostClicked() }
-        binding.guestLayout.setOnClickListener { onGuestClicked() }
-    }
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.match, menu)
-        openRefereesMenuItem = menu.findItem(R.id.action_open_referees)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -162,7 +163,8 @@ class MatchFragment : Fragment() {
         val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
                 args.matchId,
                 matchViewModel.matchLiveData.value!!.hostTeam.id,
-                matchViewModel.matchLiveData.value!!.hostTeam
+                matchViewModel.matchLiveData.value!!.hostTeam,
+                matchViewModel.matchLiveData.value!!.format
         )
         findNavController().navigate(action)
     }
@@ -171,7 +173,8 @@ class MatchFragment : Fragment() {
         val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
                 args.matchId,
                 matchViewModel.matchLiveData.value!!.guestTeam.id,
-                matchViewModel.matchLiveData.value!!.guestTeam
+                matchViewModel.matchLiveData.value!!.guestTeam,
+                matchViewModel.matchLiveData.value!!.format
         )
         findNavController().navigate(action)
     }

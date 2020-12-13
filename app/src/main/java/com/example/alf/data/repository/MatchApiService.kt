@@ -165,6 +165,30 @@ class MatchApiService {
         return resultLiveData
     }
 
+    fun fetchMatchTeam(matchTeamLiveData: MutableLiveData<MatchTeam>, matchId: Int, teamId: Int): LiveData<MatchTeam> {
+
+        matchApiInterface.fetchMatchTeam(matchId, teamId).enqueue(object : Callback<MatchTeam> {
+
+            override fun onFailure(call: Call<MatchTeam>, t: Throwable) {
+                matchTeamLiveData.value = null
+            }
+
+            override fun onResponse(
+                    call: Call<MatchTeam>,
+                    response: Response<MatchTeam>
+            ) {
+                val res = response.body()
+                if (response.code() == 200 && res != null) {
+                    matchTeamLiveData.value = res
+                } else {
+                    matchTeamLiveData.value = null
+                }
+            }
+        })
+
+        return matchTeamLiveData
+    }
+
     fun fetchMatchTeamSquad(squadLiveData: MutableLiveData<List<MatchPerson>>, matchId: Int, teamId: Int): LiveData<List<MatchPerson>> {
 
         matchApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object : Callback<List<MatchPerson>> {

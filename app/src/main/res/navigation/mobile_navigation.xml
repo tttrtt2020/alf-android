@@ -77,13 +77,6 @@
             android:id="@+id/action_matchFragment_to_squadsFragment"
             app:destination="@id/squadsFragment" />-->
         <action
-            android:id="@+id/action_matchFragment_to_formationsFragment"
-            app:destination="@id/formationsFragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:exitAnim="@anim/slide_out_to_left"
-            app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_to_right" />
-        <action
             android:id="@+id/action_matchFragment_to_liveEventTypesFragment"
             app:destination="@id/liveEventTypesFragment"
             app:enterAnim="@anim/slide_in_from_right"
@@ -212,6 +205,16 @@
         <argument
             android:name="team"
             app:argType="com.example.alf.data.model.Team" />
+        <argument
+            android:name="format"
+            app:argType="com.example.alf.data.model.Format" />
+        <action
+            android:id="@+id/action_teamFragment_to_formationsFragment"
+            app:destination="@id/formationsFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 </navigation>
