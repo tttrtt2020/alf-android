@@ -1,9 +1,6 @@
 package com.example.alf.ui.persons
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.alf.data.model.Person
@@ -24,11 +21,18 @@ class SearchPersonsViewModel(
 
     private var currentSearchResult: Flow<PagingData<Person>>? = null
 
+    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+
     init {
         personApiService = PersonApiService()
         personListLiveData = MutableLiveData()
         /*createPersonLiveData = MutableLiveData()
         deletePersonLiveData = MutableLiveData()*/
+
+        loadingInProgressLiveData.apply {
+            //addSource(currentSearchResult!!.asLiveData()) { loadingInProgressLiveData.value = false }
+            //addSource(personListLiveData) { loadingInProgressLiveData.value = false }
+        }
     }
 
     fun searchPersons(queryString: String): Flow<PagingData<Person>> {

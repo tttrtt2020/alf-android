@@ -34,7 +34,9 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
     }
 
     private lateinit var binding: FragmentPersonsBinding
+
     private lateinit var personsViewModel: SearchPersonsViewModel
+
     private val viewAdapter = PersonsPagingAdapter(PersonsPagingAdapter.PersonComparator, this)
 
     private lateinit var searchView: SearchView
@@ -42,7 +44,6 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setHasOptionsMenu(true)
     }
 
@@ -51,7 +52,9 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPersonsBinding.inflate(layoutInflater)
+        binding = FragmentPersonsBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        //binding.personsViewModel = personsViewModel
         return binding.root
     }
 

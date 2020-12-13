@@ -47,7 +47,6 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setHasOptionsMenu(true)
     }
 
@@ -56,7 +55,9 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentRefereeSelectionBinding.inflate(layoutInflater)
+        binding = FragmentRefereeSelectionBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        //binding.refereeSelectionViewModel = refereeSelectionViewModel
         return binding.root
     }
 
