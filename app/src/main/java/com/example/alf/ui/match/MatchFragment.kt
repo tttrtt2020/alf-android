@@ -120,6 +120,8 @@ class MatchFragment : Fragment() {
         })
 
         binding.fab.setOnClickListener { onFabClicked() }
+        binding.hostLayout.setOnClickListener { onHostClicked() }
+        binding.guestLayout.setOnClickListener { onGuestClicked() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -153,6 +155,24 @@ class MatchFragment : Fragment() {
 
     private fun onFabClicked() {
         val action = MatchFragmentDirections.actionMatchFragmentToLiveEventTypesFragment(args.matchId)
+        findNavController().navigate(action)
+    }
+
+    private fun onHostClicked() {
+        val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
+                args.matchId,
+                matchViewModel.matchLiveData.value!!.hostTeam.id,
+                matchViewModel.matchLiveData.value!!.hostTeam
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun onGuestClicked() {
+        val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
+                args.matchId,
+                matchViewModel.matchLiveData.value!!.guestTeam.id,
+                matchViewModel.matchLiveData.value!!.guestTeam
+        )
         findNavController().navigate(action)
     }
 

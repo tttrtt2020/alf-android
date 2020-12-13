@@ -75,53 +75,74 @@
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/host_logo"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginEnd="@dimen/card_margin"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="@string/content_description_team_logo"
-                        app:imageUrl="@{matchViewModel.hostTeamLogoUrlLiveData}"/>
-
-                    <ImageView
-                        android:id="@+id/guest_logo"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="@dimen/card_margin"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="@string/content_description_team_logo"
-                        app:imageUrl="@{matchViewModel.guestTeamLogoUrlLiveData}"/>
-
-                    <TextView
-                        android:id="@+id/host_name"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/host_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/host_logo"
                         android:layout_toStartOf="@id/result_layout"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:textSize="@dimen/text_size_medium"
-                        android:textColor="@color/white"
-                        android:text="@{matchViewModel.hostTeamNameLiveData}" />
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true">
 
-                    <TextView
-                        android:id="@+id/guest_name"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/host_logo"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginEnd="@dimen/card_margin"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/content_description_team_logo"
+                            app:imageUrl="@{matchViewModel.hostTeamLogoUrlLiveData}"/>
+
+                        <TextView
+                            android:id="@+id/host_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/host_logo"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:textSize="@dimen/text_size_medium"
+                            android:textColor="@color/white"
+                            android:text="@{matchViewModel.hostTeamNameLiveData}" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/guest_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/guest_logo"
                         android:layout_toEndOf="@id/result_layout"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:textSize="@dimen/text_size_medium"
-                        android:textColor="@color/white"
-                        android:text="@{matchViewModel.guestTeamNameLiveData}" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:id="@+id/guest_logo"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="@dimen/card_margin"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/content_description_team_logo"
+                            app:imageUrl="@{matchViewModel.guestTeamLogoUrlLiveData}"/>
+
+                        <TextView
+                            android:id="@+id/guest_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@id/guest_logo"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:textSize="@dimen/text_size_medium"
+                            android:textColor="@color/white"
+                            android:text="@{matchViewModel.guestTeamNameLiveData}" />
+                    </RelativeLayout>
                 </RelativeLayout>
 
             </FrameLayout>
