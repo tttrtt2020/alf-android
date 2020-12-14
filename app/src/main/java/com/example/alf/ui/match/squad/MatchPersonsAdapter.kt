@@ -66,9 +66,9 @@ class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
 
     inner class ViewHolder(private val binding: ItemMatchPersonBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(matchPerson: MatchPerson, inStart: Boolean) {
+        fun bind(matchPerson: MatchPerson) {
             binding.matchPerson = matchPerson
-            binding.inStart = inStart
+            binding.inStart = matchPerson.timeIn == 0
             binding.executePendingBindings()
         }
     }
@@ -81,7 +81,7 @@ class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val matchPerson = matchPersons[position]
-        holder.bind(matchPerson, position < format.playerCount)
+        holder.bind(matchPerson)
         holder.itemView.setOnClickListener { listener.onItemClick(matchPerson) }
     }
 
