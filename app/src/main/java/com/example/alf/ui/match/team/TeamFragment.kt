@@ -41,8 +41,8 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     private val squadViewModel: SquadViewModel by viewModels {
         SquadViewModelFactory(
                 requireActivity().application,
-                requireArguments().getInt(SquadFragment.ARG_MATCH_ID),
-                requireArguments().getInt(SquadFragment.ARG_TEAM_ID)
+                args.matchId,
+                args.teamId
         )
     }
 
@@ -123,8 +123,8 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     }
 
     private fun onFabClicked() {
-        /*val action = TeamFragmentDirections.actionMatchFragmentToLiveEventTypesFragment(args.matchId)
-        findNavController().navigate(action)*/
+        val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(args.matchId, args.teamId)
+        findNavController().navigate(action)
     }
 
     private fun showSnackBar(view: View, msg: String) {

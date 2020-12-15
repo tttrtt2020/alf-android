@@ -24,14 +24,14 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private lateinit var binding: FragmentMatchRefereesBinding
 
-    private val args: EventFragmentArgs by navArgs()
+    private val args: MatchRefereesFragmentArgs by navArgs()
 
     private lateinit var viewAdapter: MatchRefereesAdapter
 
     private val matchRefereesViewModel: MatchRefereesViewModel by viewModels {
         MatchRefereesViewModelFactory(
                 requireActivity().application,
-                requireArguments().getInt(ARG_MATCH_ID)
+                args.matchId
         )
     }
 
@@ -74,7 +74,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private fun onDeleteMatchRefereeResult(success: Boolean) {
         if (success) {
-            matchRefereesViewModel.getRefereesByMatchId(requireArguments().getInt(ARG_MATCH_ID))
+            matchRefereesViewModel.getRefereesByMatchId(args.matchId)
             //viewAdapter.deleteReferee(referee) todo: should do this but requires referee or position
             showSnackBar(binding.root, "Delete match referee success")
         } else showSnackBar(binding.root, "Delete match referee failed")
@@ -96,7 +96,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private fun openRefereeSelection() {
         val action = MatchRefereesFragmentDirections.actionMatchRefereesFragmentToRefereeSelectionFragment(
-            requireArguments().getInt(ARG_MATCH_ID)
+            args.matchId
         )
         findNavController().navigate(action)
     }
@@ -168,6 +168,6 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     private fun deleteReferee(referee: Referee, position: Int) {
         showSnackBar(binding.root, "Delete $referee $position")
 
-        matchRefereesViewModel.deleteMatchReferee(requireArguments().getInt(ARG_MATCH_ID), referee)
+        matchRefereesViewModel.deleteMatchReferee(args.matchId, referee)
     }
 }

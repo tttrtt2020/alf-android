@@ -30,6 +30,19 @@ class MatchesLoadStateAdapter(
     }
 }
 
+class PlayersLoadStateAdapter(
+        private val retry: () -> Unit
+) : LoadStateAdapter<LoadStateViewHolder>() {
+
+    override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
+        holder.bind(loadState)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
+        return LoadStateViewHolder.create(parent, retry)
+    }
+}
+
 class RefereesLoadStateAdapter(
         private val retry: () -> Unit
 ) : LoadStateAdapter<LoadStateViewHolder>() {

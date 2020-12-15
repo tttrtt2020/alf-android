@@ -53,12 +53,4 @@ class MatchesViewModel(
         return newResult
     }
 
-    /*fun fetchAllMatches() {
-        matchListLiveData = matchRepository?.fetchAllMatches()
-    }*/
-
-    fun fetchAllMatches() {
-        matchListLiveData = matchApiService?.fetchMatches()
-    }
-
 }

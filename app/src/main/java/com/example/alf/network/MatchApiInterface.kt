@@ -31,4 +31,11 @@ interface MatchApiInterface {
     @GET("matches/{matchId}/{teamId}/squad")
     fun fetchMatchTeamSquad(@Path("matchId") matchId: Int, @Path("teamId") teamId: Int): Call<List<MatchPerson>>
 
+    @GET("matches/{matchId}/{teamId}/allowablePlayers")
+    suspend fun fetchMatchTeamAllowablePlayers(
+            @Path("matchId") matchId: Int, @Path("teamId") teamId: Int,
+            @Query("query") query: String,
+            @Query("page") page: Int, @Query("sort") field: String
+    ): PlayersPage
+
 }

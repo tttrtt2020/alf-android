@@ -19,7 +19,10 @@ package com.example.alf
 import androidx.lifecycle.ViewModelProvider
 import com.example.alf.data.paging.MatchesService
 import com.example.alf.data.paging.PersonsService
+import com.example.alf.data.paging.PlayersService
 import com.example.alf.data.paging.RefereesService
+import com.example.alf.ui.match.players.PlayersPagingRepository
+import com.example.alf.ui.match.players.PlayersViewModelFactory
 import com.example.alf.ui.matches.MatchesPagingRepository
 import com.example.alf.ui.matches.MatchesViewModelFactory
 import com.example.alf.ui.persons.PersonsPagingRepository
@@ -48,6 +51,14 @@ object Injection {
      */
     private fun provideMatchesRepository(): MatchesPagingRepository {
         return MatchesPagingRepository(MatchesService())
+    }
+
+    /**
+     * Creates an instance of [PlayersRepository] based on the [PlayersService] and a
+     * [PlayersLocalCache]
+     */
+    private fun providePlayersRepository(matchId: Int, teamId: Int): PlayersPagingRepository {
+        return PlayersPagingRepository(PlayersService(), matchId, teamId)
     }
 
     /**
@@ -80,5 +91,13 @@ object Injection {
      */
     fun provideRefereesViewModelFactory(): ViewModelProvider.Factory {
         return RefereesViewModelFactory(provideRefereesRepository())
+    }
+
+    /**
+     * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
+     * [ViewModel] objects.
+     */
+    fun providePlayersViewModelFactory(matchId: Int, teamId: Int): ViewModelProvider.Factory {
+        return PlayersViewModelFactory(providePlayersRepository(matchId, teamId))
     }
 }

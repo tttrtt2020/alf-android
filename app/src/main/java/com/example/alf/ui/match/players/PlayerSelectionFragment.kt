@@ -1,4 +1,4 @@
-package com.example.alf.ui.referees
+package com.example.alf.ui.match.players
 
 import android.app.SearchManager
 import android.content.Context
@@ -14,9 +14,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import com.example.alf.Injection
 import com.example.alf.R
-import com.example.alf.data.model.Referee
-import com.example.alf.databinding.FragmentRefereeSelectionBinding
-import com.example.alf.ui.RefereesLoadStateAdapter
+import com.example.alf.data.model.Player
+import com.example.alf.databinding.FragmentPlayerSelectionBinding
+import com.example.alf.ui.PlayersLoadStateAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -26,19 +26,19 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 
-class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, RefereesPagingAdapter.RefereeListener {
+class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, PlayersPagingAdapter.PlayerListener {
 
     companion object {
         private const val LAST_SEARCH_QUERY: String = "last_search_query"
         private const val DEFAULT_QUERY = ""
     }
 
-    private lateinit var binding: FragmentRefereeSelectionBinding
+    private lateinit var binding: FragmentPlayerSelectionBinding
 
-    private val args: RefereeSelectionFragmentArgs by navArgs()
+    private val args: PlayerSelectionFragmentArgs by navArgs()
 
-    private lateinit var refereeSelectionViewModel: SearchRefereesViewModel
-    private val viewAdapter = RefereesPagingAdapter(RefereesPagingAdapter.RefereeComparator, this)
+    private lateinit var playerSelectionViewModel: SearchPlayersViewModel
+    private val viewAdapter = PlayersPagingAdapter(PlayersPagingAdapter.PlayerComparator, this)
 
     private lateinit var searchView: SearchView
     private var searchJob: Job? = null
@@ -53,9 +53,9 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentRefereeSelectionBinding.inflate(inflater)
+        binding = FragmentPlayerSelectionBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        //binding.refereeSelectionViewModel = refereeSelectionViewModel
+        //binding.playerSelectionViewModel = playerSelectionViewModel
         return binding.root
     }
 
@@ -63,8 +63,8 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         super.onViewCreated(view, savedInstanceState)
 
         // get the view model
-        refereeSelectionViewModel = ViewModelProvider(this, Injection.provideRefereesViewModelFactory()).get(
-            SearchRefereesViewModel::class.java
+        playerSelectionViewModel = ViewModelProvider(this, Injection.providePlayersViewModelFactory(args.matchId, args.teamId)).get(
+            SearchPlayersViewModel::class.java
         )
 
         initAdapter()
@@ -72,16 +72,16 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         search(query)
         initSearch(query)
 
-        refereeSelectionViewModel.addRefereeToMatchLiveData.observe(viewLifecycleOwner) {
+        playerSelectionViewModel.addPlayerToMatchLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
-                onAddMatchRefereeResult(it)
-                refereeSelectionViewModel.addRefereeToMatchLiveData.value = null
+                onAddMatchPlayerResult(it)
+                playerSelectionViewModel.addPlayerToMatchLiveData.value = null
             }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.referees, menu)
+        inflater.inflate(R.menu.players, menu)
 
         // Associate searchable configuration with the SearchView
         val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -95,13 +95,13 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     }
 
     private fun initAdapter() {
-        binding.refereesRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
-            header = RefereesLoadStateAdapter { viewAdapter.retry() },
-            footer = RefereesLoadStateAdapter { viewAdapter.retry() }
+        binding.playersRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
+            header = PlayersLoadStateAdapter { viewAdapter.retry() },
+            footer = PlayersLoadStateAdapter { viewAdapter.retry() }
         )
         viewAdapter.addLoadStateListener { loadState ->
             // Only show the list if refresh succeeds.
-            binding.refereesRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+            binding.playersRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
             // Show loading spinner during initial load or refresh.
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails.
@@ -123,29 +123,29 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
     }
 
-    override fun onItemClick(referee: Referee) {
-        selectReferee(referee)
+    override fun onItemClick(player: Player) {
+        selectPlayer(player)
     }
 
-    private fun selectReferee(referee: Referee) {
-        refereeSelectionViewModel.addRefereeToMatch(
+    private fun selectPlayer(player: Player) {
+        /*playerSelectionViewModel.addPlayerToMatch(
             args.matchId,
-            referee
-        )
+            player
+        )*/
     }
 
-    private fun onAddMatchRefereeResult(success: Boolean) {
+    private fun onAddMatchPlayerResult(success: Boolean) {
         if (success) {
-            //showSnackBar(binding.root, "Add match referee success")
+            //showSnackBar(binding.root, "Add match player success")
             goBack()
-        } else showSnackBar(binding.root, "Add match referee failed")
+        } else showSnackBar(binding.root, "Add match player failed")
     }
 
     private fun goBack() {
-        val action = RefereeSelectionFragmentDirections.actionRefereeSelectionFragmentToMatchRefereesFragment(
+        /*val action = PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToMatchPlayersFragment(
             args.matchId
         )
-        findNavController().navigate(action)
+        findNavController().navigate(action)*/
     }
 
 
@@ -153,7 +153,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            refereeSelectionViewModel.searchReferees(query).collectLatest {
+            playerSelectionViewModel.searchPlayers(query).collectLatest {
                 viewAdapter.submitData(it)
             }
         }
@@ -170,14 +170,14 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
                 .distinctUntilChangedBy { it.refresh }
                 // Only react to cases where REFRESH completes i.e., NotLoading.
                 .filter { it.refresh is LoadState.NotLoading }
-                .collect { binding.refereesRecyclerView.scrollToPosition(0) }
+                .collect { binding.playersRecyclerView.scrollToPosition(0) }
         }
     }
 
     private fun doSearch(query: String) {
         query.trim().let {
             if (it.isNotEmpty()) {
-                binding.refereesRecyclerView.scrollToPosition(0)
+                binding.playersRecyclerView.scrollToPosition(0)
                 search(it)
             }
         }

@@ -11,7 +11,7 @@ import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.data.model.Format
 import com.example.alf.data.model.match.MatchPerson
-import com.example.alf.data.model.match.Player
+import com.example.alf.data.model.Player
 import com.example.alf.databinding.ItemMatchPersonBinding
 
 class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :

@@ -14,7 +14,7 @@ class MatchApiService {
 
     private var matchApiInterface: MatchApiInterface = ApiClient.getApiClient().create(MatchApiInterface::class.java)
 
-    fun fetchMatches(): LiveData<List<Match>> {
+    /*fun fetchMatches(): LiveData<List<Match>> {
         val data = MutableLiveData<List<Match>>()
 
         matchApiInterface.fetchMatchesPage().enqueue(object : Callback<MatchesPage> {
@@ -38,7 +38,7 @@ class MatchApiService {
 
         return data
 
-    }
+    }*/
 
     fun getMatchById(matchLiveData: MutableLiveData<Match>, id: Int): LiveData<Match> {
 
@@ -211,6 +211,10 @@ class MatchApiService {
         })
 
         return squadLiveData
+    }
+
+    suspend fun fetchMatchTeamAllowablePlayersPage(matchId: Int, teamId: Int, query: String, nextPageNumber: Int): PlayersPage {
+        return matchApiInterface.fetchMatchTeamAllowablePlayers(matchId, teamId, query, nextPageNumber, "id,desc")
     }
 
 }
