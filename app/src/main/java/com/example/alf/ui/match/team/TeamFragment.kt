@@ -14,7 +14,6 @@ import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentTeamBinding
 import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.match.squad.MatchPersonsAdapter
-import com.example.alf.ui.match.squad.SquadFragment
 import com.example.alf.ui.match.squad.SquadViewModel
 import com.example.alf.ui.match.squad.SquadViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -123,7 +122,7 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     }
 
     private fun onFabClicked() {
-        val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(args.matchId, args.teamId)
+        val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(args.matchId, args.teamId, args.team, args.format)
         findNavController().navigate(action)
     }
 

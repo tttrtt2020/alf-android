@@ -128,24 +128,21 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
     }
 
     private fun selectPlayer(player: Player) {
-        /*playerSelectionViewModel.addPlayerToMatch(
-            args.matchId,
-            player
-        )*/
+        playerSelectionViewModel.addPlayerToMatch(args.matchId, args.teamId, player)
     }
 
     private fun onAddMatchPlayerResult(success: Boolean) {
         if (success) {
-            //showSnackBar(binding.root, "Add match player success")
+            showSnackBar(binding.root, "Add match player success")
             goBack()
         } else showSnackBar(binding.root, "Add match player failed")
     }
 
     private fun goBack() {
-        /*val action = PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToMatchPlayersFragment(
-            args.matchId
+        val action = PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToTeamFragment(
+                args.matchId, args.teamId, args.team, args.format
         )
-        findNavController().navigate(action)*/
+        findNavController().navigate(action)
     }
 
 

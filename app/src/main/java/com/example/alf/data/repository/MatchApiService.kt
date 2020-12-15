@@ -217,4 +217,24 @@ class MatchApiService {
         return matchApiInterface.fetchMatchTeamAllowablePlayers(matchId, teamId, query, nextPageNumber, "id,desc")
     }
 
+    fun addMatchPlayer(
+            addPlayerToMatchLiveData: MutableLiveData<Boolean?>,
+            matchId: Int,
+            teamId: Int,
+            player: Player
+    ): LiveData<Boolean?> {
+
+        matchApiInterface.addMatchPlayer(matchId, teamId, player).enqueue(object : Callback<Player> {
+            override fun onFailure(call: Call<Player>, t: Throwable) {
+                addPlayerToMatchLiveData.value = false
+            }
+
+            override fun onResponse(call: Call<Player>, response: Response<Player>) {
+                addPlayerToMatchLiveData.value = response.code() == 201
+            }
+        })
+
+        return addPlayerToMatchLiveData
+    }
+
 }

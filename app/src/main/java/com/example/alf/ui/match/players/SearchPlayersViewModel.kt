@@ -45,9 +45,9 @@ class SearchPlayersViewModel(
         return newResult
     }
 
-    /*fun addPlayerToMatch(matchId: Int, player: Player) {
+    fun addPlayerToMatch(matchId: Int, teamId: Int, player: Player) {
         loadingInProgressLiveData.value = true
-        matchApiService.addMatchPlayer(addPlayerToMatchLiveData, matchId, player)
-    }*/
+        matchApiService.addMatchPlayer(addPlayerToMatchLiveData, matchId, teamId, player)
+    }
 
 }

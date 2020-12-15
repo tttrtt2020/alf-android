@@ -234,6 +234,21 @@
         <argument
             android:name="teamId"
             app:argType="integer" />
+        <argument
+            android:name="team"
+            app:argType="com.example.alf.data.model.Team" />
+        <argument
+            android:name="format"
+            app:argType="com.example.alf.data.model.Format" />
+        <action
+            android:id="@+id/action_playerSelectionFragment_to_teamFragment"
+            app:destination="@id/teamFragment"
+            app:popUpTo="@id/teamFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_from_left"
+            app:exitAnim="@anim/slide_out_to_right"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 </navigation>

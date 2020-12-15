@@ -38,4 +38,7 @@ interface MatchApiInterface {
             @Query("page") page: Int, @Query("sort") field: String
     ): PlayersPage
 
+    @POST("matches/{matchId}/{teamId}/players")
+    fun addMatchPlayer(@Path("matchId") matchId: Int, @Path("teamId") teamId: Int, @Body player: Player): Call<Player>
+
 }
