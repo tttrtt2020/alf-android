@@ -11,7 +11,11 @@ interface RefereeApiInterface {
     fun fetchRefereesPage(): Call<RefereesPage>
 
     @GET("referees")
-    suspend fun fetchRefereesPage(@Query("lastName") lastName: String, @Query("page") page: Int, @Query("sort") field: String): RefereesPage
+    suspend fun fetchRefereesPage(
+            @Query("query") query: String,
+            @Query("sort") sort: String,
+            @Query("page") page: Int,
+    ): RefereesPage
 
     /*@GET("referees")
     fun fetchRefereesPageByQuery(@Query("lastName") lastName: String): Call<RefereesPage>*/

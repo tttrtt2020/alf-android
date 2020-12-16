@@ -13,13 +13,13 @@ class PersonsPagingRepository(private val service: PersonsService) {
 
     private val networkPageSize = AlfApplication.getProperty("pagination.persons.pageSize").toInt()
 
-    fun getSearchResultStream(query: String): Flow<PagingData<Person>> {
+    fun getSearchResultStream(query: String, sort: String): Flow<PagingData<Person>> {
         return Pager(
             config = PagingConfig(
                 pageSize = networkPageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PersonsPagingSource(service, query) }
+            pagingSourceFactory = { PersonsPagingSource(service, query, sort) }
         ).flow
     }
 

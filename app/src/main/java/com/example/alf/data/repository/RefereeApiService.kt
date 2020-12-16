@@ -38,8 +38,8 @@ class RefereeApiService {
         return refereeLiveData
     }
 
-    suspend fun fetchRefereesPage(query: String, nextPageNumber: Int): RefereesPage {
-        return refereeApiInterface.fetchRefereesPage(query, nextPageNumber, "id,desc")
+    suspend fun fetchRefereesPage(query: String, sort: String, nextPageNumber: Int): RefereesPage {
+        return refereeApiInterface.fetchRefereesPage(query, sort, nextPageNumber)
     }
 
     fun createReferee(refereeLiveData: MutableLiveData<Referee>, referee: Referee): LiveData<Referee>{

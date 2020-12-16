@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
+import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
 import com.example.alf.data.model.Player
@@ -42,6 +43,8 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
 
     private lateinit var searchView: SearchView
     private var searchJob: Job? = null
+
+    private val sort = AlfApplication.getProperty("players.sort")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,7 +153,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            playerSelectionViewModel.searchPlayers(query).collectLatest {
+            playerSelectionViewModel.searchPlayers(query, sort).collectLatest {
                 viewAdapter.submitData(it)
             }
         }

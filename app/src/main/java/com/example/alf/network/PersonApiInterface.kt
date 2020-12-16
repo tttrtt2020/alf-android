@@ -10,13 +10,11 @@ interface PersonApiInterface {
     fun fetchPersonsPage(): Call<PersonsPage>
 
     @GET("persons")
-    suspend fun fetchPersonsPage(@Query("lastName") lastName: String, @Query("page") page: Int, @Query("sort") field: String): PersonsPage
-
-    /*@GET("persons")
-    fun fetchPersonsPageByQuery(@Query("lastName") lastName: String): Call<PersonsPage>*/
-
-    @GET("persons")
-    suspend fun fetchPersonsPageByQuery(@Query("lastName") lastName: String): PersonsPage
+    suspend fun fetchPersonsPage(
+            @Query("query") query: String,
+            @Query("sort") sort: String,
+            @Query("page") page: Int,
+    ): PersonsPage
 
     @GET("persons/{id}")
     fun fetchPersonById(@Path("id") id: Int): Call<Person>

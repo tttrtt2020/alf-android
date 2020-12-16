@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
+import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
 import com.example.alf.data.model.Person
@@ -41,6 +42,8 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
 
     private lateinit var searchView: SearchView
     private var searchJob: Job? = null
+
+    private val sort = AlfApplication.getProperty("persons.sort")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,7 +161,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            personsViewModel.searchPersons(query).collectLatest {
+            personsViewModel.searchPersons(query, sort).collectLatest {
                 viewAdapter.submitData(it)
             }
         }

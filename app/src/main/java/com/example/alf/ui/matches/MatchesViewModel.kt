@@ -40,14 +40,14 @@ class MatchesViewModel(
         matchListLiveData = MutableLiveData()
     }
 
-    fun searchMatches(queryString: String): Flow<PagingData<Match>> {
+    fun searchMatches(query: String, sort: String): Flow<PagingData<Match>> {
         val lastResult = currentSearchResult
-        if (queryString == currentQueryValue && lastResult != null) {
+        if (query == currentQueryValue && lastResult != null) {
             return lastResult
         }
-        currentQueryValue = queryString
+        currentQueryValue = query
         val newResult: Flow<PagingData<Match>> = matchesPagingRepository
-                .getSearchResultStream(queryString)
+                .getSearchResultStream(query, sort)
                 .cachedIn(viewModelScope)
         currentSearchResult = newResult
         return newResult

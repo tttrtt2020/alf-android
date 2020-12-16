@@ -64,8 +64,8 @@ class PersonApiService {
         return personLiveData
     }
 
-    suspend fun fetchPersonsPage(query: String, nextPageNumber: Int): PersonsPage {
-        return personApiInterface.fetchPersonsPage(query, nextPageNumber, "id,desc")
+    suspend fun fetchPersonsPage(query: String, sort: String, nextPageNumber: Int): PersonsPage {
+        return personApiInterface.fetchPersonsPage(query, sort, nextPageNumber)
     }
 
     fun createPerson(personLiveData: MutableLiveData<Person>, person: Person): LiveData<Person>{

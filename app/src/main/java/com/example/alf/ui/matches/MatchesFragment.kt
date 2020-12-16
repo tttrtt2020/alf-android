@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
 import com.example.alf.data.model.Match
@@ -39,6 +40,8 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
 
     private lateinit var searchView: SearchView
     private var searchJob: Job? = null
+
+    private val sort = AlfApplication.getProperty("matches.sort")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +105,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            matchesViewModel.searchMatches(query).collectLatest {
+            matchesViewModel.searchMatches(query, sort).collectLatest {
                 viewAdapter.submitData(it)
             }
         }

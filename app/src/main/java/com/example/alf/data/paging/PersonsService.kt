@@ -5,8 +5,12 @@ import com.example.alf.data.repository.PersonApiService
 
 class PersonsService {
 
-    suspend fun searchPersonsPage(query: String, nextPageNumber: Int): PersonsPage {
-        return PersonApiService().fetchPersonsPage(query, nextPageNumber)
+    suspend fun searchPersonsPage(
+            query: String,
+            sort: String,
+            nextPageNumber: Int
+    ): PersonsPage {
+        return PersonApiService().fetchPersonsPage(query, sort, nextPageNumber)
     }
 
 }

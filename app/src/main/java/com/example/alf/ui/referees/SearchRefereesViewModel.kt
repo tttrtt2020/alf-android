@@ -32,13 +32,13 @@ class SearchRefereesViewModel(
         }
     }
 
-    fun searchReferees(queryString: String): Flow<PagingData<Referee>> {
+    fun searchReferees(query: String, sort: String): Flow<PagingData<Referee>> {
         val lastResult = currentSearchResult
-        if (queryString == currentQueryValue && lastResult != null) {
+        if (query == currentQueryValue && lastResult != null) {
             return lastResult
         }
-        currentQueryValue = queryString
-        val pager = refereesPagingRepository.getSearchResultPager(queryString)
+        currentQueryValue = query
+        val pager = refereesPagingRepository.getSearchResultPager(query, sort)
         val newResult: Flow<PagingData<Referee>> = pager.flow
             .cachedIn(viewModelScope)
         currentSearchResult = newResult

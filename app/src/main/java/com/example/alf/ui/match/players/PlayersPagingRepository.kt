@@ -13,23 +13,23 @@ class PlayersPagingRepository(private val service: PlayersService, val matchId: 
 
     private val networkPageSize = AlfApplication.getProperty("pagination.players.pageSize").toInt()
 
-    fun getSearchResultStream(query: String): Flow<PagingData<Player>> {
+    fun getSearchResultStream(query: String, sort: String): Flow<PagingData<Player>> {
         return Pager(
             config = PagingConfig(
                 pageSize = networkPageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PlayersPagingSource(service, matchId, teamId, query) }
+            pagingSourceFactory = { PlayersPagingSource(service, matchId, teamId, query, sort) }
         ).flow
     }
 
-    fun getSearchResultPager(query: String): Pager<Int, Player> {
+    fun getSearchResultPager(query: String, sort: String): Pager<Int, Player> {
         return Pager(
             config = PagingConfig(
                 pageSize = networkPageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PlayersPagingSource(service, matchId, teamId, query) }
+            pagingSourceFactory = { PlayersPagingSource(service, matchId, teamId, query, sort) }
         )
     }
 

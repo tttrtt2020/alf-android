@@ -10,7 +10,8 @@ class PlayersPagingSource(
     private val service: PlayersService,
     private var matchId: Int,
     private var teamId: Int,
-    private var query: String
+    private var query: String,
+    private var sort: String
 ) : PagingSource<Int, Player>() {
 
     private val startingPageIndex = AlfApplication.getProperty("pagination.players.startIndex").toInt()
@@ -19,7 +20,7 @@ class PlayersPagingSource(
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: startingPageIndex
-            val playersPage = service.searchPlayersPage(matchId, teamId, query, nextPageNumber)
+            val playersPage = service.searchPlayersPage(matchId, teamId, query, sort, nextPageNumber)
             return LoadResult.Page(
                 data = playersPage.content,
                 prevKey = if (playersPage.number == startingPageIndex) null else playersPage.number - 1,

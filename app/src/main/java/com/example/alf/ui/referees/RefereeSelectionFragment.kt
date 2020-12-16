@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
+import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
 import com.example.alf.data.model.Referee
@@ -42,6 +43,8 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
 
     private lateinit var searchView: SearchView
     private var searchJob: Job? = null
+
+    private val sort = AlfApplication.getProperty("referees.sort")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,7 +156,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            refereeSelectionViewModel.searchReferees(query).collectLatest {
+            refereeSelectionViewModel.searchReferees(query, sort).collectLatest {
                 viewAdapter.submitData(it)
             }
         }

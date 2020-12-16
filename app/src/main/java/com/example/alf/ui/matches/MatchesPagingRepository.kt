@@ -13,13 +13,13 @@ class MatchesPagingRepository(private val service: MatchesService) {
 
     private val networkPageSize = AlfApplication.getProperty("pagination.matches.pageSize").toInt()
 
-    fun getSearchResultStream(query: String): Flow<PagingData<Match>> {
+    fun getSearchResultStream(query: String, sort: String): Flow<PagingData<Match>> {
         return Pager(
             config = PagingConfig(
                 pageSize = networkPageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { MatchesPagingSource(service, query) }
+            pagingSourceFactory = { MatchesPagingSource(service, query, sort) }
         ).flow
     }
 

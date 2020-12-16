@@ -13,23 +13,23 @@ class RefereesPagingRepository(private val service: RefereesService) {
 
     private val networkPageSize = AlfApplication.getProperty("pagination.referees.pageSize").toInt()
 
-    fun getSearchResultStream(query: String): Flow<PagingData<Referee>> {
+    fun getSearchResultStream(query: String, sort: String): Flow<PagingData<Referee>> {
         return Pager(
             config = PagingConfig(
                 pageSize = networkPageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { RefereesPagingSource(service, query) }
+            pagingSourceFactory = { RefereesPagingSource(service, query, sort) }
         ).flow
     }
 
-    fun getSearchResultPager(query: String): Pager<Int, Referee> {
+    fun getSearchResultPager(query: String, sort: String): Pager<Int, Referee> {
         return Pager(
             config = PagingConfig(
                 pageSize = networkPageSize,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { RefereesPagingSource(service, query) }
+            pagingSourceFactory = { RefereesPagingSource(service, query, sort) }
         )
     }
 

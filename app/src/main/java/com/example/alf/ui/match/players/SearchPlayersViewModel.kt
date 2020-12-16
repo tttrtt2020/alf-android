@@ -32,13 +32,13 @@ class SearchPlayersViewModel(
         }
     }
 
-    fun searchPlayers(queryString: String): Flow<PagingData<Player>> {
+    fun searchPlayers(query: String, sort: String): Flow<PagingData<Player>> {
         val lastResult = currentSearchResult
-        if (queryString == currentQueryValue && lastResult != null) {
+        if (query == currentQueryValue && lastResult != null) {
             return lastResult
         }
-        currentQueryValue = queryString
-        val pager = playersPagingRepository.getSearchResultPager(queryString)
+        currentQueryValue = query
+        val pager = playersPagingRepository.getSearchResultPager(query, sort)
         val newResult: Flow<PagingData<Player>> = pager.flow
             .cachedIn(viewModelScope)
         currentSearchResult = newResult

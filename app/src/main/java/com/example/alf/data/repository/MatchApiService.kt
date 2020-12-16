@@ -64,8 +64,8 @@ class MatchApiService {
         return matchLiveData
     }
 
-    suspend fun fetchMatchesPage(query: String, nextPageNumber: Int): MatchesPage {
-        return matchApiInterface.fetchMatchesPage(query, nextPageNumber)
+    suspend fun fetchMatchesPage(query: String, sort: String, nextPageNumber: Int): MatchesPage {
+        return matchApiInterface.fetchMatchesPage(query, sort, nextPageNumber)
     }
 
     /*fun createMatch(personModel: Match):LiveData<Match>{
@@ -213,8 +213,8 @@ class MatchApiService {
         return squadLiveData
     }
 
-    suspend fun fetchMatchTeamAllowablePlayersPage(matchId: Int, teamId: Int, query: String, nextPageNumber: Int): PlayersPage {
-        return matchApiInterface.fetchMatchTeamAllowablePlayers(matchId, teamId, query, nextPageNumber, "id,desc")
+    suspend fun fetchMatchTeamAllowablePlayersPage(matchId: Int, teamId: Int, query: String, sort: String, nextPageNumber: Int): PlayersPage {
+        return matchApiInterface.fetchMatchTeamAllowablePlayers(matchId, teamId, query, sort, nextPageNumber)
     }
 
     fun addMatchPlayer(

@@ -7,8 +7,9 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class PersonsPagingSource(
-    private val service: PersonsService,
-    private var query: String
+        private val service: PersonsService,
+        private var query: String,
+        private val sort: String
 ) : PagingSource<Int, Person>() {
 
     private val startingPageIndex = AlfApplication.getProperty("pagination.persons.startIndex").toInt()
@@ -17,7 +18,7 @@ class PersonsPagingSource(
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: startingPageIndex
-            val personsPage = service.searchPersonsPage(query, nextPageNumber)
+            val personsPage = service.searchPersonsPage(query, sort, nextPageNumber)
             return LoadResult.Page(
                 data = personsPage.content,
                 prevKey = if (personsPage.number == startingPageIndex) null else personsPage.number - 1,

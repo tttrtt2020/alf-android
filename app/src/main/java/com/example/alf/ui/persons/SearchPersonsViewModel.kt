@@ -35,14 +35,14 @@ class SearchPersonsViewModel(
         }
     }
 
-    fun searchPersons(queryString: String): Flow<PagingData<Person>> {
+    fun searchPersons(query: String, sort: String): Flow<PagingData<Person>> {
         val lastResult = currentSearchResult
-        if (queryString == currentQueryValue && lastResult != null) {
+        if (query == currentQueryValue && lastResult != null) {
             return lastResult
         }
-        currentQueryValue = queryString
+        currentQueryValue = query
         val newResult: Flow<PagingData<Person>> = personsPagingRepository
-            .getSearchResultStream(queryString)
+            .getSearchResultStream(query, sort)
             .cachedIn(viewModelScope)
         currentSearchResult = newResult
         return newResult
