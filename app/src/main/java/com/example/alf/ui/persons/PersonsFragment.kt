@@ -192,14 +192,12 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        if (query != null) {
-            doSearch(query)
-        }
+        query?.let { doSearch(it) }
         return true
     }
 
-    override fun onQueryTextChange(newText: String?): Boolean {
-
+    override fun onQueryTextChange(query: String?): Boolean {
+        query?.let { doSearch(it) }
         return true
     }
 
