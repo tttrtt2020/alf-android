@@ -9,13 +9,13 @@ import com.example.alf.databinding.ItemFieldPositionBinding
 class FieldPositionsAdapter(var listener: FieldPositionsListener) :
         RecyclerView.Adapter<FieldPositionsAdapter.ViewHolder>() {
 
-    private var fieldPositions: ArrayList<FieldPosition> = ArrayList()
+    private var fieldPositions: List<FieldPosition> = ArrayList()
 
     interface FieldPositionsListener {
         fun onItemClick(fieldPosition: FieldPosition)
     }
 
-    fun setFieldPositions(list: ArrayList<FieldPosition>) {
+    fun setFieldPositions(list: List<FieldPosition>) {
         fieldPositions = list
         notifyDataSetChanged()
     }

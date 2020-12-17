@@ -44,16 +44,17 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
         }
 
         fieldPositionsViewModel.fieldPositionsLiveData.observe(viewLifecycleOwner, {
-            if (it != null) {
-                binding.fieldPositionsRecyclerView.visibility = View.VISIBLE
-                viewAdapter.setFieldPositions(it as ArrayList<FieldPosition>)
-
-                binding.progressBar.visibility = View.GONE
-            } else {
-                showSnackBar(view, "Something went wrong")
-            }
+            onGetFieldPositionsResult(it)
         })
 
+    }
+
+    private fun onGetFieldPositionsResult(fieldPositions: List<FieldPosition>?) {
+        if (fieldPositions != null) {
+            viewAdapter.setFieldPositions(fieldPositions)
+        } else {
+            showSnackBar(binding.root, "Get available field positions failed")
+        }
     }
 
     private fun showSnackBar(view: View, msg: String) {
