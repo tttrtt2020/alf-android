@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.databinding.FragmentFieldPositionSelectionBinding
@@ -57,11 +58,18 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
         }
     }
 
+    private fun openPlayerSelectionFragment(fieldPosition: FieldPosition) {
+        val action = FieldPositionSelectionFragmentDirections.actionFieldPositionSelectionFragmentToPlayerSelectionFragment(
+                args.matchId, args.teamId, args.team, args.format, fieldPosition
+        )
+        findNavController().navigate(action)
+    }
+
     private fun showSnackBar(view: View, msg: String) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onItemClick(fieldPosition: FieldPosition) {
-        TODO("Not yet implemented")
+        openPlayerSelectionFragment(fieldPosition)
     }
 }

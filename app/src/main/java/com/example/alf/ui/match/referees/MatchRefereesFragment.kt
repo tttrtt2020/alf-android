@@ -128,11 +128,17 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
         }
     }
 
+    private fun deleteReferee(referee: Referee, position: Int) {
+        showSnackBar(binding.root, "Delete $referee $position")
+
+        matchRefereesViewModel.deleteMatchReferee(args.matchId, referee)
+    }
+
     class RefereeActionModeCallback(
             private val matchRefereesFragment: MatchRefereesFragment,
             private val referee: Referee,
             private val position: Int
-            ) : ActionMode.Callback {
+    ) : ActionMode.Callback {
         // Called when the action mode is created; startActionMode() was called
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             // Inflate a menu resource providing context menu items
@@ -163,11 +169,5 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
         override fun onDestroyActionMode(mode: ActionMode) {
             matchRefereesFragment.actionMode = null
         }
-    }
-
-    private fun deleteReferee(referee: Referee, position: Int) {
-        showSnackBar(binding.root, "Delete $referee $position")
-
-        matchRefereesViewModel.deleteMatchReferee(args.matchId, referee)
     }
 }

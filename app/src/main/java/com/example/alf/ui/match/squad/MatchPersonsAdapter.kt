@@ -1,6 +1,7 @@
 package com.example.alf.ui.match.squad;
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -10,8 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.data.model.Format
-import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.data.model.Player
+import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.ItemMatchPersonBinding
 
 class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
@@ -57,6 +58,8 @@ class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
         fun onItemDeleted(matchPerson: MatchPerson, position: Int)
 
         fun onItemClick(matchPerson: MatchPerson)
+
+        fun onItemLongClick(view: View, matchPerson: MatchPerson, position: Int): Boolean
     }
 
     fun setMatchPersons(list: List<MatchPerson>) {
@@ -83,6 +86,7 @@ class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
         val matchPerson = matchPersons[position]
         holder.bind(matchPerson)
         holder.itemView.setOnClickListener { listener.onItemClick(matchPerson) }
+        holder.itemView.setOnLongClickListener { listener.onItemLongClick(it, matchPerson, position) }
     }
 
     override fun getItemCount() = matchPersons.size

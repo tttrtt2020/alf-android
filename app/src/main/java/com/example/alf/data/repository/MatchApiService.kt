@@ -40,7 +40,10 @@ class MatchApiService {
 
     }*/
 
-    fun getMatchById(matchLiveData: MutableLiveData<Match>, id: Int): LiveData<Match> {
+    fun getMatchById(
+            matchLiveData: MutableLiveData<Match>,
+            id: Int
+    ): LiveData<Match> {
 
         matchApiInterface.fetchMatchById(id).enqueue(object : Callback<Match> {
 
@@ -107,7 +110,10 @@ class MatchApiService {
 
     }*/
 
-    fun fetchMatchReferees(matchRefereesLiveData: MutableLiveData<List<Referee>>, matchId: Int): LiveData<List<Referee>> {
+    fun fetchMatchReferees(
+            matchRefereesLiveData: MutableLiveData<List<Referee>>,
+            matchId: Int
+    ): LiveData<List<Referee>> {
 
         matchApiInterface.fetchMatchReferees(matchId).enqueue(object : Callback<List<Referee>> {
 
@@ -150,7 +156,11 @@ class MatchApiService {
         return addRefereeToMatchLiveData
     }
 
-    fun deleteMatchReferee(resultLiveData: MutableLiveData<Boolean?>, matchId: Int, referee: Referee): LiveData<Boolean?> {
+    fun deleteMatchReferee(
+            resultLiveData: MutableLiveData<Boolean?>,
+            matchId: Int,
+            referee: Referee
+    ): LiveData<Boolean?> {
 
         matchApiInterface.deleteMatchReferee(matchId, referee.id).enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
@@ -165,7 +175,11 @@ class MatchApiService {
         return resultLiveData
     }
 
-    fun fetchMatchTeam(matchTeamLiveData: MutableLiveData<MatchTeam>, matchId: Int, teamId: Int): LiveData<MatchTeam> {
+    fun fetchMatchTeam(
+            matchTeamLiveData: MutableLiveData<MatchTeam>,
+            matchId: Int,
+            teamId: Int
+    ): LiveData<MatchTeam> {
 
         matchApiInterface.fetchMatchTeam(matchId, teamId).enqueue(object : Callback<MatchTeam> {
 
@@ -189,7 +203,11 @@ class MatchApiService {
         return matchTeamLiveData
     }
 
-    fun fetchMatchTeamSquad(squadLiveData: MutableLiveData<List<MatchPerson>>, matchId: Int, teamId: Int): LiveData<List<MatchPerson>> {
+    fun fetchMatchTeamSquad(
+            squadLiveData: MutableLiveData<List<MatchPerson>>,
+            matchId: Int,
+            teamId: Int
+    ): LiveData<List<MatchPerson>> {
 
         matchApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object : Callback<List<MatchPerson>> {
 
@@ -213,7 +231,11 @@ class MatchApiService {
         return squadLiveData
     }
 
-    suspend fun fetchMatchTeamAllowablePlayersPage(matchId: Int, teamId: Int, query: String, sort: String, nextPageNumber: Int): PlayersPage {
+    suspend fun fetchMatchTeamAllowablePlayersPage(
+            matchId: Int, teamId: Int,
+            query: String,
+            sort: String, nextPageNumber: Int
+    ): PlayersPage {
         return matchApiInterface.fetchMatchTeamAllowablePlayers(matchId, teamId, query, sort, nextPageNumber)
     }
 
@@ -235,6 +257,25 @@ class MatchApiService {
         })
 
         return addPlayerToMatchLiveData
+    }
+
+    fun deleteMatchPlayer(
+            resultLiveData: MutableLiveData<Boolean?>,
+            matchId: Int,
+            player: Player
+    ): LiveData<Boolean?> {
+
+        matchApiInterface.deleteMatchPlayer(matchId, player.id).enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                resultLiveData.value = false
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+            }
+        })
+
+        return resultLiveData
     }
 
 }

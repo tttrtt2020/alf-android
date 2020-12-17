@@ -88,8 +88,7 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
         TODO("Not yet implemented")
     }
 
-    override fun setOnChangeFormationClickListener() {
-        val action = MatchFragmentDirections.actionMatchFragmentToFormationsFragment()
-        findNavController().navigate(action)
+    override fun onItemLongClick(view: View, matchPerson: MatchPerson, position: Int): Boolean {
+        TODO("Not yet implemented")
     }
 }

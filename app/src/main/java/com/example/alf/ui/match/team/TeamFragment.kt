@@ -2,6 +2,7 @@ package com.example.alf.ui.match.team
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
 import com.example.alf.data.model.MatchTeam
+import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentTeamBinding
@@ -48,6 +50,8 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     private lateinit var viewAdapter: MatchPersonsAdapter
 
     private var formation: Formation? = null
+
+    var actionMode: ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +102,13 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         teamViewModel.formationLiveData.observe(viewLifecycleOwner, {
             formation = it
         })
+
+        teamViewModel.deleteMatchPlayerLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                onDeleteMatchPlayerResult(it)
+                teamViewModel.deleteMatchPlayerLiveData.value = null
+            }
+        }
     }
 
     private fun setupFab() {
@@ -119,19 +130,34 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         findNavController().navigate(action)
     }
 
+    private fun onDeleteMatchPlayerResult(success: Boolean) {
+        if (success) {
+            teamViewModel.getSquadByMatchIdAndTeamId(args.matchId, args.teamId)
+            //viewAdapter.deleteMatchPlayer(matchPlayer) todo: should do this but requires match player or position
+            showSnackBar(binding.root, "Delete player success")
+        } else showSnackBar(binding.root, "Delete player failed")
+    }
+
     private fun onFabClicked() {
-        //if (teamViewModel.formationLiveData.value == null) {
         if (formation == null) {
-            val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
-                    args.matchId, args.teamId, args.team, args.format
-            )
-            findNavController().navigate(action)
+            openPlayerSelectionFragment()
         } else {
-            val action = TeamFragmentDirections.actionTeamFragmentToFieldPositionSelectionFragment(
-                    args.matchId, args.teamId, args.team, args.format
-            )
-            findNavController().navigate(action)
+            openFieldPositionSelectionFragment()
         }
+    }
+
+    private fun openPlayerSelectionFragment() {
+        val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
+                args.matchId, args.teamId, args.team, args.format
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun openFieldPositionSelectionFragment() {
+        val action = TeamFragmentDirections.actionTeamFragmentToFieldPositionSelectionFragment(
+                args.matchId, args.teamId, args.team, args.format
+        )
+        findNavController().navigate(action)
     }
 
     private fun onGetTeamResult(matchTeam: MatchTeam) {
@@ -147,11 +173,69 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     }
 
     override fun onItemDeleted(matchPerson: MatchPerson, position: Int) {
-        TODO("Not yet implemented")
+        deletePlayer(matchPerson.player, position)
     }
 
     override fun onItemClick(matchPerson: MatchPerson) {
         TODO("Not yet implemented")
+    }
+
+    override fun onItemLongClick(view: View, matchPerson: MatchPerson, position: Int): Boolean {
+        // Called when the user long-clicks on match person view
+        return when (actionMode) {
+            null -> {
+                // Start the CAB using the ActionMode.Callback defined above
+                actionMode = (activity as MainActivity).startSupportActionMode(
+                        MatchPersonActionModeCallback(this, matchPerson, position)
+                )
+                view.isSelected = true
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun deletePlayer(player: Player, position: Int) {
+        showSnackBar(binding.root, "Delete $player $position")
+
+        teamViewModel.deleteMatchPlayer(args.matchId, player)
+    }
+
+    class MatchPersonActionModeCallback(
+            private val teamFragment: TeamFragment,
+            private val matchPerson: MatchPerson,
+            private val position: Int
+    ) : ActionMode.Callback {
+        // Called when the action mode is created; startActionMode() was called
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            // Inflate a menu resource providing context menu items
+            val inflater: MenuInflater = mode.menuInflater
+            inflater.inflate(R.menu.context_team_players, menu)
+            return true
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+            return false // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+            return when (item.itemId) {
+                R.id.action_delete -> {
+                    teamFragment.onItemDeleted(matchPerson, position)
+                    mode.finish() // Action picked, so close the CAB
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // Called when the user exits the action mode
+        override fun onDestroyActionMode(mode: ActionMode) {
+            teamFragment.actionMode = null
+        }
     }
 
 }

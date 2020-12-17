@@ -24,16 +24,28 @@ interface MatchApiInterface {
     fun fetchMatchReferees(@Path("matchId") matchId: Int): Call<List<Referee>>
 
     @POST("matches/{matchId}/referees")
-    fun addMatchReferee(@Path("matchId") matchId: Int, @Body referee: Referee): Call<Referee>
+    fun addMatchReferee(
+            @Path("matchId") matchId: Int,
+            @Body referee: Referee
+    ): Call<Referee>
 
     @DELETE("matches/{matchId}/referees/{refereeId}")
-    fun deleteMatchReferee(@Path("matchId") matchId: Int, @Path("refereeId") refereeId: Int): Call<Unit>
+    fun deleteMatchReferee(
+            @Path("matchId") matchId: Int,
+            @Path("refereeId") refereeId: Int
+    ): Call<Unit>
 
     @GET("matches/{matchId}/{teamId}/matchTeam")
-    fun fetchMatchTeam(@Path("matchId") matchId: Int, @Path("teamId") teamId: Int): Call<MatchTeam>
+    fun fetchMatchTeam(
+            @Path("matchId") matchId: Int,
+            @Path("teamId") teamId: Int
+    ): Call<MatchTeam>
 
     @GET("matches/{matchId}/{teamId}/squad")
-    fun fetchMatchTeamSquad(@Path("matchId") matchId: Int, @Path("teamId") teamId: Int): Call<List<MatchPerson>>
+    fun fetchMatchTeamSquad(
+            @Path("matchId") matchId: Int,
+            @Path("teamId") teamId: Int
+    ): Call<List<MatchPerson>>
 
     @GET("matches/{matchId}/{teamId}/allowablePlayers")
     suspend fun fetchMatchTeamAllowablePlayers(
@@ -44,6 +56,16 @@ interface MatchApiInterface {
     ): PlayersPage
 
     @POST("matches/{matchId}/{teamId}/players")
-    fun addMatchPlayer(@Path("matchId") matchId: Int, @Path("teamId") teamId: Int, @Body player: Player): Call<Player>
+    fun addMatchPlayer(
+            @Path("matchId") matchId: Int,
+            @Path("teamId") teamId: Int,
+            @Body player: Player
+    ): Call<Player>
+
+    @DELETE("matches/{matchId}/{playerId}")
+    fun deleteMatchPlayer(
+            @Path("matchId") matchId: Int,
+            @Path("playerId") playerId: Int
+    ): Call<Unit>
 
 }

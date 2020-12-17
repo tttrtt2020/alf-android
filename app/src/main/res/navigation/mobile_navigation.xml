@@ -231,33 +231,6 @@
             app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
     <fragment
-        android:id="@+id/playerSelectionFragment"
-        android:name="com.example.alf.ui.match.players.PlayerSelectionFragment"
-        android:label="@string/title_player_selection"
-        tools:layout="@layout/fragment_player_selection">
-        <argument
-            android:name="matchId"
-            app:argType="integer" />
-        <argument
-            android:name="teamId"
-            app:argType="integer" />
-        <argument
-            android:name="team"
-            app:argType="com.example.alf.data.model.Team" />
-        <argument
-            android:name="format"
-            app:argType="com.example.alf.data.model.Format" />
-        <action
-            android:id="@+id/action_playerSelectionFragment_to_teamFragment"
-            app:destination="@id/teamFragment"
-            app:popUpTo="@id/teamFragment"
-            app:popUpToInclusive="true"
-            app:enterAnim="@anim/slide_in_from_left"
-            app:exitAnim="@anim/slide_out_to_right"
-            app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_to_right" />
-    </fragment>
-    <fragment
         android:id="@+id/fieldPositionSelectionFragment"
         android:name="com.example.alf.ui.match.fieldPositions.FieldPositionSelectionFragment"
         android:label="@string/title_field_position_selection"
@@ -274,6 +247,45 @@
         <argument
             android:name="format"
             app:argType="com.example.alf.data.model.Format" />
+        <action
+            android:id="@+id/action_fieldPositionSelectionFragment_to_playerSelectionFragment"
+            app:destination="@id/playerSelectionFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerSelectionFragment"
+        android:name="com.example.alf.ui.match.players.PlayerSelectionFragment"
+        android:label="@string/title_player_selection"
+        tools:layout="@layout/fragment_player_selection">
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
+        <argument
+            android:name="teamId"
+            app:argType="integer" />
+        <argument
+            android:name="team"
+            app:argType="com.example.alf.data.model.Team" />
+        <argument
+            android:name="format"
+            app:argType="com.example.alf.data.model.Format" />
+        <argument
+            android:name="fieldPosition"
+            app:argType="com.example.alf.data.model.match.FieldPosition"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_playerSelectionFragment_to_teamFragment"
+            app:destination="@id/teamFragment"
+            app:popUpTo="@id/teamFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_from_left"
+            app:exitAnim="@anim/slide_out_to_right"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 </navigation>

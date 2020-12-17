@@ -21,6 +21,7 @@ class MatchRefereesViewModel(application: Application, matchId: Int) : AndroidVi
 
     init {
         loadingInProgressLiveData.addSource(matchRefereesLiveData) { loadingInProgressLiveData.value = false }
+        loadingInProgressLiveData.addSource(deleteMatchRefereeLiveData) { loadingInProgressLiveData.value = false }
         emptyCollectionLiveData.apply {
             fun update() {
                 value = loadingInProgressLiveData.value == false && matchRefereesLiveData.value?.isEmpty() ?: false
