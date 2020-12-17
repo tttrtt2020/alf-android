@@ -5,8 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.alf.data.model.MatchTeam
-import com.example.alf.data.model.match.Formation
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.data.repository.MatchApiService
 
@@ -14,10 +12,7 @@ class SquadViewModel(application: Application, matchId: Int, teamId: Int) : Andr
 
     private var matchApiService: MatchApiService = MatchApiService()
 
-    //var squadLiveData: MutableLiveData<List<MatchPerson>> = MutableLiveData()
-    var squadLiveData: MutableLiveData<MatchTeam> = MutableLiveData()
-
-    var formationLiveData: MutableLiveData<Formation> = Transformations.map(squadLiveData) { sq -> sq.formation } as MutableLiveData<Formation>
+    var squadLiveData: MutableLiveData<List<MatchPerson>> = MutableLiveData()
 
     var getSquadResultLiveData: MutableLiveData<Boolean?> = Transformations.map(squadLiveData) { s -> s != null } as MutableLiveData<Boolean?>
 
@@ -28,7 +23,7 @@ class SquadViewModel(application: Application, matchId: Int, teamId: Int) : Andr
         loadingInProgressLiveData.addSource(squadLiveData) { loadingInProgressLiveData.value = false }
         emptyCollectionLiveData.apply {
             fun update() {
-                value = loadingInProgressLiveData.value == false && squadLiveData.value?.matchPlayers?.isEmpty() ?: false
+                value = loadingInProgressLiveData.value == false && squadLiveData.value?.isEmpty() ?: false
             }
 
             addSource(loadingInProgressLiveData) { update() }
@@ -43,8 +38,7 @@ class SquadViewModel(application: Application, matchId: Int, teamId: Int) : Andr
     private fun getSquadByMatchIdAndTeamId(matchId: Int, teamId: Int) {
         loadingInProgressLiveData.value = true
         //squadLiveData.value = null
-        //matchApiService.fetchMatchTeamSquad(squadLiveData, matchId, teamId)
-        matchApiService.fetchMatchTeam(squadLiveData, matchId, teamId)
+        matchApiService.fetchMatchTeamSquad(squadLiveData, matchId, teamId)
     }
 
 }

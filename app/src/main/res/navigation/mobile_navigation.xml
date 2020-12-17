@@ -222,6 +222,13 @@
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right" />
+        <action
+            android:id="@+id/action_teamFragment_to_fieldPositionSelectionFragment"
+            app:destination="@id/fieldPositionSelectionFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
     <fragment
         android:id="@+id/playerSelectionFragment"
@@ -249,6 +256,24 @@
             app:exitAnim="@anim/slide_out_to_right"
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/fieldPositionSelectionFragment"
+        android:name="com.example.alf.ui.match.fieldPositions.FieldPositionSelectionFragment"
+        android:label="@string/title_field_position_selection"
+        tools:layout="@layout/fragment_field_position_selection">
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
+        <argument
+            android:name="teamId"
+            app:argType="integer" />
+        <argument
+            android:name="team"
+            app:argType="com.example.alf.data.model.Team" />
+        <argument
+            android:name="format"
+            app:argType="com.example.alf.data.model.Format" />
     </fragment>
 
 </navigation>

@@ -11,11 +11,9 @@ import retrofit2.Response
 
 class EventApiService {
 
-    private var eventApiInterface: EventApiInterface = ApiClient.getApiClient().create(EventApiInterface::class.java)
-
-    init {
-        eventApiInterface = ApiClient.getApiClient().create(EventApiInterface::class.java)
-    }
+    private var eventApiInterface: EventApiInterface = ApiClient.getApiClient().create(
+            EventApiInterface::class.java
+    )
 
     fun fetchAllEvents(): LiveData<List<Event>> {
         val data = MutableLiveData<List<Event>>()

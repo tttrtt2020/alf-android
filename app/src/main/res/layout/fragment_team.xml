@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="squadViewModel" type="com.example.alf.ui.match.squad.SquadViewModel" />
+        <variable name="teamViewModel" type="com.example.alf.ui.match.team.TeamViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{squadViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{teamViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"/>
 
         <TextView
             android:id="@+id/empty"
@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:textSize="@dimen/text_size_large"
             android:text="@string/empty_collection_match_persons"
-            android:visibility="@{squadViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{teamViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
 
         <Button
             android:id="@+id/retry_button"

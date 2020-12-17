@@ -26,6 +26,8 @@
     <string name="title_player_selection">Select player</string>
     <string name="title_referee_selection">Select referee</string>
     <string name="title_team">Team</string>
+    <string name="title_field_position_selection">Select position</string>
+    <string name="title_player_selection">Select player</string>
 
     <string name="content_description_team_logo">Team logo</string>
     <string name="content_description_person_photo">Person photo</string>

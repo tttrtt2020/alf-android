@@ -10,12 +10,12 @@ import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
+import com.example.alf.data.model.MatchTeam
+import com.example.alf.data.model.match.Formation
 import com.example.alf.data.model.match.MatchPerson
 import com.example.alf.databinding.FragmentTeamBinding
 import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.match.squad.MatchPersonsAdapter
-import com.example.alf.ui.match.squad.SquadViewModel
-import com.example.alf.ui.match.squad.SquadViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -37,8 +37,8 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
-    private val squadViewModel: SquadViewModel by viewModels {
-        SquadViewModelFactory(
+    private val teamViewModel: TeamViewModel by viewModels {
+        TeamViewModelFactory(
                 requireActivity().application,
                 args.matchId,
                 args.teamId
@@ -46,6 +46,8 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     }
 
     private lateinit var viewAdapter: MatchPersonsAdapter
+
+    private var formation: Formation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +61,13 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     ): View {
         binding = FragmentTeamBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.squadViewModel = squadViewModel
+        binding.teamViewModel = teamViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setTitle()
-        loadTeam()
+        observeMatchTeamViewModel()
         setupFab()
     }
 
@@ -88,17 +90,13 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         (requireActivity() as MainActivity).supportActionBar?.title = args.team.name
     }
 
-    private fun loadTeam() {
-        squadViewModel.squadLiveData.observe(viewLifecycleOwner, {
-            if (it != null) {
-                viewAdapter = MatchPersonsAdapter(this, args.format)
-                viewAdapter.setMatchPersons(it.matchPlayers)
-                binding.matchPersonsRecyclerView.apply {
-                    adapter = viewAdapter
-                }
-            } else {
-                showSnackBar(binding.root, "Get squad failed")
-            }
+    private fun observeMatchTeamViewModel() {
+        teamViewModel.matchTeamLiveData.observe(viewLifecycleOwner, {
+            onGetTeamResult(it)
+        })
+
+        teamViewModel.formationLiveData.observe(viewLifecycleOwner, {
+            formation = it
         })
     }
 
@@ -122,8 +120,26 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     }
 
     private fun onFabClicked() {
-        val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(args.matchId, args.teamId, args.team, args.format)
-        findNavController().navigate(action)
+        //if (teamViewModel.formationLiveData.value == null) {
+        if (formation == null) {
+            val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
+                    args.matchId, args.teamId, args.team, args.format
+            )
+            findNavController().navigate(action)
+        } else {
+            val action = TeamFragmentDirections.actionTeamFragmentToFieldPositionSelectionFragment(
+                    args.matchId, args.teamId, args.team, args.format
+            )
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun onGetTeamResult(matchTeam: MatchTeam) {
+        viewAdapter = MatchPersonsAdapter(this, args.format)
+        viewAdapter.setMatchPersons(matchTeam.matchPlayers)
+        binding.matchPersonsRecyclerView.apply {
+            adapter = viewAdapter
+        }
     }
 
     private fun showSnackBar(view: View, msg: String) {
