@@ -3,7 +3,6 @@ package com.example.alf.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.match.Formation
-import com.example.alf.data.model.match.FormationsPageModel
 import com.example.alf.network.ApiClient
 import com.example.alf.network.FormationApiInterface
 import retrofit2.Call
@@ -12,31 +11,36 @@ import retrofit2.Response
 
 class FormationApiService {
 
-    private var formationApiInterface: FormationApiInterface = ApiClient.getApiClient().create(FormationApiInterface::class.java)
+    private var formationApiInterface: FormationApiInterface = ApiClient.getApiClient().create(
+            FormationApiInterface::class.java
+    )
 
-    fun fetchFormations(): LiveData<List<Formation>> {
-        val data = MutableLiveData<List<Formation>>()
+    fun fetchAllowableFormations(
+            formationsLiveData: MutableLiveData<List<Formation>>,
+            matchId: Int,
+            teamId: Int
+    ): LiveData<List<Formation>> {
 
-        formationApiInterface.fetchFormationsPage().enqueue(object : Callback<FormationsPageModel> {
+        formationApiInterface.fetchAllowableFormations(matchId, teamId).enqueue(object : Callback<List<Formation>> {
 
-            override fun onFailure(call: Call<FormationsPageModel>, t: Throwable) {
-                data.value = null
+            override fun onFailure(call: Call<List<Formation>>, t: Throwable) {
+                formationsLiveData.value = null
             }
 
             override fun onResponse(
-                call: Call<FormationsPageModel>,
-                response: Response<FormationsPageModel>
+                call: Call<List<Formation>>,
+                response: Response<List<Formation>>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    data.value = res.content
+                    formationsLiveData.value = res
                 } else {
-                    data.value = null
+                    formationsLiveData.value = null
                 }
             }
         })
 
-        return data
+        return formationsLiveData
     }
 
     fun fetchFormationById(id: Int): LiveData<Formation>? {

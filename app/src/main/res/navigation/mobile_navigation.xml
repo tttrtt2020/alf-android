@@ -106,10 +106,16 @@
             app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
     <fragment
-        android:id="@+id/formationsFragment"
-        android:name="com.example.alf.ui.match.formations.FormationsFragment"
-        android:label="@string/title_formations"
-        tools:layout="@layout/fragment_formations" >
+        android:id="@+id/formationSelectionFragment"
+        android:name="com.example.alf.ui.match.formations.FormationSelectionFragment"
+        android:label="@string/title_select_formation"
+        tools:layout="@layout/fragment_formation_selection" >
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
+        <argument
+            android:name="teamId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/liveEventTypesFragment"
@@ -209,8 +215,8 @@
             android:name="format"
             app:argType="com.example.alf.data.model.Format" />
         <action
-            android:id="@+id/action_teamFragment_to_formationsFragment"
-            app:destination="@id/formationsFragment"
+            android:id="@+id/action_teamFragment_to_formationSelectionFragment"
+            app:destination="@id/formationSelectionFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"

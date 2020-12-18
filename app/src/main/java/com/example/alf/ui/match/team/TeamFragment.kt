@@ -70,7 +70,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setTitle()
+        setTitle(args.team.name)
         observeMatchTeamViewModel()
         setupFab()
     }
@@ -83,15 +83,15 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_open_formations -> {
-                openFormations()
+                openFormationSelection()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun setTitle() {
-        (requireActivity() as MainActivity).supportActionBar?.title = args.team.name
+    private fun setTitle(title: String) {
+        (requireActivity() as MainActivity).supportActionBar?.title = title
     }
 
     private fun observeMatchTeamViewModel() {
@@ -101,6 +101,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
         teamViewModel.formationLiveData.observe(viewLifecycleOwner, {
             formation = it
+            setTitle(args.team.name + (if (formation != null) (": " + formation!!.name) else ""))
         })
 
         teamViewModel.deleteMatchPlayerLiveData.observe(viewLifecycleOwner) {
@@ -125,8 +126,8 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         })
     }
 
-    private fun openFormations() {
-        val action = TeamFragmentDirections.actionTeamFragmentToFormationsFragment()
+    private fun openFormationSelection() {
+        val action = TeamFragmentDirections.actionTeamFragmentToFormationSelectionFragment(args.matchId, args.teamId)
         findNavController().navigate(action)
     }
 
@@ -140,20 +141,20 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     private fun onFabClicked() {
         if (formation == null) {
-            openPlayerSelectionFragment()
+            openPlayerSelection()
         } else {
-            openFieldPositionSelectionFragment()
+            openFieldPositionSelection()
         }
     }
 
-    private fun openPlayerSelectionFragment() {
+    private fun openPlayerSelection() {
         val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
                 args.matchId, args.teamId, args.team, args.format
         )
         findNavController().navigate(action)
     }
 
-    private fun openFieldPositionSelectionFragment() {
+    private fun openFieldPositionSelection() {
         val action = TeamFragmentDirections.actionTeamFragmentToFieldPositionSelectionFragment(
                 args.matchId, args.teamId, args.team, args.format
         )

@@ -8,7 +8,7 @@ import com.example.alf.data.repository.FieldPositionApiService
 
 class FieldPositionsViewModel(matchId: Int, teamId: Int) : ViewModel() {
 
-    private var fieldPositionApiService: FieldPositionApiService = FieldPositionApiService()
+    private var fieldPositionApiService = FieldPositionApiService()
 
     var fieldPositionsLiveData: MutableLiveData<List<FieldPosition>> = MutableLiveData()
 

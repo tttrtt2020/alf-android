@@ -25,6 +25,7 @@
     <string name="title_live_event_type_selection">Select event</string>
     <string name="title_referee_selection">Select referee</string>
     <string name="title_team">Team</string>
+    <string name="title_select_formation">Select formation</string>
     <string name="title_field_position_selection">Select position</string>
     <string name="title_player_selection">Select player</string>
 

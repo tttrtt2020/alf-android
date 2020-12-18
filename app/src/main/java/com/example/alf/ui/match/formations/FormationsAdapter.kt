@@ -9,13 +9,13 @@ import com.example.alf.databinding.ItemFormationBinding
 class FormationsAdapter(var listener: FormationsListener) :
         RecyclerView.Adapter<FormationsAdapter.ViewHolder>() {
 
-    private var formations: ArrayList<Formation> = ArrayList()
+    private var formations: List<Formation> = ArrayList()
 
     interface FormationsListener {
         fun onItemClick(formation: Formation)
     }
 
-    fun setFormations(list: ArrayList<Formation>) {
+    fun setFormations(list: List<Formation>) {
         formations = list
         notifyDataSetChanged()
     }

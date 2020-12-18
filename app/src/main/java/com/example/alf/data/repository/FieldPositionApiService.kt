@@ -15,7 +15,11 @@ class FieldPositionApiService {
             FieldPositionApiInterface::class.java
     )
 
-    fun fetchFreeFieldPositions(fieldPositionsLiveData: MutableLiveData<List<FieldPosition>>, matchId: Int, teamId: Int): LiveData<List<FieldPosition>> {
+    fun fetchFreeFieldPositions(
+            fieldPositionsLiveData: MutableLiveData<List<FieldPosition>>,
+            matchId: Int,
+            teamId: Int
+    ): LiveData<List<FieldPosition>> {
 
         fieldPositionApiInterface.fetchFreeFieldPositions(matchId, teamId).enqueue(object : Callback<List<FieldPosition>> {
 

@@ -6,30 +6,31 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="playerSelectionViewModel" type="com.example.alf.ui.match.players.SearchPlayersViewModel" />
+        <variable name="formationsViewModel" type="com.example.alf.ui.match.formations.FormationsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.match.players.PlayerSelectionFragment">
+        tools:context=".ui.match.formations.FormationSelectionFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/players_recycler_view"
+            android:id="@+id/formations_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingVertical="@dimen/card_margin_half"
             android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
-            app:layoutManager="LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{playerSelectionViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            android:visibility="@{formationsViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
             style="?android:attr/progressBarStyle" />
 
         <Button
@@ -37,7 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Retry"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
