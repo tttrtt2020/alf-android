@@ -34,6 +34,8 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFieldPositionSelectionBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
+        binding.fieldPositionSelectionViewModel = fieldPositionsViewModel
         return binding.root
     }
 

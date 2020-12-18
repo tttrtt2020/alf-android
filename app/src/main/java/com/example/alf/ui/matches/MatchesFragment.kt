@@ -55,23 +55,21 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
             savedInstanceState: Bundle?
     ): View {
         binding = FragmentMatchesBinding.inflate(layoutInflater)
-        /*binding.lifecycleOwner = this
-        binding.matchesViewModel = matchesViewModel*/
+        binding.lifecycleOwner = this
+        matchesViewModel = ViewModelProvider(this, Injection.provideMatchesViewModelFactory()).get(
+                MatchesViewModel::class.java
+        )
+        binding.matchesViewModel = matchesViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // get the view model
-        matchesViewModel = ViewModelProvider(this, Injection.provideMatchesViewModelFactory()).get(
-                MatchesViewModel::class.java
-        )
-
         initAdapter()
-        val query = savedInstanceState?.getString(MatchesFragment.LAST_SEARCH_QUERY) ?: MatchesFragment.DEFAULT_QUERY
-        search(query)
+        val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initSearch(query)
+        search(query)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

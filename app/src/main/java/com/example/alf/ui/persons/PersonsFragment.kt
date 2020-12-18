@@ -56,24 +56,22 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPersonsBinding.inflate(inflater)
+        personsViewModel = ViewModelProvider(this, Injection.providePersonsViewModelFactory()).get(
+                SearchPersonsViewModel::class.java
+        )
         binding.lifecycleOwner = this
-        //binding.personsViewModel = personsViewModel
+        binding.personsViewModel = personsViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // get the view model
-        personsViewModel = ViewModelProvider(this, Injection.providePersonsViewModelFactory()).get(
-            SearchPersonsViewModel::class.java
-        )
-
         setupFab()
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        search(query)
         initSearch(query)
+        search(query)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

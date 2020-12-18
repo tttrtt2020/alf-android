@@ -15,7 +15,7 @@
         tools:context=".ui.match.fieldPositions.FieldPositionSelectionFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fieldPositions_recycler_view"
+            android:id="@+id/field_positions_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingVertical="@dimen/card_margin_half"
@@ -40,7 +40,7 @@
             android:layout_margin="@dimen/card_margin_double"
             android:layout_gravity="center"
             android:textSize="@dimen/text_size_large"
-            android:text="@string/empty_collection_events"
+            android:text="@string/empty_collection_field_positions"
             android:visibility="@{fieldPositionSelectionViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
 
         <Button

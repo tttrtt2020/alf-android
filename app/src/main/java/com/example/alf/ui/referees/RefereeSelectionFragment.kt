@@ -58,22 +58,20 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     ): View {
         binding = FragmentRefereeSelectionBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        //binding.refereeSelectionViewModel = refereeSelectionViewModel
+        refereeSelectionViewModel = ViewModelProvider(this, Injection.provideRefereesViewModelFactory()).get(
+                SearchRefereesViewModel::class.java
+        )
+        binding.refereeSelectionViewModel = refereeSelectionViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // get the view model
-        refereeSelectionViewModel = ViewModelProvider(this, Injection.provideRefereesViewModelFactory()).get(
-            SearchRefereesViewModel::class.java
-        )
-
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        search(query)
         initSearch(query)
+        search(query)
 
         refereeSelectionViewModel.addRefereeToMatchLiveData.observe(viewLifecycleOwner) {
             if (it != null) {

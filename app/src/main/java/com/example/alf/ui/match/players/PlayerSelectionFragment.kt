@@ -58,22 +58,20 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
     ): View {
         binding = FragmentPlayerSelectionBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        //binding.playerSelectionViewModel = playerSelectionViewModel
+        playerSelectionViewModel = ViewModelProvider(this, Injection.providePlayersViewModelFactory(args.matchId, args.teamId)).get(
+                SearchPlayersViewModel::class.java
+        )
+        binding.playerSelectionViewModel = playerSelectionViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // get the view model
-        playerSelectionViewModel = ViewModelProvider(this, Injection.providePlayersViewModelFactory(args.matchId, args.teamId)).get(
-            SearchPlayersViewModel::class.java
-        )
-
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        search(query)
         initSearch(query)
+        search(query)
 
         playerSelectionViewModel.addPlayerToMatchLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -131,7 +129,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
     }
 
     private fun selectPlayer(player: Player) {
-        playerSelectionViewModel.addPlayerToMatch(args.matchId, args.teamId, player)
+        playerSelectionViewModel.addPlayerToMatch(args.matchId, args.teamId, args.fieldPosition, player)
     }
 
     private fun onAddMatchPlayerResult(success: Boolean) {

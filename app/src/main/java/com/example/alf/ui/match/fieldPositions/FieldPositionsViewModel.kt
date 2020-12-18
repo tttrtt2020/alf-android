@@ -32,6 +32,7 @@ class FieldPositionsViewModel(matchId: Int, teamId: Int) : ViewModel() {
     }
 
     private fun fetchFieldPositions(matchId: Int, teamId: Int) {
+        loadingInProgressLiveData.value = true
         fieldPositionApiService.fetchFreeFieldPositions(fieldPositionsLiveData, matchId, teamId)
     }
 

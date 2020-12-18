@@ -59,6 +59,7 @@
 
     <string name="empty_collection_referees">No referees</string>
     <string name="empty_collection_events">No events</string>
-    <string name="empty_collection_match_persons">No players</string>
+    <string name="empty_collection_field_positions">No field positions</string>
+    <string name="empty_collection_match_players">No players</string>
 
 </resources>
