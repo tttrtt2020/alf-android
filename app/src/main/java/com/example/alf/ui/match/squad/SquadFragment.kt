@@ -58,12 +58,12 @@ class SquadFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
         matchViewModel.matchLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
-                loadSquad()
+                loadSquad(it)
             }
         })
     }
 
-    private fun loadSquad() {
+    private fun loadSquad(match: Match) {
         squadViewModel.squadLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
                 viewAdapter = MatchPlayersAdapter(this, match.format)

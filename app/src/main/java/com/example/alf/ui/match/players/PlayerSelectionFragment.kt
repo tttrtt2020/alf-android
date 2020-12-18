@@ -129,7 +129,10 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
     }
 
     private fun selectPlayer(player: Player) {
-        playerSelectionViewModel.addPlayerToMatch(args.matchId, args.teamId, args.fieldPosition, player)
+        playerSelectionViewModel.addPlayerToMatch(
+                args.matchId, args.teamId, args.fieldPosition?.id,
+                player
+        )
     }
 
     private fun onAddMatchPlayerResult(success: Boolean) {

@@ -244,11 +244,11 @@ class MatchApiService {
             addPlayerToMatchLiveData: MutableLiveData<Boolean?>,
             matchId: Int,
             teamId: Int,
-            fieldPosition: FieldPosition?,
+            fieldPositionId: Int?,
             player: Player
     ): LiveData<Boolean?> {
 
-        matchApiInterface.addMatchPlayer(matchId, teamId, fieldPosition?.id, player).enqueue(object : Callback<Player> {
+        matchApiInterface.addMatchPlayer(matchId, teamId, fieldPositionId, player).enqueue(object : Callback<Player> {
             override fun onFailure(call: Call<Player>, t: Throwable) {
                 addPlayerToMatchLiveData.value = false
             }

@@ -10,7 +10,8 @@ interface MatchApiInterface {
     @GET("matches?sort=dateTime,desc")
     fun fetchMatchesPage(): Call<MatchesPage>
 
-    @GET("matches")
+    @GET("matches/played")
+    //@GET("matches")
     suspend fun fetchMatchesPage(
             @Query("query") query: String,
             @Query("sort") sort: String,
@@ -59,6 +60,7 @@ interface MatchApiInterface {
     fun addMatchPlayer(
             @Path("matchId") matchId: Int,
             @Path("teamId") teamId: Int,
+            @Query("fieldPositionId") fieldPositionId: Int?,
             @Body player: Player
     ): Call<Player>
 
