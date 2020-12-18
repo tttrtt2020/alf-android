@@ -70,7 +70,6 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setTitle(args.team.name)
         observeMatchTeamViewModel()
         setupFab()
     }
@@ -99,9 +98,12 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
             onGetTeamResult(it)
         })
 
+        teamViewModel.titleLiveData.observe(viewLifecycleOwner, {
+            setTitle(it)
+        })
+
         teamViewModel.formationLiveData.observe(viewLifecycleOwner, {
             formation = it
-            setTitle(args.team.name + (if (formation != null) (": " + formation!!.name) else ""))
         })
 
         teamViewModel.deleteMatchPlayerLiveData.observe(viewLifecycleOwner) {
@@ -149,20 +151,20 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     private fun openPlayerSelection() {
         val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
-                args.matchId, args.teamId, args.team, args.format
+                args.matchId, args.teamId
         )
         findNavController().navigate(action)
     }
 
     private fun openFieldPositionSelection() {
         val action = TeamFragmentDirections.actionTeamFragmentToFieldPositionSelectionFragment(
-                args.matchId, args.teamId, args.team, args.format
+                args.matchId, args.teamId
         )
         findNavController().navigate(action)
     }
 
     private fun onGetTeamResult(matchTeam: MatchTeam) {
-        viewAdapter = MatchPlayersAdapter(this, args.format)
+        viewAdapter = MatchPlayersAdapter(this)
         viewAdapter.setMatchPlayers(matchTeam.matchPlayers)
         binding.matchPlayersRecyclerView.apply {
             adapter = viewAdapter

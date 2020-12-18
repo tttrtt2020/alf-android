@@ -67,4 +67,24 @@ class FormationApiService {
 
         return data
     }
+
+    fun setFormation(
+            addFormationToMatchLiveData: MutableLiveData<Boolean?>,
+            matchId: Int,
+            teamId: Int,
+            formation: Formation
+    ): LiveData<Boolean?> {
+        formationApiInterface.setFormation(matchId, teamId, formation).enqueue(object : Callback<Formation> {
+            override fun onFailure(call: Call<Formation>, t: Throwable) {
+                addFormationToMatchLiveData.value = false
+            }
+
+            override fun onResponse(call: Call<Formation>, response: Response<Formation>) {
+                addFormationToMatchLiveData.value = (response.code() >= 200 || response.code() <= 299)
+            }
+        })
+
+        return addFormationToMatchLiveData
+    }
+
 }

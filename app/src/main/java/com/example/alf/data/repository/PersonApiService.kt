@@ -96,7 +96,7 @@ class PersonApiService {
             }
 
             override fun onResponse(call: Call<Person>, response: Response<Person>) {
-                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+                resultLiveData.value = (response.code() >= 200 || response.code() <= 299)
             }
         })
 

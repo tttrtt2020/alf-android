@@ -9,6 +9,6 @@ class FormationsViewModelFactory(
         private val teamId: Int
         ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return FormationsViewModel(matchId, teamId) as T
+        return FormationSelectionViewModel(matchId, teamId) as T
     }
 }

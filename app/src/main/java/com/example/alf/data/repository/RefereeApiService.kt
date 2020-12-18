@@ -70,7 +70,7 @@ class RefereeApiService {
             }
 
             override fun onResponse(call: Call<Referee>, response: Response<Referee>) {
-                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+                resultLiveData.value = (response.code() >= 200 || response.code() <= 299)
             }
         })
 

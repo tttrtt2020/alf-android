@@ -6,7 +6,7 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="formationsViewModel" type="com.example.alf.ui.match.formations.FormationsViewModel" />
+        <variable name="formationSelectionViewModel" type="com.example.alf.ui.match.formations.FormationSelectionViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -22,6 +22,7 @@
             android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
+            android:visibility="@{formationSelectionViewModel.formationsLiveData.empty ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2" />
 
@@ -30,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{formationsViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            android:visibility="@{formationSelectionViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
             style="?android:attr/progressBarStyle" />
 
         <Button

@@ -62,7 +62,7 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
 
     private fun openPlayerSelectionFragment(fieldPosition: FieldPosition) {
         val action = FieldPositionSelectionFragmentDirections.actionFieldPositionSelectionFragmentToPlayerSelectionFragment(
-                args.matchId, args.teamId, args.team, args.format, fieldPosition
+                args.matchId, args.teamId, fieldPosition
         )
         findNavController().navigate(action)
     }

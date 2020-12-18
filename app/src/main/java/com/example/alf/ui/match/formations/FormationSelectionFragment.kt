@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.alf.data.model.match.Formation
 import com.example.alf.databinding.FragmentFormationSelectionBinding
@@ -18,7 +19,7 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
 
     private val args: FormationSelectionFragmentArgs by navArgs()
 
-    private val formationsViewModel: FormationsViewModel by viewModels {
+    private val formationSelectionViewModel: FormationSelectionViewModel by viewModels {
         FormationsViewModelFactory(
                 args.matchId,
                 args.teamId
@@ -34,7 +35,7 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
     ): View {
         binding = FragmentFormationSelectionBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
-        binding.formationsViewModel = formationsViewModel
+        binding.formationSelectionViewModel = formationSelectionViewModel
         return binding.root
     }
 
@@ -45,10 +46,16 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
             adapter = viewAdapter
         }
 
-        formationsViewModel.formationsLiveData.observe(viewLifecycleOwner, {
+        formationSelectionViewModel.formationsLiveData.observe(viewLifecycleOwner, {
             onGetFormationsResult(it)
         })
 
+        formationSelectionViewModel.addFormationToMatchLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                onSetFormationResult(it)
+                formationSelectionViewModel.addFormationToMatchLiveData.value = null
+            }
+        }
     }
 
     private fun onGetFormationsResult(formations: List<Formation>?) {
@@ -59,11 +66,32 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
         }
     }
 
+    private fun onSetFormationResult(success: Boolean) {
+        if (success) {
+            showSnackBar(binding.root, "Set formation success")
+            goBack()
+        } else showSnackBar(binding.root, "Set formation failed")
+    }
+
+    private fun goBack() {
+        val action = FormationSelectionFragmentDirections.actionFormationSelectionFragmentToTeamFragment(
+                args.matchId, args.teamId
+        )
+        findNavController().navigate(action)
+    }
+
     private fun showSnackBar(view: View, msg: String) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onItemClick(formation: Formation) {
-        TODO("Not yet implemented")
+        selectFormation(formation)
+    }
+
+    private fun selectFormation(formation: Formation) {
+        formationSelectionViewModel.setFormation(
+                args.matchId, args.teamId,
+                formation
+        )
     }
 }

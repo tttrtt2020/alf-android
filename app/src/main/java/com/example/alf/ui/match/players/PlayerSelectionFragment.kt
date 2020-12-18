@@ -144,7 +144,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
 
     private fun goBack() {
         val action = PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToTeamFragment(
-                args.matchId, args.teamId, args.team, args.format
+                args.matchId, args.teamId
         )
         findNavController().navigate(action)
     }

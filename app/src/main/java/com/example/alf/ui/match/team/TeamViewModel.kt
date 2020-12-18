@@ -13,6 +13,7 @@ class TeamViewModel(application: Application, matchId: Int, teamId: Int) : Andro
 
     var matchTeamLiveData: MutableLiveData<MatchTeam> = MutableLiveData()
 
+    var titleLiveData: LiveData<String> = Transformations.map(matchTeamLiveData) { mt -> mt.team.name + (if (mt.formation != null) (": " + mt.formation!!.name) else "") }
     var formationLiveData: LiveData<Formation?> = Transformations.map(matchTeamLiveData) { sq -> sq.formation }
 
     var getSquadResultLiveData: MutableLiveData<Boolean?> = Transformations.map(matchTeamLiveData) { s -> s != null } as MutableLiveData<Boolean?>

@@ -174,9 +174,7 @@ class MatchFragment : Fragment() {
     private fun onHostClicked() {
         val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
                 args.matchId,
-                matchViewModel.matchLiveData.value!!.hostTeam.id,
-                matchViewModel.matchLiveData.value!!.hostTeam,
-                matchViewModel.matchLiveData.value!!.format
+                matchViewModel.matchLiveData.value!!.hostTeam.id
         )
         findNavController().navigate(action)
     }
@@ -184,9 +182,7 @@ class MatchFragment : Fragment() {
     private fun onGuestClicked() {
         val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
                 args.matchId,
-                matchViewModel.matchLiveData.value!!.guestTeam.id,
-                matchViewModel.matchLiveData.value!!.guestTeam,
-                matchViewModel.matchLiveData.value!!.format
+                matchViewModel.matchLiveData.value!!.guestTeam.id
         )
         findNavController().navigate(action)
     }

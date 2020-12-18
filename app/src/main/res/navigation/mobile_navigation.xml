@@ -116,6 +116,15 @@
         <argument
             android:name="teamId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_formationSelectionFragment_to_teamFragment"
+            app:destination="@id/teamFragment"
+            app:popUpTo="@id/teamFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_from_left"
+            app:exitAnim="@anim/slide_out_to_right"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
     <fragment
         android:id="@+id/liveEventTypesFragment"
@@ -208,12 +217,6 @@
         <argument
             android:name="teamId"
             app:argType="integer" />
-        <argument
-            android:name="team"
-            app:argType="com.example.alf.data.model.Team" />
-        <argument
-            android:name="format"
-            app:argType="com.example.alf.data.model.Format" />
         <action
             android:id="@+id/action_teamFragment_to_formationSelectionFragment"
             app:destination="@id/formationSelectionFragment"
@@ -247,12 +250,6 @@
         <argument
             android:name="teamId"
             app:argType="integer" />
-        <argument
-            android:name="team"
-            app:argType="com.example.alf.data.model.Team" />
-        <argument
-            android:name="format"
-            app:argType="com.example.alf.data.model.Format" />
         <action
             android:id="@+id/action_fieldPositionSelectionFragment_to_playerSelectionFragment"
             app:destination="@id/playerSelectionFragment"
@@ -272,12 +269,6 @@
         <argument
             android:name="teamId"
             app:argType="integer" />
-        <argument
-            android:name="team"
-            app:argType="com.example.alf.data.model.Team" />
-        <argument
-            android:name="format"
-            app:argType="com.example.alf.data.model.Format" />
         <argument
             android:name="fieldPosition"
             app:argType="com.example.alf.data.model.match.FieldPosition"

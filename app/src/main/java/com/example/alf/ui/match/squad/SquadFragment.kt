@@ -66,7 +66,7 @@ class SquadFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     private fun loadSquad(match: Match) {
         squadViewModel.squadLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
-                viewAdapter = MatchPlayersAdapter(this, match.format)
+                viewAdapter = MatchPlayersAdapter(this)
                 viewAdapter.setMatchPlayers(it)
                 binding.matchPlayersRecyclerView.apply {
                     adapter = viewAdapter

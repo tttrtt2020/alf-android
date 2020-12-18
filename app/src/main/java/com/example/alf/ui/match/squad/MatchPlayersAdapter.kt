@@ -10,12 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.AlfApplication
 import com.example.alf.R
-import com.example.alf.data.model.Format
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.databinding.ItemMatchPlayerBinding
 
-class MatchPlayersAdapter(var listener: SquadListener, val format: Format) :
+class MatchPlayersAdapter(var listener: SquadListener) :
         RecyclerView.Adapter<MatchPlayersAdapter.ViewHolder>() {
 
     companion object {

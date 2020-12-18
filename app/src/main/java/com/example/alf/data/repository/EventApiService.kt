@@ -48,7 +48,7 @@ class EventApiService {
             }
 
             override fun onResponse(call: Call<Event>, response: Response<Event>) {
-                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+                resultLiveData.value = (response.code() >= 200 || response.code() <= 299)
             }
         })
 
@@ -63,7 +63,7 @@ class EventApiService {
             }
 
             override fun onResponse(call: Call<Event>, response: Response<Event>) {
-                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+                resultLiveData.value = (response.code() >= 200 || response.code() <= 299)
             }
         })
 
