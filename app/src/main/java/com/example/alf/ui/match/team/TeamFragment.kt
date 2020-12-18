@@ -14,14 +14,14 @@ import com.example.alf.R
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.Formation
-import com.example.alf.data.model.match.MatchPerson
+import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.databinding.FragmentTeamBinding
 import com.example.alf.ui.match.MatchViewModel
-import com.example.alf.ui.match.squad.MatchPersonsAdapter
+import com.example.alf.ui.match.squad.MatchPlayersAdapter
 import com.google.android.material.snackbar.Snackbar
 
 
-class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
+class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     companion object {
         const val ARG_MATCH_ID = "matchId"
@@ -47,7 +47,7 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         )
     }
 
-    private lateinit var viewAdapter: MatchPersonsAdapter
+    private lateinit var viewAdapter: MatchPlayersAdapter
 
     private var formation: Formation? = null
 
@@ -113,7 +113,7 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
 
     private fun setupFab() {
         binding.fab.setOnClickListener { onFabClicked() }
-        binding.matchPersonsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.matchPlayersRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
                     binding.fab.hide()
@@ -161,9 +161,9 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
     }
 
     private fun onGetTeamResult(matchTeam: MatchTeam) {
-        viewAdapter = MatchPersonsAdapter(this, args.format)
-        viewAdapter.setMatchPersons(matchTeam.matchPlayers)
-        binding.matchPersonsRecyclerView.apply {
+        viewAdapter = MatchPlayersAdapter(this, args.format)
+        viewAdapter.setMatchPlayers(matchTeam.matchPlayers)
+        binding.matchPlayersRecyclerView.apply {
             adapter = viewAdapter
         }
     }
@@ -172,21 +172,21 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onItemDeleted(matchPerson: MatchPerson, position: Int) {
-        deletePlayer(matchPerson.player, position)
+    override fun onItemDeleted(matchPlayer: MatchPlayer, position: Int) {
+        deletePlayer(matchPlayer.player, position)
     }
 
-    override fun onItemClick(matchPerson: MatchPerson) {
+    override fun onItemClick(matchPlayer: MatchPlayer) {
         TODO("Not yet implemented")
     }
 
-    override fun onItemLongClick(view: View, matchPerson: MatchPerson, position: Int): Boolean {
+    override fun onItemLongClick(view: View, matchPlayer: MatchPlayer, position: Int): Boolean {
         // Called when the user long-clicks on match person view
         return when (actionMode) {
             null -> {
                 // Start the CAB using the ActionMode.Callback defined above
                 actionMode = (activity as MainActivity).startSupportActionMode(
-                        MatchPersonActionModeCallback(this, matchPerson, position)
+                        MatchPlayerActionModeCallback(this, matchPlayer, position)
                 )
                 view.isSelected = true
                 true
@@ -201,9 +201,9 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         teamViewModel.deleteMatchPlayer(args.matchId, player)
     }
 
-    class MatchPersonActionModeCallback(
+    class MatchPlayerActionModeCallback(
             private val teamFragment: TeamFragment,
-            private val matchPerson: MatchPerson,
+            private val matchPlayer: MatchPlayer,
             private val position: Int
     ) : ActionMode.Callback {
         // Called when the action mode is created; startActionMode() was called
@@ -224,7 +224,7 @@ class TeamFragment : Fragment(), MatchPersonsAdapter.SquadListener {
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             return when (item.itemId) {
                 R.id.action_delete -> {
-                    teamFragment.onItemDeleted(matchPerson, position)
+                    teamFragment.onItemDeleted(matchPlayer, position)
                     mode.finish() // Action picked, so close the CAB
                     true
                 }

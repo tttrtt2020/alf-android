@@ -9,7 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.alf.R
-import com.example.alf.data.model.match.MatchPerson
+import com.example.alf.data.model.Match
+import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.databinding.FragmentSquadBinding
 import com.example.alf.ui.match.MatchFragmentDirections
 import com.example.alf.ui.match.MatchViewModel
@@ -17,7 +18,7 @@ import com.example.alf.ui.match.formations.TeamFormationView
 import com.google.android.material.snackbar.Snackbar
 
 
-class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormationView.OnChangeFormationClickListener {
+class SquadFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     companion object {
         const val ARG_MATCH_ID = "matchId"
@@ -29,7 +30,7 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
 
     private lateinit var binding: FragmentSquadBinding
 
-    private lateinit var viewAdapter: MatchPersonsAdapter
+    private lateinit var viewAdapter: MatchPlayersAdapter
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
@@ -65,9 +66,9 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
     private fun loadSquad() {
         squadViewModel.squadLiveData.observe(viewLifecycleOwner, {
             if (it != null) {
-                viewAdapter = MatchPersonsAdapter(this, matchViewModel.matchLiveData.value!!.format)
-                viewAdapter.setMatchPersons(squadViewModel.squadLiveData.value!!)
-                binding.matchPersonsRecyclerView.apply {
+                viewAdapter = MatchPlayersAdapter(this, match.format)
+                viewAdapter.setMatchPlayers(it)
+                binding.matchPlayersRecyclerView.apply {
                     adapter = viewAdapter
                 }
             } else {
@@ -80,15 +81,15 @@ class SquadFragment : Fragment(), MatchPersonsAdapter.SquadListener, TeamFormati
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onItemDeleted(matchPerson: MatchPerson, position: Int) {
+    override fun onItemDeleted(matchPlayer: MatchPlayer, position: Int) {
         TODO("Not yet implemented")
     }
 
-    override fun onItemClick(matchPerson: MatchPerson) {
+    override fun onItemClick(matchPlayer: MatchPlayer) {
         TODO("Not yet implemented")
     }
 
-    override fun onItemLongClick(view: View, matchPerson: MatchPerson, position: Int): Boolean {
+    override fun onItemLongClick(view: View, matchPlayer: MatchPlayer, position: Int): Boolean {
         TODO("Not yet implemented")
     }
 }

@@ -5,14 +5,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.alf.data.model.match.MatchPerson
+import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.data.repository.MatchApiService
 
 class SquadViewModel(application: Application, matchId: Int, teamId: Int) : AndroidViewModel(application) {
 
     private var matchApiService: MatchApiService = MatchApiService()
 
-    var squadLiveData: MutableLiveData<List<MatchPerson>> = MutableLiveData()
+    var squadLiveData: MutableLiveData<List<MatchPlayer>> = MutableLiveData()
 
     var getSquadResultLiveData: MutableLiveData<Boolean?> = Transformations.map(squadLiveData) { s -> s != null } as MutableLiveData<Boolean?>
 

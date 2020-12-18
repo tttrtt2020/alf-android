@@ -12,11 +12,11 @@ import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.data.model.Format
 import com.example.alf.data.model.Player
-import com.example.alf.data.model.match.MatchPerson
-import com.example.alf.databinding.ItemMatchPersonBinding
+import com.example.alf.data.model.match.MatchPlayer
+import com.example.alf.databinding.ItemMatchPlayerBinding
 
-class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
-        RecyclerView.Adapter<MatchPersonsAdapter.ViewHolder>() {
+class MatchPlayersAdapter(var listener: SquadListener, val format: Format) :
+        RecyclerView.Adapter<MatchPlayersAdapter.ViewHolder>() {
 
     companion object {
 
@@ -52,43 +52,43 @@ class MatchPersonsAdapter(var listener: SquadListener, val format: Format) :
         }
     }
 
-    private var matchPersons: List<MatchPerson> = ArrayList()
+    private var matchPlayers: List<MatchPlayer> = ArrayList()
 
     interface SquadListener {
-        fun onItemDeleted(matchPerson: MatchPerson, position: Int)
+        fun onItemDeleted(matchPlayer: MatchPlayer, position: Int)
 
-        fun onItemClick(matchPerson: MatchPerson)
+        fun onItemClick(matchPlayer: MatchPlayer)
 
-        fun onItemLongClick(view: View, matchPerson: MatchPerson, position: Int): Boolean
+        fun onItemLongClick(view: View, matchPlayer: MatchPlayer, position: Int): Boolean
     }
 
-    fun setMatchPersons(list: List<MatchPerson>) {
-        matchPersons = list
+    fun setMatchPlayers(list: List<MatchPlayer>) {
+        matchPlayers = list
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(private val binding: ItemMatchPersonBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemMatchPlayerBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(matchPerson: MatchPerson) {
-            binding.matchPerson = matchPerson
-            binding.inStart = matchPerson.timeIn == 0
+        fun bind(matchPlayer: MatchPlayer) {
+            binding.matchPlayer = matchPlayer
+            binding.inStart = matchPlayer.timeIn == 0
             binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemMatchPersonBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemMatchPlayerBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val matchPerson = matchPersons[position]
-        holder.bind(matchPerson)
-        holder.itemView.setOnClickListener { listener.onItemClick(matchPerson) }
-        holder.itemView.setOnLongClickListener { listener.onItemLongClick(it, matchPerson, position) }
+        val matchPlayer = matchPlayers[position]
+        holder.bind(matchPlayer)
+        holder.itemView.setOnClickListener { listener.onItemClick(matchPlayer) }
+        holder.itemView.setOnLongClickListener { listener.onItemLongClick(it, matchPlayer, position) }
     }
 
-    override fun getItemCount() = matchPersons.size
+    override fun getItemCount() = matchPlayers.size
 
 }

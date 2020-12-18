@@ -23,7 +23,6 @@
     <string name="title_match_referees">Referees</string>
     <string name="title_formations">Formations</string>
     <string name="title_live_event_type_selection">Select event</string>
-    <string name="title_player_selection">Select player</string>
     <string name="title_referee_selection">Select referee</string>
     <string name="title_team">Team</string>
     <string name="title_field_position_selection">Select position</string>
@@ -31,12 +30,13 @@
 
     <string name="content_description_team_logo">Team logo</string>
     <string name="content_description_person_photo">Person photo</string>
+    <string name="content_description_player_photo">Player photo</string>
     <string name="content_description_flag_image">Flag image</string>
     <string name="content_description_event_type">Event type</string>
     <string name="content_description_in_start">In start icon</string>
     <string name="content_description_add_person">Add person</string>
     <string name="content_description_add_match_referee">Add referee to match</string>
-    <string name="content_description_add_match_person">Add person to match</string>
+    <string name="content_description_add_match_player">Add player to match</string>
     <string name="content_description_add_event">Add event to match</string>
 
     <string name="change_formation">Change formation</string>

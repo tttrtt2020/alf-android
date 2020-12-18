@@ -2,7 +2,7 @@ package com.example.alf.data.model.match
 
 import com.example.alf.data.model.Player
 
-data class MatchPerson (
+data class MatchPlayer (
         var player: Player,
         var playerRole: Role,
         var fieldPosition: FieldPosition?,

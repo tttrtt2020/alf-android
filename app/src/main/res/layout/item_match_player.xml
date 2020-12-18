@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="matchPerson" type="com.example.alf.data.model.match.MatchPerson" />
+        <variable name="matchPlayer" type="com.example.alf.data.model.match.MatchPlayer" />
         <variable name="inStart" type="Boolean" />
     </data>
 
@@ -26,9 +26,9 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/content_description_person_photo"
+                android:contentDescription="@string/content_description_player_photo"
                 android:scaleType="centerCrop"
-                app:imageSrc="@{matchPerson.player}"/>
+                app:imageSrc="@{matchPlayer.player}"/>
 
             <ImageView
                 android:id="@+id/start_icon"
@@ -51,8 +51,8 @@
                 android:layout_marginEnd="@dimen/card_margin"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_small"
-                android:visibility="@{matchPerson.inForPlayer != null ? View.VISIBLE : View.GONE}"
-                android:text="@{String.format(@string/in_for, matchPerson.inForPlayer.lastName)}"
+                android:visibility="@{matchPlayer.inForPlayer != null ? View.VISIBLE : View.GONE}"
+                android:text="@{String.format(@string/in_for, matchPlayer.inForPlayer.lastName)}"
                 app:drawableEndCompat="@drawable/ic_substitution_in"/>
 
             <TextView
@@ -64,8 +64,8 @@
                 android:layout_marginEnd="@dimen/card_margin"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_small"
-                android:visibility="@{matchPerson.outForPlayer != null ? View.VISIBLE : View.GONE}"
-                android:text="@{String.format(@string/out_for, matchPerson.outForPlayer.lastName)}"
+                android:visibility="@{matchPlayer.outForPlayer != null ? View.VISIBLE : View.GONE}"
+                android:text="@{String.format(@string/out_for, matchPlayer.outForPlayer.lastName)}"
                 app:drawableEndCompat="@drawable/ic_substitution_out"/>
 
             <TextView
@@ -80,8 +80,8 @@
                 android:layout_marginTop="@dimen/card_margin_half"
                 android:textSize="@dimen/text_size_medium"
                 android:padding="4dp"
-                android:visibility="@{matchPerson.fieldPosition != null ? View.VISIBLE : View.GONE}"
-                android:text="@{matchPerson.fieldPosition.shortName}"/>
+                android:visibility="@{matchPlayer.fieldPosition != null ? View.VISIBLE : View.GONE}"
+                android:text="@{matchPlayer.fieldPosition.shortName}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_medium"
-                    android:text="@{matchPerson.player.lastName}"/>
+                    android:text="@{matchPlayer.player.lastName}"/>
 
                 <TextView
                     android:id="@+id/first_name"
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_small"
-                    android:text="@{matchPerson.player.firstName}"/>
+                    android:text="@{matchPlayer.player.firstName}"/>
 
                 <TextView
                     android:id="@+id/role"
@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/text_size_small"
-                    android:text="@{matchPerson.playerRole.name}"/>
+                    android:text="@{matchPlayer.playerRole.name}"/>
 
             </LinearLayout>
 

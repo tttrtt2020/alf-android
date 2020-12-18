@@ -3,7 +3,8 @@ package com.example.alf.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.*
-import com.example.alf.data.model.match.MatchPerson
+import com.example.alf.data.model.match.FieldPosition
+import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
 import retrofit2.Call
@@ -204,20 +205,20 @@ class MatchApiService {
     }
 
     fun fetchMatchTeamSquad(
-            squadLiveData: MutableLiveData<List<MatchPerson>>,
+            squadLiveData: MutableLiveData<List<MatchPlayer>>,
             matchId: Int,
             teamId: Int
-    ): LiveData<List<MatchPerson>> {
+    ): LiveData<List<MatchPlayer>> {
 
-        matchApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object : Callback<List<MatchPerson>> {
+        matchApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object : Callback<List<MatchPlayer>> {
 
-            override fun onFailure(call: Call<List<MatchPerson>>, t: Throwable) {
+            override fun onFailure(call: Call<List<MatchPlayer>>, t: Throwable) {
                 squadLiveData.value = null
             }
 
             override fun onResponse(
-                    call: Call<List<MatchPerson>>,
-                    response: Response<List<MatchPerson>>
+                    call: Call<List<MatchPlayer>>,
+                    response: Response<List<MatchPlayer>>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
@@ -243,10 +244,11 @@ class MatchApiService {
             addPlayerToMatchLiveData: MutableLiveData<Boolean?>,
             matchId: Int,
             teamId: Int,
+            fieldPosition: FieldPosition?,
             player: Player
     ): LiveData<Boolean?> {
 
-        matchApiInterface.addMatchPlayer(matchId, teamId, player).enqueue(object : Callback<Player> {
+        matchApiInterface.addMatchPlayer(matchId, teamId, fieldPosition?.id, player).enqueue(object : Callback<Player> {
             override fun onFailure(call: Call<Player>, t: Throwable) {
                 addPlayerToMatchLiveData.value = false
             }

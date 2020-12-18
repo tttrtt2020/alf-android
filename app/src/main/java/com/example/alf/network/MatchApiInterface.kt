@@ -1,7 +1,7 @@
 package com.example.alf.network
 
 import com.example.alf.data.model.*
-import com.example.alf.data.model.match.MatchPerson
+import com.example.alf.data.model.match.MatchPlayer
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -45,7 +45,7 @@ interface MatchApiInterface {
     fun fetchMatchTeamSquad(
             @Path("matchId") matchId: Int,
             @Path("teamId") teamId: Int
-    ): Call<List<MatchPerson>>
+    ): Call<List<MatchPlayer>>
 
     @GET("matches/{matchId}/{teamId}/allowablePlayers")
     suspend fun fetchMatchTeamAllowablePlayers(
