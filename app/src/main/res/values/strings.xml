@@ -10,6 +10,7 @@
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="action_open_referees">Referees</string>
+    <string name="action_skip">Skip</string>
     <string name="show_only_finished">Show only finished</string>
 
     <string name="menu_home">Home</string>

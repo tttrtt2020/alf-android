@@ -82,7 +82,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.referees, menu)
+        inflater.inflate(R.menu.referee_selection, menu)
 
         // Associate searchable configuration with the SearchView
         val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager

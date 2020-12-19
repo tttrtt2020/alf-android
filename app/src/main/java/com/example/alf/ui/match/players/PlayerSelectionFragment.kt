@@ -82,7 +82,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.players, menu)
+        inflater.inflate(R.menu.player_selection, menu)
 
         // Associate searchable configuration with the SearchView
         val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
