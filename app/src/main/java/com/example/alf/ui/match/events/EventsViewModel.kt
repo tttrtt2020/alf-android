@@ -1,14 +1,10 @@
 package com.example.alf.ui.match.events
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.example.alf.data.model.event.Event
 import com.example.alf.data.repository.EventApiService
 
-class EventsViewModel(application: Application, id: Int) : AndroidViewModel(application) {
+class EventsViewModel(matchId: Int) : ViewModel() {
 
     private var eventApiService: EventApiService = EventApiService()
 
@@ -32,7 +28,7 @@ class EventsViewModel(application: Application, id: Int) : AndroidViewModel(appl
             update()
         }
 
-        getEvents(id)
+        getEvents(matchId)
     }
 
     private fun getEvents(id: Int) {

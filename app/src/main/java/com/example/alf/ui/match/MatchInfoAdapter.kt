@@ -42,9 +42,9 @@ class MatchInfoAdapter(
             1 -> {
                 return EventsFragment().apply {
                     arguments = Bundle().apply {
-                        putInt(EventsFragment.ARG_MATCH_ID, matchId)
+                        /*putInt(EventsFragment.ARG_MATCH_ID, matchId)
                         putInt(EventsFragment.ARG_HOST_TEAM_ID, hostTeamId)
-                        putInt(EventsFragment.ARG_GUEST_TEAM_ID, guestTeamId)
+                        putInt(EventsFragment.ARG_GUEST_TEAM_ID, guestTeamId)*/
                     }
                 }
             }

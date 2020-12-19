@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.alf.R
-import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentMatchBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -91,7 +90,6 @@ class MatchFragment : Fragment() {
 
         //setupViewPager()
 
-        setupFab()
         binding.hostLayout.setOnClickListener { onHostClicked() }
         binding.guestLayout.setOnClickListener { onGuestClicked() }
     }
@@ -134,6 +132,10 @@ class MatchFragment : Fragment() {
                 openMatchReferees()
                 true
             }
+            R.id.action_open_events -> {
+                openMatchEvents()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -142,33 +144,22 @@ class MatchFragment : Fragment() {
         if (success) showSnackBar(binding.root, "Get success") else showSnackBar(binding.root, "Get failed")
     }
 
-    private fun setupFab() {
-        binding.fab.setOnClickListener { onFabClicked() }
-        // todo: uncomment below code and attach recycler view
-        /*binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    binding.fab.hide()
-                } else {
-                    binding.fab.show()
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })*/
-    }
-
     private fun openMatchReferees() {
         val action = MatchFragmentDirections.actionMatchFragmentToMatchRefereesFragment(args.matchId)
         findNavController().navigate(action)
     }
 
-    private fun showSnackBar(view: View, msg: String) {
-        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
+    private fun openMatchEvents() {
+        val action = MatchFragmentDirections.actionMatchFragmentToEventsFragment(
+                args.matchId,
+                matchViewModel.matchLiveData.value!!.hostTeam.id,
+                matchViewModel.matchLiveData.value!!.hostTeam.id
+        )
+        findNavController().navigate(action)
     }
 
-    private fun onFabClicked() {
-        val action = MatchFragmentDirections.actionMatchFragmentToLiveEventTypesFragment(args.matchId)
-        findNavController().navigate(action)
+    private fun showSnackBar(view: View, msg: String) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun onHostClicked() {
@@ -183,15 +174,6 @@ class MatchFragment : Fragment() {
         val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
                 args.matchId,
                 matchViewModel.matchLiveData.value!!.guestTeam.id
-        )
-        findNavController().navigate(action)
-    }
-
-    fun onEventClicked(event: Event) {
-        val action = MatchFragmentDirections.actionMatchFragmentToEventFragment(
-                args.matchId,
-                event.id,
-                event
         )
         findNavController().navigate(action)
     }

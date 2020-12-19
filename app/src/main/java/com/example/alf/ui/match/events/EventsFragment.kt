@@ -6,28 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentEventsBinding
-import com.example.alf.ui.match.MatchFragment
 import com.google.android.material.snackbar.Snackbar
 
 
 class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
-    companion object {
+    /*companion object {
         const val ARG_MATCH_ID = "matchId"
         const val ARG_HOST_TEAM_ID = "hostTeamId"
         const val ARG_GUEST_TEAM_ID = "guestTeamId"
-    }
+    }*/
 
     private lateinit var binding: FragmentEventsBinding
+
+    private val args: EventsFragmentArgs by navArgs()
 
     //private val matchViewModel: MatchViewModel by viewModels({ requireParentFragment() })
     //private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
     private val eventsViewModel: EventsViewModel by viewModels {
         EventsViewModelFactory(
-                requireActivity().application,
-                requireArguments().getInt(ARG_MATCH_ID)
+                args.matchId
         )
     }
 
@@ -46,8 +49,8 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewAdapter = EventsAdapter(
-                requireArguments().getInt(ARG_HOST_TEAM_ID),
-                requireArguments().getInt(ARG_GUEST_TEAM_ID),
+                args.hostTeamId,
+                args.guestTeamId,
                 this
         )
         binding.eventsRecyclerView.apply {
@@ -61,6 +64,27 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
                 showSnackBar(binding.root, "Get events failed")
             }
         })
+
+        setupFab()
+    }
+
+    private fun setupFab() {
+        binding.fab.setOnClickListener { onFabClicked() }
+        binding.eventsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    binding.fab.hide()
+                } else {
+                    binding.fab.show()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+    }
+
+    private fun onFabClicked() {
+        val action = EventsFragmentDirections.actionEventsFragmentToLiveEventTypesFragment(args.matchId)
+        findNavController().navigate(action)
     }
 
     private fun showSnackBar(view: View, msg: String) {
@@ -72,6 +96,11 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onItemClick(event: Event) {
-        (parentFragment as MatchFragment).onEventClicked(event)
+        val action = EventsFragmentDirections.actionEventsFragmentToEventFragment(
+                args.matchId,
+                event.id,
+                event
+        )
+        findNavController().navigate(action)
     }
 }

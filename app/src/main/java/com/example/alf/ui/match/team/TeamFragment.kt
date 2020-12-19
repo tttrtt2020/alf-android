@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
-    companion object {
+    /*companion object {
         const val ARG_MATCH_ID = "matchId"
         const val ARG_TEAM_SIDE = "teamSide"
         const val ARG_TEAM_SIDE_HOST = "host"
@@ -31,7 +31,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         const val ARG_TEAM_ID = "teamId"
         const val ARG_TEAM = "team"
         const val ARG_FORMAT = "format"
-    }
+    }*/
 
     private lateinit var binding: FragmentTeamBinding
 
