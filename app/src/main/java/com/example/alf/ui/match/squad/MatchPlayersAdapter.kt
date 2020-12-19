@@ -70,7 +70,11 @@ class MatchPlayersAdapter(var listener: SquadListener) :
 
         fun bind(matchPlayer: MatchPlayer) {
             binding.matchPlayer = matchPlayer
-            binding.inStart = matchPlayer.timeIn == 0
+
+            // todo: choose correct logic
+            binding.inStart = matchPlayer.fieldPosition != null
+            //binding.inStart = matchPlayer.timeIn == 0
+
             binding.executePendingBindings()
         }
     }

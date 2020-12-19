@@ -142,11 +142,15 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     }
 
     private fun onFabClicked() {
-        if (formation == null) {
-            openPlayerSelection()
-        } else {
+        if (freeFieldPositionsExist()) {
             openFieldPositionSelection()
+        } else {
+            openPlayerSelection()
         }
+    }
+
+    private fun freeFieldPositionsExist(): Boolean {
+        return teamViewModel.freeFieldPositionsExist(formation)
     }
 
     private fun openPlayerSelection() {

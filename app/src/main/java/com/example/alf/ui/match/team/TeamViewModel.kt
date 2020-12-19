@@ -51,4 +51,10 @@ class TeamViewModel(application: Application, matchId: Int, teamId: Int) : Andro
         matchApiService.deleteMatchPlayer(deleteMatchPlayerLiveData, matchId, player)
     }
 
+    fun freeFieldPositionsExist(formation: Formation?): Boolean {
+        return if (formation == null) {
+            false
+        } else matchTeamLiveData.value?.matchPlayers?.count { mp -> mp.fieldPosition != null }!! < formation.fieldPositions.size
+    }
+
 }
