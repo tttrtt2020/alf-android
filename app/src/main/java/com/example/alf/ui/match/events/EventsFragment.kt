@@ -53,6 +53,13 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         eventsViewModel.eventsLiveData.observe(viewLifecycleOwner, {
             onGetEventsResult(it)
         })
+
+        eventsViewModel.deleteEventLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                onDeleteEventResult(it)
+                eventsViewModel.deleteEventLiveData.value = null
+            }
+        }
     }
 
     private fun onGetEventsResult(events: List<Event>?) {
@@ -76,6 +83,14 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         })
     }
 
+    private fun onDeleteEventResult(success: Boolean) {
+        if (success) {
+            eventsViewModel.getEvents()
+            //viewAdapter.deleteMatchPlayer(matchPlayer) todo: should do this but requires match player or position
+            showSnackBar(binding.root, "Delete event success")
+        } else showSnackBar(binding.root, "Delete event failed")
+    }
+
     private fun onFabClicked() {
         val action = EventsFragmentDirections.actionEventsFragmentToEventTypesFragment(args.matchId)
         findNavController().navigate(action)
@@ -86,7 +101,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onItemDeleted(event: Event, position: Int) {
-        TODO("Not yet implemented")
+        deleteEvent(event, position)
     }
 
     override fun onItemClick(event: Event) {
@@ -96,6 +111,10 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
                 event
         )
         findNavController().navigate(action)*/
+    }
+
+    private fun deleteEvent(event: Event, position: Int) {
+        eventsViewModel.deleteEvent(event)
     }
 
     override fun onItemLongClick(view: View, event: Event, position: Int): Boolean {
