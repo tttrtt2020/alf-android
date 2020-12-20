@@ -85,17 +85,17 @@ class EventApiService {
         return resultLiveData
     }
 
-    fun fetchMatchEvents(eventsLiveData: MutableLiveData<List<Event>>, matchId: Int): LiveData<List<Event>> {
+    fun fetchMatchEvents(eventsLiveData: MutableLiveData<List<Event>?>, matchId: Int): LiveData<List<Event>?> {
 
-        eventApiInterface.fetchMatchEvents(matchId).enqueue(object : Callback<List<Event>> {
+        eventApiInterface.fetchMatchEvents(matchId).enqueue(object : Callback<List<Event>?> {
 
-            override fun onFailure(call: Call<List<Event>>, t: Throwable) {
+            override fun onFailure(call: Call<List<Event>?>, t: Throwable) {
                 eventsLiveData.value = null
             }
 
             override fun onResponse(
-                    call: Call<List<Event>>,
-                    response: Response<List<Event>>
+                    call: Call<List<Event>?>,
+                    response: Response<List<Event>?>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {

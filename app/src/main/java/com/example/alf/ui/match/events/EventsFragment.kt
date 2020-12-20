@@ -1,26 +1,21 @@
 package com.example.alf.ui.match.events
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
+import com.example.alf.MainActivity
+import com.example.alf.R
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentEventsBinding
 import com.google.android.material.snackbar.Snackbar
 
 
 class EventsFragment : Fragment(), EventsAdapter.EventsListener {
-
-    /*companion object {
-        const val ARG_MATCH_ID = "matchId"
-        const val ARG_HOST_TEAM_ID = "hostTeamId"
-        const val ARG_GUEST_TEAM_ID = "guestTeamId"
-    }*/
 
     private lateinit var binding: FragmentEventsBinding
 
@@ -36,6 +31,8 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private lateinit var viewAdapter: EventsAdapter
 
+    var actionMode: ActionMode? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,24 +45,21 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewAdapter = EventsAdapter(
-                args.hostTeamId,
-                args.guestTeamId,
-                this
-        )
-        binding.eventsRecyclerView.apply {
-            adapter = viewAdapter
-        }
-
-        eventsViewModel.eventsLiveData.observe(viewLifecycleOwner, {
-            if (it != null) {
-                viewAdapter.setEvents(eventsViewModel.eventsLiveData.value!!)
-            } else {
-                showSnackBar(binding.root, "Get events failed")
-            }
-        })
-
+        observeEventsViewModel()
         setupFab()
+    }
+
+    private fun observeEventsViewModel() {
+        eventsViewModel.eventsLiveData.observe(viewLifecycleOwner, {
+            onGetEventsResult(it)
+        })
+    }
+
+    private fun onGetEventsResult(events: List<Event>?) {
+        if (events != null) {
+            viewAdapter = EventsAdapter(events, args.hostTeamId, args.guestTeamId, this)
+            binding.eventsRecyclerView.adapter = viewAdapter
+        } else showSnackBar(binding.root, "Get events failed")
     }
 
     private fun setupFab() {
@@ -83,7 +77,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     private fun onFabClicked() {
-        val action = EventsFragmentDirections.actionEventsFragmentToLiveEventTypesFragment(args.matchId)
+        val action = EventsFragmentDirections.actionEventsFragmentToEventTypesFragment(args.matchId)
         findNavController().navigate(action)
     }
 
@@ -96,11 +90,63 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onItemClick(event: Event) {
-        val action = EventsFragmentDirections.actionEventsFragmentToEventFragment(
+        /*val action = EventsFragmentDirections.actionEventsFragmentToEventFragment(
                 args.matchId,
                 event.id,
                 event
         )
-        findNavController().navigate(action)
+        findNavController().navigate(action)*/
+    }
+
+    override fun onItemLongClick(view: View, event: Event, position: Int): Boolean {
+        // Called when the user long-clicks on match person view
+        return when (actionMode) {
+            null -> {
+                // Start the CAB using the ActionMode.Callback defined above
+                actionMode = (activity as MainActivity).startSupportActionMode(
+                        EventActionModeCallback(this, event, position)
+                )
+                view.isSelected = true
+                true
+            }
+            else -> false
+        }
+    }
+
+    class EventActionModeCallback(
+            private val eventsFragment: EventsFragment,
+            private val event: Event,
+            private val position: Int
+    ) : ActionMode.Callback {
+        // Called when the action mode is created; startActionMode() was called
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            // Inflate a menu resource providing context menu items
+            val inflater: MenuInflater = mode.menuInflater
+            inflater.inflate(R.menu.context_events, menu)
+            return true
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+            return false // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+            return when (item.itemId) {
+                R.id.action_delete -> {
+                    eventsFragment.onItemDeleted(event, position)
+                    mode.finish() // Action picked, so close the CAB
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // Called when the user exits the action mode
+        override fun onDestroyActionMode(mode: ActionMode) {
+            eventsFragment.actionMode = null
+        }
     }
 }

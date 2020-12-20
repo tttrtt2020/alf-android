@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="liveEventType" type="com.example.alf.data.model.event.LiveEventType" />
+        <variable name="eventType" type="com.example.alf.data.model.event.EventType" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -26,7 +26,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/card_margin_half"
                 android:contentDescription="@string/content_description_event_type"
-                app:imageSrc="@{liveEventType}"/>
+                app:imageSrc="@{eventType}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="@dimen/event_type_name_text_size"
-                    android:text="@{liveEventType.name}" />
+                    android:text="@{eventType.name}" />
 
             </LinearLayout>
         </RelativeLayout>

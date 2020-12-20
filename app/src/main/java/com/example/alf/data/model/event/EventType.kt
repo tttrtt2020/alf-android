@@ -2,7 +2,7 @@ package com.example.alf.data.model.event
 
 import java.io.Serializable
 
-class EventType(
+data class EventType(
         var id: Int,
         var name: String
 ) : Serializable

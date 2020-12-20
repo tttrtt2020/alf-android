@@ -2,6 +2,7 @@ package com.example.alf.ui.match.events;
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -13,9 +14,10 @@ import com.example.alf.databinding.ItemEventBinding
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
 class EventsAdapter(
-        var hostTeamId: Int,
-        var guestTeamId: Int,
-        var listener: EventsListener
+        private var events: List<Event>,
+        private var hostTeamId: Int,
+        private var guestTeamId: Int,
+        private var listener: EventsListener
         ) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
     companion object {
@@ -39,12 +41,12 @@ class EventsAdapter(
         }
     }
 
-    private var events: List<Event> = ArrayList()
-
     interface EventsListener {
         fun onItemDeleted(event: Event, position: Int)
 
         fun onItemClick(event: Event)
+
+        fun onItemLongClick(view: View, event: Event, position: Int): Boolean
     }
 
     fun setEvents(list: List<Event>) {
@@ -71,9 +73,8 @@ class EventsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val event = events[position]
         holder.bind(event)
-        holder.itemView.setOnClickListener {
-            listener.onItemClick(event)
-        }
+        holder.itemView.setOnClickListener { listener.onItemClick(event) }
+        holder.itemView.setOnLongClickListener { listener.onItemLongClick(it, event, position) }
     }
 
     override fun getItemCount() = events.size

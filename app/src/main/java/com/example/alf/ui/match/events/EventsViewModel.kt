@@ -8,7 +8,7 @@ class EventsViewModel(matchId: Int) : ViewModel() {
 
     private var eventApiService: EventApiService = EventApiService()
 
-    var eventsLiveData: MutableLiveData<List<Event>> = MutableLiveData()
+    var eventsLiveData: MutableLiveData<List<Event>?> = MutableLiveData()
 
     var getEventsResultLiveData: MutableLiveData<Boolean?> = Transformations.map(eventsLiveData) { es -> es != null } as MutableLiveData<Boolean?>
 

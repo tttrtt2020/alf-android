@@ -24,12 +24,14 @@
     <string name="title_match">Match</string>
     <string name="title_match_referees">Referees</string>
     <string name="title_formations">Formations</string>
-    <string name="title_live_event_type_selection">Select event</string>
+    <string name="title_event_type_selection">Select event type</string>
+    <string name="title_event">Event</string>
     <string name="title_referee_selection">Select referee</string>
     <string name="title_team">Team</string>
     <string name="title_select_formation">Select formation</string>
     <string name="title_field_position_selection">Select position</string>
     <string name="title_player_selection">Select player</string>
+    <string name="title_events">Events</string>
 
     <string name="content_description_team_logo">Team logo</string>
     <string name="content_description_person_photo">Person photo</string>
