@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.data.model.match.Formation
 import com.example.alf.databinding.ItemFormationBinding
 
-class FormationsAdapter(var listener: FormationsListener) :
+class FormationsAdapter(
+        private var formations: List<Formation>,
+        private var listener: FormationsListener
+        ) :
         RecyclerView.Adapter<FormationsAdapter.ViewHolder>() {
-
-    private var formations: List<Formation> = ArrayList()
 
     interface FormationsListener {
         fun onItemClick(formation: Formation)

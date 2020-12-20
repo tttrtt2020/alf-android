@@ -16,10 +16,10 @@ class FormationApiService {
     )
 
     fun fetchAllowableFormations(
-            formationsLiveData: MutableLiveData<List<Formation>>,
+            formationsLiveData: MutableLiveData<List<Formation>?>,
             matchId: Int,
             teamId: Int
-    ): LiveData<List<Formation>> {
+    ): LiveData<List<Formation>?> {
 
         formationApiInterface.fetchAllowableFormations(matchId, teamId).enqueue(object : Callback<List<Formation>> {
 

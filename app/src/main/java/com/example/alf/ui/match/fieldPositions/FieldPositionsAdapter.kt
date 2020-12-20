@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.databinding.ItemFieldPositionBinding
 
-class FieldPositionsAdapter(var listener: FieldPositionsListener) :
+class FieldPositionsAdapter(
+        private var fieldPositions: List<FieldPosition>,
+        private var listener: FieldPositionsListener
+        ) :
         RecyclerView.Adapter<FieldPositionsAdapter.ViewHolder>() {
-
-    private var fieldPositions: List<FieldPosition> = ArrayList()
 
     interface FieldPositionsListener {
         fun onItemClick(fieldPosition: FieldPosition)

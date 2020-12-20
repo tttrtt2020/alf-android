@@ -8,7 +8,7 @@ class FormationSelectionViewModel(matchId: Int, teamId: Int) : ViewModel() {
 
     private var formationApiService = FormationApiService()
 
-    var formationsLiveData: MutableLiveData<List<Formation>> = MutableLiveData()
+    var formationsLiveData: MutableLiveData<List<Formation>?> = MutableLiveData()
 
     var addFormationToMatchLiveData: MutableLiveData<Boolean?> = MutableLiveData()
 

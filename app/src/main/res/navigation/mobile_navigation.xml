@@ -120,40 +120,25 @@
             app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
     <fragment
-        android:id="@+id/liveEventTypesFragment"
-        android:name="com.example.alf.ui.match.events.live.LiveEventTypesFragment"
-        android:label="@string/title_live_event_type_selection"
-        tools:layout="@layout/fragment_live_event_types">
+        android:id="@+id/eventTypesFragment"
+        android:name="com.example.alf.ui.match.eventTypes.EventTypesFragment"
+        android:label="@string/title_event_type_selection"
+        tools:layout="@layout/fragment_event_types">
         <argument
             android:name="matchId"
             app:argType="integer" />
         <action
-            android:id="@+id/action_liveEventTypesFragment_to_liveEventFragment"
-            app:destination="@id/liveEventFragment"
+            android:id="@+id/action_eventTypesFragment_to_eventFragment"
+            app:destination="@id/eventFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
     <fragment
-        android:id="@+id/liveEventFragment"
-        android:name="com.example.alf.ui.match.events.live.LiveEventFragment"
-        android:label="LiveEventFragment"
-        tools:layout="@layout/fragment_live_event">
-        <argument
-            android:name="matchId"
-            app:argType="integer" />
-        <argument
-            android:name="liveEventTypeId"
-            app:argType="integer" />
-        <argument
-            android:name="liveEventType"
-            app:argType="com.example.alf.data.model.event.LiveEventType" />
-    </fragment>
-    <fragment
         android:id="@+id/eventFragment"
         android:name="com.example.alf.ui.match.event.EventFragment"
-        android:label="EventFragment"
+        android:label="@string/title_event"
         tools:layout="@layout/fragment_event">
         <argument
             android:name="matchId"
@@ -164,6 +149,12 @@
         <argument
             android:name="event"
             app:argType="com.example.alf.data.model.event.Event" />
+        <argument
+            android:name="eventTypeId"
+            app:argType="integer" />
+        <argument
+            android:name="eventType"
+            app:argType="com.example.alf.data.model.event.EventType" />
     </fragment>
     <fragment
         android:id="@+id/matchRefereesFragment"
@@ -280,7 +271,7 @@
     <fragment
         android:id="@+id/eventsFragment"
         android:name="com.example.alf.ui.match.events.EventsFragment"
-        android:label="EventsFragment"
+        android:label="@string/title_events"
         tools:layout="@layout/fragment_events">
         <argument
             android:name="matchId"
@@ -299,8 +290,8 @@
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right" />
         <action
-            android:id="@+id/action_eventsFragment_to_liveEventTypesFragment"
-            app:destination="@id/liveEventTypesFragment"
+            android:id="@+id/action_eventsFragment_to_eventTypesFragment"
+            app:destination="@id/eventTypesFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"

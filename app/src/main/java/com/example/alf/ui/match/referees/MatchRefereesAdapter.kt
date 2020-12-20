@@ -13,7 +13,9 @@ import com.example.alf.R
 import com.example.alf.data.model.Referee
 import com.example.alf.databinding.ItemRefereeBinding
 
-class MatchRefereesAdapter(var listener: MatchRefereeListener) :
+class MatchRefereesAdapter(
+        private var referees: ArrayList<Referee>,
+        private var listener: MatchRefereeListener) :
         RecyclerView.Adapter<MatchRefereesAdapter.ViewHolder>() {
 
     companion object {
@@ -49,8 +51,6 @@ class MatchRefereesAdapter(var listener: MatchRefereeListener) :
             )
         }
     }
-
-    private var referees: ArrayList<Referee> = ArrayList()
 
     interface MatchRefereeListener {
         fun onItemDeleted(referee: Referee, position: Int)

@@ -12,7 +12,6 @@ import com.example.alf.MainActivity
 import com.example.alf.R
 import com.example.alf.data.model.Referee
 import com.example.alf.databinding.FragmentMatchRefereesBinding
-import com.example.alf.ui.match.event.EventFragmentArgs
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -49,19 +48,13 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        observeRefereesViewModel()
+        setupFab()
+    }
 
-        initFab()
-
+    private fun observeRefereesViewModel() {
         matchRefereesViewModel.matchRefereesLiveData.observe(viewLifecycleOwner, {
-            if (it != null) {
-                viewAdapter = MatchRefereesAdapter(this)
-                viewAdapter.setReferees(it)
-                binding.refereesRecyclerView.apply {
-                    adapter = viewAdapter
-                }
-            } else {
-                showSnackBar(binding.root, "Get match referees failed")
-            }
+            onGetRefereesResult(it)
         })
 
         matchRefereesViewModel.deleteMatchRefereeLiveData.observe(viewLifecycleOwner) {
@@ -72,16 +65,20 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
         }
     }
 
-    private fun onDeleteMatchRefereeResult(success: Boolean) {
-        if (success) {
-            matchRefereesViewModel.getRefereesByMatchId(args.matchId)
-            //viewAdapter.deleteReferee(referee) todo: should do this but requires referee or position
-            showSnackBar(binding.root, "Delete match referee success")
-        } else showSnackBar(binding.root, "Delete match referee failed")
+    private fun onGetRefereesResult(referees: List<Referee>?) {
+        if (referees != null) {
+            viewAdapter = MatchRefereesAdapter(
+                    if (referees is ArrayList) referees else ArrayList(referees),
+                    this
+            )
+            binding.refereesRecyclerView.adapter = viewAdapter
+        } else {
+            showSnackBar(binding.root, "Get referees failed")
+        }
     }
 
-    private fun initFab() {
-        binding.fab.setOnClickListener { openRefereeSelection() }
+    private fun setupFab() {
+        binding.fab.setOnClickListener { onFabClicked() }
         binding.refereesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
@@ -92,6 +89,18 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
+    }
+
+    private fun onDeleteMatchRefereeResult(success: Boolean) {
+        if (success) {
+            matchRefereesViewModel.getRefereesByMatchId(args.matchId)
+            //viewAdapter.deleteReferee(referee) todo: should do this but requires referee or position
+            showSnackBar(binding.root, "Delete match referee success")
+        } else showSnackBar(binding.root, "Delete match referee failed")
+    }
+
+    private fun onFabClicked() {
+        openRefereeSelection()
     }
 
     private fun openRefereeSelection() {

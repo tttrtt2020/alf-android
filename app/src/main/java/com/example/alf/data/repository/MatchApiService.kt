@@ -112,9 +112,9 @@ class MatchApiService {
     }*/
 
     fun fetchMatchReferees(
-            matchRefereesLiveData: MutableLiveData<List<Referee>>,
+            matchRefereesLiveData: MutableLiveData<List<Referee>?>,
             matchId: Int
-    ): LiveData<List<Referee>> {
+    ): LiveData<List<Referee>?> {
 
         matchApiInterface.fetchMatchReferees(matchId).enqueue(object : Callback<List<Referee>> {
 
@@ -177,10 +177,10 @@ class MatchApiService {
     }
 
     fun fetchMatchTeam(
-            matchTeamLiveData: MutableLiveData<MatchTeam>,
+            matchTeamLiveData: MutableLiveData<MatchTeam?>,
             matchId: Int,
             teamId: Int
-    ): LiveData<MatchTeam> {
+    ): LiveData<MatchTeam?> {
 
         matchApiInterface.fetchMatchTeam(matchId, teamId).enqueue(object : Callback<MatchTeam> {
 
@@ -205,10 +205,10 @@ class MatchApiService {
     }
 
     fun fetchMatchTeamSquad(
-            squadLiveData: MutableLiveData<List<MatchPlayer>>,
+            squadLiveData: MutableLiveData<List<MatchPlayer>?>,
             matchId: Int,
             teamId: Int
-    ): LiveData<List<MatchPlayer>> {
+    ): LiveData<List<MatchPlayer>?> {
 
         matchApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object : Callback<List<MatchPlayer>> {
 

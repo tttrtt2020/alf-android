@@ -44,16 +44,13 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        observeFieldPositionSelectionViewModel()
+    }
 
-        viewAdapter = FieldPositionsAdapter(this)
-        binding.fieldPositionsRecyclerView.apply {
-            adapter = viewAdapter
-        }
-
+    private fun observeFieldPositionSelectionViewModel() {
         fieldPositionsViewModel.fieldPositionsLiveData.observe(viewLifecycleOwner, {
             onGetFieldPositionsResult(it)
         })
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -73,7 +70,8 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
 
     private fun onGetFieldPositionsResult(fieldPositions: List<FieldPosition>?) {
         if (fieldPositions != null) {
-            viewAdapter.setFieldPositions(fieldPositions)
+            viewAdapter = FieldPositionsAdapter(fieldPositions, this)
+            binding.fieldPositionsRecyclerView.adapter = viewAdapter
         } else {
             showSnackBar(binding.root, "Get available field positions failed")
         }

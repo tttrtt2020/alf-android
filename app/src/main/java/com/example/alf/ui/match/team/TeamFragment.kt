@@ -23,16 +23,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
-    /*companion object {
-        const val ARG_MATCH_ID = "matchId"
-        const val ARG_TEAM_SIDE = "teamSide"
-        const val ARG_TEAM_SIDE_HOST = "host"
-        const val ARG_TEAM_SIDE_GUEST = "guest"
-        const val ARG_TEAM_ID = "teamId"
-        const val ARG_TEAM = "team"
-        const val ARG_FORMAT = "format"
-    }*/
-
     private lateinit var binding: FragmentTeamBinding
 
     private val args: TeamFragmentArgs by navArgs()
@@ -99,7 +89,9 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         })
 
         teamViewModel.titleLiveData.observe(viewLifecycleOwner, {
-            setTitle(it)
+            if (it != null) {
+                setTitle(it)
+            }
         })
 
         teamViewModel.formationLiveData.observe(viewLifecycleOwner, {
@@ -167,11 +159,12 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         findNavController().navigate(action)
     }
 
-    private fun onGetTeamResult(matchTeam: MatchTeam) {
-        viewAdapter = MatchPlayersAdapter(this)
-        viewAdapter.setMatchPlayers(matchTeam.matchPlayers)
-        binding.matchPlayersRecyclerView.apply {
-            adapter = viewAdapter
+    private fun onGetTeamResult(matchTeam: MatchTeam?) {
+        if (matchTeam != null) {
+            viewAdapter = MatchPlayersAdapter(matchTeam.matchPlayers, this)
+            binding.matchPlayersRecyclerView.adapter = viewAdapter
+        } else {
+            showSnackBar(binding.root, "Get players failed")
         }
     }
 

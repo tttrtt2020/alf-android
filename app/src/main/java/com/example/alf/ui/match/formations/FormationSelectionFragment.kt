@@ -40,12 +40,10 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        observeFormationSelectionViewModel()
+    }
 
-        viewAdapter = FormationsAdapter(this)
-        binding.formationsRecyclerView.apply {
-            adapter = viewAdapter
-        }
-
+    private fun observeFormationSelectionViewModel() {
         formationSelectionViewModel.formationsLiveData.observe(viewLifecycleOwner, {
             onGetFormationsResult(it)
         })
@@ -60,7 +58,8 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
 
     private fun onGetFormationsResult(formations: List<Formation>?) {
         if (formations != null) {
-            viewAdapter.setFormations(formations)
+            viewAdapter = FormationsAdapter(formations, this)
+            binding.formationsRecyclerView.adapter = viewAdapter
         } else {
             showSnackBar(binding.root, "Get available formations failed")
         }

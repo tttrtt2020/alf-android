@@ -11,7 +11,7 @@ class MatchRefereesViewModel(application: Application, matchId: Int) : AndroidVi
 
     private var matchApiService: MatchApiService = MatchApiService()
 
-    var matchRefereesLiveData: MutableLiveData<List<Referee>> = MutableLiveData()
+    var matchRefereesLiveData: MutableLiveData<List<Referee>?> = MutableLiveData()
 
     var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 

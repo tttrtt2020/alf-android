@@ -14,7 +14,10 @@ import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.databinding.ItemMatchPlayerBinding
 
-class MatchPlayersAdapter(var listener: SquadListener) :
+class MatchPlayersAdapter(
+        private var matchPlayers: List<MatchPlayer>,
+        private var listener: SquadListener
+        ) :
         RecyclerView.Adapter<MatchPlayersAdapter.ViewHolder>() {
 
     companion object {
@@ -50,8 +53,6 @@ class MatchPlayersAdapter(var listener: SquadListener) :
             )
         }
     }
-
-    private var matchPlayers: List<MatchPlayer> = ArrayList()
 
     interface SquadListener {
         fun onItemDeleted(matchPlayer: MatchPlayer, position: Int)

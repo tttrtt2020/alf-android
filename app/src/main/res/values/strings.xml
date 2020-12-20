@@ -40,9 +40,9 @@
     <string name="content_description_event_type">Event type</string>
     <string name="content_description_in_start">In start icon</string>
     <string name="content_description_add_person">Add person</string>
-    <string name="content_description_add_match_referee">Add referee to match</string>
-    <string name="content_description_add_match_player">Add player to match</string>
-    <string name="content_description_add_event">Add event to match</string>
+    <string name="content_description_add_player">Add player</string>
+    <string name="content_description_add_referee">Add referee</string>
+    <string name="content_description_add_event">Add event</string>
 
     <string name="change_formation">Change formation</string>
 

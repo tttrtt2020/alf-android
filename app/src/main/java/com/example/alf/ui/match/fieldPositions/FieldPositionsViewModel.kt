@@ -10,7 +10,7 @@ class FieldPositionsViewModel(matchId: Int, teamId: Int) : ViewModel() {
 
     private var fieldPositionApiService = FieldPositionApiService()
 
-    var fieldPositionsLiveData: MutableLiveData<List<FieldPosition>> = MutableLiveData()
+    var fieldPositionsLiveData: MutableLiveData<List<FieldPosition>?> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
     var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()

@@ -11,10 +11,12 @@ class TeamViewModel(application: Application, matchId: Int, teamId: Int) : Andro
 
     private var matchApiService: MatchApiService = MatchApiService()
 
-    var matchTeamLiveData: MutableLiveData<MatchTeam> = MutableLiveData()
+    var matchTeamLiveData: MutableLiveData<MatchTeam?> = MutableLiveData()
 
-    var titleLiveData: LiveData<String> = Transformations.map(matchTeamLiveData) { mt -> mt.team.name + (if (mt.formation != null) (": " + mt.formation!!.name) else "") }
-    var formationLiveData: LiveData<Formation?> = Transformations.map(matchTeamLiveData) { sq -> sq.formation }
+    var titleLiveData: LiveData<String?> = Transformations.map(matchTeamLiveData) { mt ->
+        if (mt != null ) mt.team.name + (if (mt.formation != null) (": " + mt.formation!!.name) else "") else null
+    }
+    var formationLiveData: LiveData<Formation?> = Transformations.map(matchTeamLiveData) { sq -> sq?.formation }
 
     var getSquadResultLiveData: MutableLiveData<Boolean?> = Transformations.map(matchTeamLiveData) { s -> s != null } as MutableLiveData<Boolean?>
 
