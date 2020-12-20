@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.alf.ui.match.events.EventsFragment
-import com.example.alf.ui.match.squad.SquadFragment
 
 class MatchInfoAdapter(
         fragment: Fragment,
@@ -20,7 +19,8 @@ class MatchInfoAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        when (position) {
+        return Fragment()
+        /*when (position) {
             0 -> {
                 return SquadFragment().apply {
                     arguments = Bundle().apply {
@@ -42,14 +42,14 @@ class MatchInfoAdapter(
             1 -> {
                 return EventsFragment().apply {
                     arguments = Bundle().apply {
-                        /*putInt(EventsFragment.ARG_MATCH_ID, matchId)
+                        putInt(EventsFragment.ARG_MATCH_ID, matchId)
                         putInt(EventsFragment.ARG_HOST_TEAM_ID, hostTeamId)
-                        putInt(EventsFragment.ARG_GUEST_TEAM_ID, guestTeamId)*/
+                        putInt(EventsFragment.ARG_GUEST_TEAM_ID, guestTeamId)
                     }
                 }
             }
             else -> throw IllegalArgumentException("position argument can only be one of (0, 1, 2)")
-        }
+        }*/
 
     }
 }
