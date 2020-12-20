@@ -88,9 +88,6 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
     }
 
     private fun selectFormation(formation: Formation) {
-        formationSelectionViewModel.setFormation(
-                args.matchId, args.teamId,
-                formation
-        )
+        formationSelectionViewModel.setFormation(formation)
     }
 }

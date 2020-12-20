@@ -4,7 +4,10 @@ import androidx.lifecycle.*
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.repository.FormationApiService
 
-class FormationSelectionViewModel(matchId: Int, teamId: Int) : ViewModel() {
+class FormationSelectionViewModel(
+        private val matchId: Int,
+        private val teamId: Int
+        ) : ViewModel() {
 
     private var formationApiService = FormationApiService()
 
@@ -29,15 +32,15 @@ class FormationSelectionViewModel(matchId: Int, teamId: Int) : ViewModel() {
             update()
         }
 
-        fetchFormations(matchId, teamId)
+        fetchFormations()
     }
 
-    private fun fetchFormations(matchId: Int, teamId: Int) {
+    private fun fetchFormations() {
         loadingInProgressLiveData.value = true
         formationApiService.fetchAllowableFormations(formationsLiveData, matchId, teamId)
     }
 
-    fun setFormation(matchId: Int, teamId: Int, formation: Formation) {
+    fun setFormation(formation: Formation) {
         loadingInProgressLiveData.value = true
         formationApiService.setFormation(addFormationToMatchLiveData, matchId, teamId, formation)
     }

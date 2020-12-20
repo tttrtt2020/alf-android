@@ -1,49 +1,48 @@
 package com.example.alf.ui.match.referees
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.alf.data.model.Referee
 import com.example.alf.data.repository.MatchApiService
 
-class MatchRefereesViewModel(application: Application, matchId: Int) : AndroidViewModel(application) {
+class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
 
     private var matchApiService: MatchApiService = MatchApiService()
 
-    var matchRefereesLiveData: MutableLiveData<List<Referee>?> = MutableLiveData()
+    var refereesLiveData: MutableLiveData<List<Referee>?> = MutableLiveData()
 
     var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
-    var deleteMatchRefereeLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+    var deleteRefereeLiveData: MutableLiveData<Boolean?> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
-        loadingInProgressLiveData.addSource(matchRefereesLiveData) { loadingInProgressLiveData.value = false }
-        loadingInProgressLiveData.addSource(deleteMatchRefereeLiveData) { loadingInProgressLiveData.value = false }
+        loadingInProgressLiveData.addSource(refereesLiveData) { loadingInProgressLiveData.value = false }
+        loadingInProgressLiveData.addSource(deleteRefereeLiveData) { loadingInProgressLiveData.value = false }
         emptyCollectionLiveData.apply {
             fun update() {
-                value = loadingInProgressLiveData.value == false && matchRefereesLiveData.value?.isEmpty() ?: false
+                value = loadingInProgressLiveData.value == false && refereesLiveData.value?.isEmpty() ?: false
             }
 
             addSource(loadingInProgressLiveData) { update() }
-            addSource(matchRefereesLiveData) { update() }
+            addSource(refereesLiveData) { update() }
 
             update()
         }
 
-        getRefereesByMatchId(matchId)
+        getReferees()
     }
 
-    fun getRefereesByMatchId(matchId: Int) {
+    fun getReferees() {
         loadingInProgressLiveData.value = true
-        matchApiService.fetchMatchReferees(matchRefereesLiveData, matchId)
+        matchApiService.fetchMatchReferees(refereesLiveData, matchId)
     }
 
-    fun deleteMatchReferee(matchId: Int, referee: Referee) {
+    fun deleteReferee(referee: Referee) {
         loadingInProgressLiveData.value = true
-        matchApiService.deleteMatchReferee(deleteMatchRefereeLiveData, matchId, referee)
+        matchApiService.deleteMatchReferee(deleteRefereeLiveData, matchId, referee)
     }
 
 }

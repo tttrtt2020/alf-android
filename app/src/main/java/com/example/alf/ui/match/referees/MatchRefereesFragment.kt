@@ -29,7 +29,6 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private val matchRefereesViewModel: MatchRefereesViewModel by viewModels {
         MatchRefereesViewModelFactory(
-                requireActivity().application,
                 args.matchId
         )
     }
@@ -53,14 +52,14 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     private fun observeRefereesViewModel() {
-        matchRefereesViewModel.matchRefereesLiveData.observe(viewLifecycleOwner, {
+        matchRefereesViewModel.refereesLiveData.observe(viewLifecycleOwner, {
             onGetRefereesResult(it)
         })
 
-        matchRefereesViewModel.deleteMatchRefereeLiveData.observe(viewLifecycleOwner) {
+        matchRefereesViewModel.deleteRefereeLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 onDeleteMatchRefereeResult(it)
-                matchRefereesViewModel.deleteMatchRefereeLiveData.value = null
+                matchRefereesViewModel.deleteRefereeLiveData.value = null
             }
         }
     }
@@ -93,7 +92,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private fun onDeleteMatchRefereeResult(success: Boolean) {
         if (success) {
-            matchRefereesViewModel.getRefereesByMatchId(args.matchId)
+            matchRefereesViewModel.getReferees()
             //viewAdapter.deleteReferee(referee) todo: should do this but requires referee or position
             showSnackBar(binding.root, "Delete match referee success")
         } else showSnackBar(binding.root, "Delete match referee failed")
@@ -138,9 +137,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     private fun deleteReferee(referee: Referee, position: Int) {
-        showSnackBar(binding.root, "Delete $referee $position")
-
-        matchRefereesViewModel.deleteMatchReferee(args.matchId, referee)
+        matchRefereesViewModel.deleteReferee(referee)
     }
 
     class RefereeActionModeCallback(

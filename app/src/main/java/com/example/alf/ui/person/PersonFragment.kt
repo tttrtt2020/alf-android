@@ -45,7 +45,6 @@ class PersonFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private val personViewModel: PersonViewModel by viewModels {
         PersonViewModelFactory(
-                requireActivity().application,
                 args.personId,
                 args.person
         )

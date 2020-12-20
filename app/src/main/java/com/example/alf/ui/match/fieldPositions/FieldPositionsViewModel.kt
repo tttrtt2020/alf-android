@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.data.repository.FieldPositionApiService
 
-class FieldPositionsViewModel(matchId: Int, teamId: Int) : ViewModel() {
+class FieldPositionsViewModel(
+        private val matchId: Int,
+        private val teamId: Int
+        ) : ViewModel() {
 
     private var fieldPositionApiService = FieldPositionApiService()
 
@@ -28,10 +31,10 @@ class FieldPositionsViewModel(matchId: Int, teamId: Int) : ViewModel() {
             update()
         }
 
-        fetchFieldPositions(matchId, teamId)
+        fetchFieldPositions()
     }
 
-    private fun fetchFieldPositions(matchId: Int, teamId: Int) {
+    private fun fetchFieldPositions() {
         loadingInProgressLiveData.value = true
         fieldPositionApiService.fetchFreeFieldPositions(fieldPositionsLiveData, matchId, teamId)
     }

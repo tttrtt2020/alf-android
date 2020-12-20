@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 class MatchesViewModel(
         private val matchesPagingRepository: MatchesPagingRepository
-) : ViewModel() {
+        ) : ViewModel() {
 
     private val pageSize = AlfApplication.getProperty("pagination.matches.pageSize").toInt()
 

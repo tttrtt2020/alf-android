@@ -59,7 +59,7 @@ class MatchFragment : Fragment() {
     private val args: MatchFragmentArgs by navArgs()
 
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment) {
-        MatchViewModelFactory(activity?.application!!, args.matchId)
+        MatchViewModelFactory(args.matchId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

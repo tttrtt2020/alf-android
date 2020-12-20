@@ -1,6 +1,5 @@
 package com.example.alf.ui.match
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Match
@@ -10,7 +9,7 @@ import com.example.alf.data.repository.MatchApiService
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchViewModel(application: Application, id: Int) : AndroidViewModel(application) {
+class MatchViewModel(private val matchId: Int) : ViewModel() {
 
     private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("match.dateFormat"), Locale.getDefault())
     private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("match.timeFormat"), Locale.getDefault())
@@ -39,7 +38,7 @@ class MatchViewModel(application: Application, id: Int) : AndroidViewModel(appli
     init {
         loadingInProgressLiveData.addSource(matchLiveData) { loadingInProgressLiveData.value = false }
 
-        getMatchById(id)
+        getMatch()
     }
 
     private fun buildStadiumPhotoUrl(stadium: Stadium): String {
@@ -51,10 +50,10 @@ class MatchViewModel(application: Application, id: Int) : AndroidViewModel(appli
         return AlfApplication.getProperty("url.logo.club") + team.club.id + AlfApplication.getProperty("extension.logo.club")
     }
 
-    private fun getMatchById(id: Int) {
+    private fun getMatch() {
         loadingInProgressLiveData.value = true
         //matchLiveData.value = null
-        matchApiService.getMatchById(matchLiveData, id)
+        matchApiService.getMatchById(matchLiveData, matchId)
     }
 
 }

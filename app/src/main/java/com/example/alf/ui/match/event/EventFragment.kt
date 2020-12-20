@@ -54,7 +54,7 @@ class EventFragment : Fragment() {
         EventViewModelFactory(args.matchId, args.eventId, args.event)
     }
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment) {
-        MatchViewModelFactory(activity?.application!!, args.matchId)
+        MatchViewModelFactory(args.matchId)
     }
 
     private lateinit var saveMenuItem: MenuItem

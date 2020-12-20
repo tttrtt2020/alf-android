@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.example.alf.data.model.event.Event
 import com.example.alf.data.repository.EventApiService
 
-class EventsViewModel(val matchId: Int) : ViewModel() {
+class EventsViewModel(private val matchId: Int) : ViewModel() {
 
     private var eventApiService: EventApiService = EventApiService()
 

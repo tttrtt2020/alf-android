@@ -1,6 +1,5 @@
 package com.example.alf.ui.person
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Country
@@ -11,7 +10,10 @@ import java.util.*
 /**
  * ViewModel for the person create/edit screen.
  */
-class PersonViewModel(application: Application, personId: Int, person: Person?) : AndroidViewModel(application) {
+class PersonViewModel(
+        private val personId: Int,
+        private val person: Person?
+        ) : ViewModel() {
 
     private var personService: PersonApiService = PersonApiService()
 
@@ -47,19 +49,19 @@ class PersonViewModel(application: Application, personId: Int, person: Person?) 
             }
         }
 
-        getPersonById(personId)
+        getPerson()
     }
 
-    private fun getPersonById(id: Int) {
+    private fun getPerson() {
         loadingInProgressLiveData.value = true
-        if (id == 0) {
+        if (personId == 0) {
             // create new person
             personLiveData.value = Person(0,
                     "", null, "",
                     null, Country(0, "nj", "mrep"), null, null)
         } else {
             // get existing person
-            personService.getPersonById(personLiveData, id)
+            personService.getPersonById(personLiveData, personId)
         }
     }
 

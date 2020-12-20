@@ -31,7 +31,6 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     private val matchViewModel: MatchViewModel by navGraphViewModels(R.id.matchFragment)
     private val teamViewModel: TeamViewModel by viewModels {
         TeamViewModelFactory(
-                requireActivity().application,
                 args.matchId,
                 args.teamId
         )
@@ -98,10 +97,10 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
             formation = it
         })
 
-        teamViewModel.deleteMatchPlayerLiveData.observe(viewLifecycleOwner) {
+        teamViewModel.deletePlayerLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 onDeleteMatchPlayerResult(it)
-                teamViewModel.deleteMatchPlayerLiveData.value = null
+                teamViewModel.deletePlayerLiveData.value = null
             }
         }
     }
@@ -127,7 +126,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     private fun onDeleteMatchPlayerResult(success: Boolean) {
         if (success) {
-            teamViewModel.getSquadByMatchIdAndTeamId(args.matchId, args.teamId)
+            teamViewModel.getSquad()
             //viewAdapter.deleteMatchPlayer(matchPlayer) todo: should do this but requires match player or position
             showSnackBar(binding.root, "Delete player success")
         } else showSnackBar(binding.root, "Delete player failed")
@@ -196,9 +195,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     }
 
     private fun deletePlayer(player: Player, position: Int) {
-        showSnackBar(binding.root, "Delete $player $position")
-
-        teamViewModel.deleteMatchPlayer(args.matchId, player)
+        teamViewModel.deletePlayer(player)
     }
 
     class MatchPlayerActionModeCallback(
