@@ -6,13 +6,13 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="eventTypesViewModel" type="com.example.alf.ui.match.eventTypes.EventTypesViewModel" />
+        <variable name="eventTypeSelectionViewModel" type="com.example.alf.ui.match.eventTypes.EventTypeSelectionViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.match.eventTypes.EventTypesFragment">
+        tools:context=".ui.match.eventTypes.EventTypeSelectionFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/event_types_recycler_view"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{eventTypesViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            android:visibility="@{eventTypeSelectionViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
             style="?android:attr/progressBarStyle" />
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_gravity="center"
             android:textSize="@dimen/text_size_large"
             android:text="@string/empty_collection_events"
-            android:visibility="@{eventTypesViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{eventTypeSelectionViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
 
         <Button
             android:id="@+id/retry_button"

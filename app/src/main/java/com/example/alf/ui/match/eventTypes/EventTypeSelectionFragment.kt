@@ -8,17 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.alf.data.model.event.EventType
-import com.example.alf.databinding.FragmentEventTypesBinding
+import com.example.alf.databinding.FragmentEventTypeSelectionBinding
 import com.google.android.material.snackbar.Snackbar
 
-class EventTypesFragment : Fragment(), EventTypesAdapter.EventTypesListener {
+class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListener {
 
-    private lateinit var binding: FragmentEventTypesBinding
+    private lateinit var binding: FragmentEventTypeSelectionBinding
 
-    private val args: EventTypesFragmentArgs by navArgs()
+    private val args: EventTypeSelectionFragmentArgs by navArgs()
 
-    private val eventTypesViewModel: EventTypesViewModel by viewModels  {
-        EventTypesViewModelFactory(
+    private val eventTypeSelectionViewModel: EventTypeSelectionViewModel by viewModels  {
+        EventTypeSelectionViewModelFactory(
                 args.matchId
         )
     }
@@ -30,9 +30,9 @@ class EventTypesFragment : Fragment(), EventTypesAdapter.EventTypesListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentEventTypesBinding.inflate(layoutInflater)
+        binding = FragmentEventTypeSelectionBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
-        binding.eventTypesViewModel = eventTypesViewModel
+        binding.eventTypeSelectionViewModel = eventTypeSelectionViewModel
         return binding.root
     }
 
@@ -41,7 +41,7 @@ class EventTypesFragment : Fragment(), EventTypesAdapter.EventTypesListener {
     }
 
     private fun observeEventTypesViewModel() {
-        eventTypesViewModel.eventTypesLiveData.observe(viewLifecycleOwner, {
+        eventTypeSelectionViewModel.eventTypesLiveData.observe(viewLifecycleOwner, {
             onGetEventTypesResult(it)
         })
     }

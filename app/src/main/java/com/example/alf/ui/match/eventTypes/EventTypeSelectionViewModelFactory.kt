@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 
-class EventTypesViewModelFactory(
+class EventTypeSelectionViewModelFactory(
         private val matchId: Int
         ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return EventTypesViewModel(matchId) as T
+        return EventTypeSelectionViewModel(matchId) as T
     }
 }
