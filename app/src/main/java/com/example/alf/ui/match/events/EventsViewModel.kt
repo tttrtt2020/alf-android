@@ -41,6 +41,7 @@ class EventsViewModel(private val matchId: Int) : ViewModel() {
     }
 
     fun deleteEvent(event: Event) {
+        loadingInProgressLiveData.value = true
         eventApiService.deleteEvent(deleteEventLiveData, event)
     }
 

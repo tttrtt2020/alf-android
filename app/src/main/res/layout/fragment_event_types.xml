@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/event_types_recycler_view"
+    <data>
+        <import type="android.view.View" />
+        <variable name="eventTypesViewModel" type="com.example.alf.ui.match.eventTypes.EventTypesViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingVertical="@dimen/card_margin_half"
-        android:clipToPadding="false"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        tools:context=".ui.match.eventTypes.EventTypesFragment">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/event_types_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="@dimen/card_margin_half"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            app:layoutManager="LinearLayoutManager" />
 
-        android:visibility="gone"/>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{eventTypesViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            style="?android:attr/progressBarStyle" />
 
-    <Button
-        android:id="@+id/retry_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Retry"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin_double"
+            android:layout_gravity="center"
+            android:textSize="@dimen/text_size_large"
+            android:text="@string/empty_collection_events"
+            android:visibility="@{eventTypesViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
 
-        android:visibility="gone"/>
+        <Button
+            android:id="@+id/retry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retry"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

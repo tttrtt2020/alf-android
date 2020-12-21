@@ -13,36 +13,42 @@ class EventTypeApiService {
 
     private var formationApiInterface: EventTypeApiInterface = ApiClient.getApiClient().create(EventTypeApiInterface::class.java)
 
-    fun fetchEventTypes(liveEventTypesLiveData: MutableLiveData<List<EventType>>): LiveData<List<EventType>> {
+    fun fetchMatchEventTypes(
+            eventTypesLiveData: MutableLiveData<List<EventType>?>,
+            matchId: Int
+    ): LiveData<List<EventType>?> {
 
-        formationApiInterface.fetchEventTypes().enqueue(object : Callback<List<EventType>> {
+        formationApiInterface.fetchMatchEventTypes(matchId).enqueue(object : Callback<List<EventType>> {
 
             override fun onFailure(call: Call<List<EventType>>, t: Throwable) {
-                liveEventTypesLiveData.value = null
+                eventTypesLiveData.value = null
             }
 
             override fun onResponse(
-                call: Call<List<EventType>>,
-                response: Response<List<EventType>>
+                    call: Call<List<EventType>>,
+                    response: Response<List<EventType>>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    liveEventTypesLiveData.value = res
+                    eventTypesLiveData.value = res
                 } else {
-                    liveEventTypesLiveData.value = null
+                    eventTypesLiveData.value = null
                 }
             }
         })
 
-        return liveEventTypesLiveData
+        return eventTypesLiveData
     }
 
-    fun fetchEventTypeById(liveEventTypeLiveData: MutableLiveData<EventType>, id: Int): LiveData<EventType> {
+    fun fetchEventTypeById(
+            eventTypeLiveData: MutableLiveData<EventType?>,
+            eventTypeId: Int
+    ): LiveData<EventType?> {
 
-        formationApiInterface.fetchEventTypeById(id).enqueue(object : Callback<EventType> {
+        formationApiInterface.fetchEventTypeById(eventTypeId).enqueue(object : Callback<EventType> {
 
             override fun onFailure(call: Call<EventType>, t: Throwable) {
-                liveEventTypeLiveData.value = null
+                eventTypeLiveData.value = null
             }
 
             override fun onResponse(
@@ -51,13 +57,13 @@ class EventTypeApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    liveEventTypeLiveData.value = res
+                    eventTypeLiveData.value = res
                 } else {
-                    liveEventTypeLiveData.value = null
+                    eventTypeLiveData.value = null
                 }
             }
         })
 
-        return liveEventTypeLiveData
+        return eventTypeLiveData
     }
 }

@@ -10,7 +10,10 @@ interface EventTypeApiInterface {
     @GET("eventTypes")
     fun fetchEventTypes(): Call<List<EventType>>
 
-    @GET("eventTypes/{id}")
-    fun fetchEventTypeById(@Path("id") id: Int): Call<EventType>
+    @GET("matches/{matchId}/eventTypes")
+    fun fetchMatchEventTypes(@Path("matchId") matchId: Int): Call<List<EventType>>
+
+    @GET("eventTypes/{eventTypeId}")
+    fun fetchEventTypeById(@Path("eventTypeId") eventTypeId: Int): Call<EventType>
 
 }

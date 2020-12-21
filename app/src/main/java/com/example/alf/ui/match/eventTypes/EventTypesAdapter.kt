@@ -11,8 +11,10 @@ import com.example.alf.data.model.event.EventType
 import com.example.alf.databinding.ItemEventTypeBinding
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
-class EventTypesAdapter(var listener: EventTypesListener) :
-        RecyclerView.Adapter<EventTypesAdapter.ViewHolder>() {
+class EventTypesAdapter(
+        private var eventTypes: List<EventType>,
+        private var listener: EventTypesListener
+) : RecyclerView.Adapter<EventTypesAdapter.ViewHolder>() {
 
     companion object {
 
@@ -34,8 +36,6 @@ class EventTypesAdapter(var listener: EventTypesListener) :
             }
         }
     }
-
-    private var eventTypes: List<EventType> = ArrayList()
 
     interface EventTypesListener {
         fun onItemClick(eventType: EventType)
