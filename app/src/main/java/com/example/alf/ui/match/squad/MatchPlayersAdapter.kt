@@ -22,16 +22,16 @@ class MatchPlayersAdapter(
 
     companion object {
 
-        private fun buildPersonPhotoUrl(person: Player): String {
-            return AlfApplication.getProperty("url.image.person") +
-                    person.id +
-                    AlfApplication.getProperty("extension.image.person")
+        private fun buildPlayerPhotoUrl(player: Player): String {
+            return AlfApplication.getProperty("url.image.player") +
+                    player.id +
+                    AlfApplication.getProperty("extension.image.player")
         }
 
         @JvmStatic
         @BindingAdapter("app:imageSrc")
-        fun loadPersonPhoto(imageView: ImageView, person: Player) {
-            val url = buildPersonPhotoUrl(person)
+        fun loadPlayerPhoto(imageView: ImageView, player: Player) {
+            val url = buildPlayerPhotoUrl(player)
             if (url.isNotEmpty()) {
                 Glide
                         .with(imageView.context)

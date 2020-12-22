@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
@@ -48,9 +49,9 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         binding = FragmentTeamBinding.inflate(inflater)
         binding.lifecycleOwner = this
@@ -59,6 +60,8 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViews()
+
         observeMatchTeamViewModel()
         setupFab()
     }
@@ -75,6 +78,22 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setupViews() {
+        binding.matchPlayersRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) {
+                        binding.fab.hide()
+                    } else {
+                        binding.fab.show()
+                    }
+                    super.onScrolled(recyclerView, dx, dy)
+                }
+            })
         }
     }
 
@@ -107,16 +126,6 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     private fun setupFab() {
         binding.fab.setOnClickListener { onFabClicked() }
-        binding.matchPlayersRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    binding.fab.hide()
-                } else {
-                    binding.fab.show()
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
     }
 
     private fun openFormationSelection() {
