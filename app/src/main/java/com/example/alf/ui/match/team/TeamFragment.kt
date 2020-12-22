@@ -17,6 +17,7 @@ import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.databinding.FragmentTeamBinding
+import com.example.alf.ui.common.ActionModeCallback
 import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.match.squad.MatchPlayersAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -191,9 +192,9 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         // Called when the user long-clicks on match person view
         return when (actionMode) {
             null -> {
-                // Start the CAB using the ActionMode.Callback defined above
+                // Start the CAB using the ActionMode.Callback
                 actionMode = (activity as MainActivity).startSupportActionMode(
-                        MatchPlayerActionModeCallback(this, matchPlayer, position)
+                        MatchPlayerActionModeCallback(this, view, matchPlayer, position)
                 )
                 view.isSelected = true
                 true
@@ -208,21 +209,17 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     class MatchPlayerActionModeCallback(
             private val teamFragment: TeamFragment,
+            view: View,
             private val matchPlayer: MatchPlayer,
             private val position: Int
-    ) : ActionMode.Callback {
+    ) : ActionModeCallback(teamFragment.requireContext(), view) {
+
         // Called when the action mode is created; startActionMode() was called
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             // Inflate a menu resource providing context menu items
             val inflater: MenuInflater = mode.menuInflater
             inflater.inflate(R.menu.context_team_players, menu)
             return true
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            return false // Return false if nothing is done
         }
 
         // Called when the user selects a contextual menu item
@@ -239,6 +236,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
         // Called when the user exits the action mode
         override fun onDestroyActionMode(mode: ActionMode) {
+            super.onDestroyActionMode(mode)
             teamFragment.actionMode = null
         }
     }

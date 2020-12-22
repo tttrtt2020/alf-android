@@ -19,4 +19,7 @@
 
     <color name="green">#33AA33</color>
     <color name="red">#AA3333</color>
+
+    <color name="item_color">@color/white</color>
+    <color name="item_selected_color">#88CC0000</color>
 </resources>

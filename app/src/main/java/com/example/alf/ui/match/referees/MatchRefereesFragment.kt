@@ -13,6 +13,7 @@ import com.example.alf.MainActivity
 import com.example.alf.R
 import com.example.alf.data.model.Referee
 import com.example.alf.databinding.FragmentMatchRefereesBinding
+import com.example.alf.ui.common.ActionModeCallback
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -129,9 +130,9 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
         // Called when the user long-clicks on referee view
         return when (actionMode) {
             null -> {
-                // Start the CAB using the ActionMode.Callback defined above
+                // Start the CAB using the ActionMode.Callback
                 actionMode = (activity as MainActivity).startSupportActionMode(
-                        RefereeActionModeCallback(this, referee, position)
+                        RefereeActionModeCallback(this, view, referee, position)
                 )
                 view.isSelected = true
                 true
@@ -146,21 +147,17 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     class RefereeActionModeCallback(
             private val matchRefereesFragment: MatchRefereesFragment,
+            view: View,
             private val referee: Referee,
             private val position: Int
-    ) : ActionMode.Callback {
+    ) : ActionModeCallback(matchRefereesFragment.requireContext(), view) {
+
         // Called when the action mode is created; startActionMode() was called
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             // Inflate a menu resource providing context menu items
             val inflater: MenuInflater = mode.menuInflater
             inflater.inflate(R.menu.context_match_referees, menu)
             return true
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            return false // Return false if nothing is done
         }
 
         // Called when the user selects a contextual menu item
@@ -177,6 +174,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
         // Called when the user exits the action mode
         override fun onDestroyActionMode(mode: ActionMode) {
+            super.onDestroyActionMode(mode)
             matchRefereesFragment.actionMode = null
         }
     }

@@ -13,6 +13,7 @@ import com.example.alf.MainActivity
 import com.example.alf.R
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentEventsBinding
+import com.example.alf.ui.common.ActionModeCallback
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -131,9 +132,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         // Called when the user long-clicks on match person view
         return when (actionMode) {
             null -> {
-                // Start the CAB using the ActionMode.Callback defined above
+                // Start the CAB using the ActionMode.Callback
                 actionMode = (activity as MainActivity).startSupportActionMode(
-                        EventActionModeCallback(this, event, position)
+                        EventActionModeCallback(this, view, event, position)
                 )
                 view.isSelected = true
                 true
@@ -144,21 +145,17 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     class EventActionModeCallback(
             private val eventsFragment: EventsFragment,
+            view: View,
             private val event: Event,
             private val position: Int
-    ) : ActionMode.Callback {
+    ) : ActionModeCallback(eventsFragment.requireContext(), view) {
+
         // Called when the action mode is created; startActionMode() was called
-        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu?): Boolean {
             // Inflate a menu resource providing context menu items
             val inflater: MenuInflater = mode.menuInflater
             inflater.inflate(R.menu.context_events, menu)
             return true
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            return false // Return false if nothing is done
         }
 
         // Called when the user selects a contextual menu item
@@ -175,6 +172,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
         // Called when the user exits the action mode
         override fun onDestroyActionMode(mode: ActionMode) {
+            super.onDestroyActionMode(mode)
             eventsFragment.actionMode = null
         }
     }
