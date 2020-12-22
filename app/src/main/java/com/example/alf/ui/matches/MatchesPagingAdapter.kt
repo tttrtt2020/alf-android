@@ -45,13 +45,13 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
         }
 
         @JvmStatic
-        @BindingAdapter("app:date")
+        @BindingAdapter("app:match_date")
         fun setDate(textView: TextView, dateTime: Date?) {
             textView.text = if (dateTime != null) dateFormat.format(dateTime) else ""
         }
 
         @JvmStatic
-        @BindingAdapter("app:time")
+        @BindingAdapter("app:match_time")
         fun setTime(textView: TextView, dateTime: Date?) {
             textView.text = if (dateTime != null) timeFormat.format(dateTime) else ""
         }

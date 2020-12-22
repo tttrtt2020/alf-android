@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+
 
 class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchView.OnQueryTextListener {
 
@@ -138,6 +140,9 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
                 header = MatchesLoadStateAdapter { viewAdapter.retry() },
                 footer = MatchesLoadStateAdapter { viewAdapter.retry() }
         )
+        binding.matchesRecyclerView.addItemDecoration(DividerItemDecoration(
+                binding.matchesRecyclerView.context, DividerItemDecoration.VERTICAL
+        ))
         viewAdapter.addLoadStateListener { loadState ->
             // Only show the list if refresh succeeds.
             binding.matchesRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
