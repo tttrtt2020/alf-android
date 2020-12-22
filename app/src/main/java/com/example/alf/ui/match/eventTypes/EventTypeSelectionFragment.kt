@@ -44,9 +44,9 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
     }
 
     private fun setupViews() {
-        binding.eventTypesRecyclerView.addItemDecoration(DividerItemDecoration(
-                context, DividerItemDecoration.VERTICAL
-        ))
+        binding.eventTypesRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 
     private fun observeEventTypesViewModel() {

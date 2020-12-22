@@ -104,9 +104,9 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
     }
 
     private fun setupViews() {
-        binding.matchesRecyclerView.addItemDecoration(DividerItemDecoration(
-                context, DividerItemDecoration.VERTICAL
-        ))
+        binding.matchesRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 
     private fun search(query: String) {

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.AlfApplication
 import com.example.alf.Injection
@@ -67,6 +68,8 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupView()
+
         setupFab()
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
@@ -88,18 +91,24 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    private fun setupView() {
+        binding.personsRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) {
+                        binding.fab.hide()
+                    } else {
+                        binding.fab.show()
+                    }
+                    super.onScrolled(recyclerView, dx, dy)
+                }
+            })
+        }
+    }
+
     private fun setupFab() {
         binding.fab.setOnClickListener { openCreateNewPerson() }
-        binding.personsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    binding.fab.hide()
-                } else {
-                    binding.fab.show()
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
     }
 
     private fun initAdapter() {

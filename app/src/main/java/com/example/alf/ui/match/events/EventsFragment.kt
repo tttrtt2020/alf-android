@@ -53,9 +53,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     private fun setupViews() {
-        binding.eventsRecyclerView.addItemDecoration(DividerItemDecoration(
-                context, DividerItemDecoration.VERTICAL
-        ))
+        binding.eventsRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 
     private fun observeEventsViewModel() {
@@ -114,12 +114,14 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onItemClick(event: Event) {
-        /*val action = EventsFragmentDirections.actionEventsFragmentToEventFragment(
+        val action = EventsFragmentDirections.actionEventsFragmentToEventFragment(
                 args.matchId,
                 event.id,
-                event
+                event,
+                event.eventType.id,
+                event.eventType
         )
-        findNavController().navigate(action)*/
+        findNavController().navigate(action)
     }
 
     private fun deleteEvent(event: Event, position: Int) {
