@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.R
 import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.databinding.FragmentFieldPositionSelectionBinding
@@ -44,13 +45,8 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViews()
         observeFieldPositionSelectionViewModel()
-    }
-
-    private fun observeFieldPositionSelectionViewModel() {
-        fieldPositionsViewModel.fieldPositionsLiveData.observe(viewLifecycleOwner, {
-            onGetFieldPositionsResult(it)
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,6 +62,18 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupViews() {
+        binding.fieldPositionsRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
+    }
+
+    private fun observeFieldPositionSelectionViewModel() {
+        fieldPositionsViewModel.fieldPositionsLiveData.observe(viewLifecycleOwner, {
+            onGetFieldPositionsResult(it)
+        })
     }
 
     private fun onGetFieldPositionsResult(fieldPositions: List<FieldPosition>?) {

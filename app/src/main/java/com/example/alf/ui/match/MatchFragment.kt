@@ -150,12 +150,14 @@ class MatchFragment : Fragment() {
     }
 
     private fun openMatchEvents() {
-        val action = MatchFragmentDirections.actionMatchFragmentToEventsFragment(
-                args.matchId,
-                matchViewModel.matchLiveData.value!!.hostTeam.id,
-                matchViewModel.matchLiveData.value!!.hostTeam.id
-        )
-        findNavController().navigate(action)
+        matchViewModel.matchLiveData.value?.let {
+            val action = MatchFragmentDirections.actionMatchFragmentToEventsFragment(
+                    args.matchId,
+                    it.hostTeam.id,
+                    it.guestTeam.id
+            )
+            findNavController().navigate(action)
+        }
     }
 
     private fun showSnackBar(view: View, msg: String) {
@@ -163,19 +165,23 @@ class MatchFragment : Fragment() {
     }
 
     private fun onHostClicked() {
-        val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
-                args.matchId,
-                matchViewModel.matchLiveData.value!!.hostTeam.id
-        )
-        findNavController().navigate(action)
+        matchViewModel.hostTeamLiveData.value?.let {
+            val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
+                    args.matchId,
+                    it.id
+            )
+            findNavController().navigate(action)
+        }
     }
 
     private fun onGuestClicked() {
-        val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
-                args.matchId,
-                matchViewModel.matchLiveData.value!!.guestTeam.id
-        )
-        findNavController().navigate(action)
+        matchViewModel.guestTeamLiveData.value?.let {
+            val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
+                    args.matchId,
+                    it.id
+            )
+            findNavController().navigate(action)
+        }
     }
 
 }

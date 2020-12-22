@@ -6,55 +6,51 @@
         <variable name="fieldPosition" type="com.example.alf.data.model.match.FieldPosition" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/card_margin"
-        android:layout_marginVertical="@dimen/card_margin_half">
+        android:padding="@dimen/card_margin"
+        android:focusable="true"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground" >
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="75dp"
+            android:layout_height="105dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/content_description_person_photo"
+            android:scaleType="fitCenter"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@id/photo"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/photo"
-                android:layout_width="75dp"
-                android:layout_height="105dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/content_description_person_photo"
-                android:scaleType="fitCenter"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/last_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_toEndOf="@id/photo"
-                android:orientation="vertical">
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:text="@={fieldPosition.shortName}" />
 
-                <TextView
-                    android:id="@+id/last_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold"
-                    android:text="@={fieldPosition.shortName}" />
+            <TextView
+                android:id="@+id/first_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:text="@={fieldPosition.name}" />
 
-                <TextView
-                    android:id="@+id/first_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_medium"
-                    android:text="@={fieldPosition.name}" />
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
 </layout>

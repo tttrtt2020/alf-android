@@ -18,10 +18,12 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
 
     var matchLiveData: MutableLiveData<Match> = MutableLiveData()
 
-    var hostTeamNameLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> m.hostTeam.name }
-    var guestTeamNameLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> m.guestTeam.name }
-    var hostTeamLogoUrlLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> buildTeamLogoUrl(m.hostTeam) }
-    var guestTeamLogoUrlLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> buildTeamLogoUrl(m.guestTeam) }
+    var hostTeamLiveData: LiveData<Team> = Transformations.map(matchLiveData) { m -> m.hostTeam }
+    var guestTeamLiveData: LiveData<Team> = Transformations.map(matchLiveData) { m -> m.guestTeam }
+    var hostTeamNameLiveData: LiveData<String> = Transformations.map(hostTeamLiveData) { t -> t.name }
+    var guestTeamNameLiveData: LiveData<String> = Transformations.map(guestTeamLiveData) { t -> t.name }
+    var hostTeamLogoUrlLiveData: LiveData<String> = Transformations.map(hostTeamLiveData) { t -> buildTeamLogoUrl(t) }
+    var guestTeamLogoUrlLiveData: LiveData<String> = Transformations.map(guestTeamLiveData) { t -> buildTeamLogoUrl(t) }
     var statusLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> m.status }
     var stadiumPhotoUrlLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> buildStadiumPhotoUrl(m.stadium!!) }
     var resultLiveData: LiveData<String> = Transformations.map(matchLiveData) { m ->
