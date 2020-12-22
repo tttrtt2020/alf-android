@@ -22,4 +22,7 @@
 
     <dimen name="edit_event_header_text_size">@dimen/text_size_medium</dimen>
     <dimen name="edit_event_text_size">@dimen/text_size_large</dimen>
+
+    <!-- should be equal to toolbar height minus two general margins -->
+    <dimen name="item_icon_size">40dp</dimen>
 </resources>

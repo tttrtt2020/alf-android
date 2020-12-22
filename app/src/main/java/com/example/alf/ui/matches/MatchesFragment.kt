@@ -68,6 +68,8 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViews()
+
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initSearch(query)
@@ -99,6 +101,12 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
             }*/
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupViews() {
+        binding.matchesRecyclerView.addItemDecoration(DividerItemDecoration(
+                context, DividerItemDecoration.VERTICAL
+        ))
     }
 
     private fun search(query: String) {
@@ -140,9 +148,6 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
                 header = MatchesLoadStateAdapter { viewAdapter.retry() },
                 footer = MatchesLoadStateAdapter { viewAdapter.retry() }
         )
-        binding.matchesRecyclerView.addItemDecoration(DividerItemDecoration(
-                binding.matchesRecyclerView.context, DividerItemDecoration.VERTICAL
-        ))
         viewAdapter.addLoadStateListener { loadState ->
             // Only show the list if refresh succeeds.
             binding.matchesRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading

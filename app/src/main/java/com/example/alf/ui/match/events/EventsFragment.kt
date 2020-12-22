@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
@@ -45,8 +46,16 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViews()
+
         observeEventsViewModel()
         setupFab()
+    }
+
+    private fun setupViews() {
+        binding.eventsRecyclerView.addItemDecoration(DividerItemDecoration(
+                context, DividerItemDecoration.VERTICAL
+        ))
     }
 
     private fun observeEventsViewModel() {
