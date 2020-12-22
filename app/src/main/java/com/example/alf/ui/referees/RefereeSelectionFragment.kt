@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
@@ -39,6 +40,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     private val args: RefereeSelectionFragmentArgs by navArgs()
 
     private lateinit var refereeSelectionViewModel: SearchRefereesViewModel
+
     private val viewAdapter = RefereesPagingAdapter(RefereesPagingAdapter.RefereeComparator, this)
 
     private lateinit var searchView: SearchView
@@ -67,18 +69,13 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupViews()
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initSearch(query)
         search(query)
 
-        refereeSelectionViewModel.addRefereeToMatchLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                onAddMatchRefereeResult(it)
-                refereeSelectionViewModel.addRefereeToMatchLiveData.value = null
-            }
-        }
+        observeRefereeSelectionViewModel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -95,11 +92,22 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
+    }
+
+    private fun setupViews() {
+        binding.refereesRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = viewAdapter.withLoadStateHeaderAndFooter(
+                    header = RefereesLoadStateAdapter { viewAdapter.retry() },
+                    footer = RefereesLoadStateAdapter { viewAdapter.retry() }
+            )
+        }
+    }
+
     private fun initAdapter() {
-        binding.refereesRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
-            header = RefereesLoadStateAdapter { viewAdapter.retry() },
-            footer = RefereesLoadStateAdapter { viewAdapter.retry() }
-        )
         viewAdapter.addLoadStateListener { loadState ->
             // Only show the list if refresh succeeds.
             binding.refereesRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
@@ -119,9 +127,13 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
+    private fun observeRefereeSelectionViewModel() {
+        refereeSelectionViewModel.addRefereeToMatchLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                onAddMatchRefereeResult(it)
+                refereeSelectionViewModel.addRefereeToMatchLiveData.value = null
+            }
+        }
     }
 
     override fun onItemClick(referee: Referee) {

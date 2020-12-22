@@ -47,7 +47,6 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews()
-
         observeEventsViewModel()
         setupFab()
     }
@@ -55,6 +54,16 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     private fun setupViews() {
         binding.eventsRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) {
+                        binding.fab.hide()
+                    } else {
+                        binding.fab.show()
+                    }
+                    super.onScrolled(recyclerView, dx, dy)
+                }
+            })
         }
     }
 
@@ -80,16 +89,6 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private fun setupFab() {
         binding.fab.setOnClickListener { onFabClicked() }
-        binding.eventsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    binding.fab.hide()
-                } else {
-                    binding.fab.show()
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
     }
 
     private fun onDeleteEventResult(success: Boolean) {

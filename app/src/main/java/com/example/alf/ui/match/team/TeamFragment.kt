@@ -61,7 +61,6 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews()
-
         observeMatchTeamViewModel()
         setupFab()
     }

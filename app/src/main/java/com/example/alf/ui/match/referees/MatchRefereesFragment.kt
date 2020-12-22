@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
@@ -16,10 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 
 
 class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListener {
-
-    companion object {
-        const val ARG_MATCH_ID = "matchId"
-    }
 
     private lateinit var binding: FragmentMatchRefereesBinding
 
@@ -47,6 +44,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViews()
         observeRefereesViewModel()
         setupFab()
     }
@@ -76,18 +74,24 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
         }
     }
 
+    private fun setupViews() {
+        binding.refereesRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) {
+                        binding.fab.hide()
+                    } else {
+                        binding.fab.show()
+                    }
+                    super.onScrolled(recyclerView, dx, dy)
+                }
+            })
+        }
+    }
+
     private fun setupFab() {
         binding.fab.setOnClickListener { onFabClicked() }
-        binding.refereesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    binding.fab.hide()
-                } else {
-                    binding.fab.show()
-                }
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
     }
 
     private fun onDeleteMatchRefereeResult(success: Boolean) {

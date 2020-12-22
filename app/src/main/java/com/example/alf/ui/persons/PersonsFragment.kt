@@ -67,9 +67,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupView()
-
         setupFab()
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
@@ -89,6 +87,11 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         searchView.setOnQueryTextListener(this)
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
     }
 
     private fun setupView() {
@@ -133,11 +136,6 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
                 showSnackBar(binding.root, it.error.stackTraceToString())
             }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
     }
 
     override fun onItemDeleted(person: Person, position: Int) {

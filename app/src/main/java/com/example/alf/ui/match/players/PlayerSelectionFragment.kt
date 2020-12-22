@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
@@ -39,6 +40,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
     private val args: PlayerSelectionFragmentArgs by navArgs()
 
     private lateinit var playerSelectionViewModel: SearchPlayersViewModel
+
     private val viewAdapter = PlayersPagingAdapter(PlayersPagingAdapter.PlayerComparator, this)
 
     private lateinit var searchView: SearchView
@@ -67,18 +69,13 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupViews()
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initSearch(query)
         search(query)
 
-        playerSelectionViewModel.addPlayerToMatchLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                onAddMatchPlayerResult(it)
-                playerSelectionViewModel.addPlayerToMatchLiveData.value = null
-            }
-        }
+        observePlayerSelectionViewModel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -95,11 +92,22 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
+    }
+
+    private fun setupViews() {
+        binding.playersRecyclerView.apply {
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = viewAdapter.withLoadStateHeaderAndFooter(
+                    header = PlayersLoadStateAdapter { viewAdapter.retry() },
+                    footer = PlayersLoadStateAdapter { viewAdapter.retry() }
+            )
+        }
+    }
+
     private fun initAdapter() {
-        binding.playersRecyclerView.adapter = viewAdapter.withLoadStateHeaderAndFooter(
-            header = PlayersLoadStateAdapter { viewAdapter.retry() },
-            footer = PlayersLoadStateAdapter { viewAdapter.retry() }
-        )
         viewAdapter.addLoadStateListener { loadState ->
             // Only show the list if refresh succeeds.
             binding.playersRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
@@ -119,9 +127,13 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
+    private fun observePlayerSelectionViewModel() {
+        playerSelectionViewModel.addPlayerToMatchLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                onAddMatchPlayerResult(it)
+                playerSelectionViewModel.addPlayerToMatchLiveData.value = null
+            }
+        }
     }
 
     override fun onItemClick(player: Player) {

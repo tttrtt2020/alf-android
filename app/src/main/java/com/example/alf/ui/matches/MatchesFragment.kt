@@ -67,9 +67,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViews()
-
         initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initSearch(query)
