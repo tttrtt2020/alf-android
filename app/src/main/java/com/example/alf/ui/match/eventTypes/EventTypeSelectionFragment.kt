@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.data.model.event.EventType
 import com.example.alf.databinding.FragmentEventTypeSelectionBinding
 import com.google.android.material.snackbar.Snackbar
@@ -37,7 +38,15 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViews()
+
         observeEventTypesViewModel()
+    }
+
+    private fun setupViews() {
+        binding.eventTypesRecyclerView.addItemDecoration(DividerItemDecoration(
+                context, DividerItemDecoration.VERTICAL
+        ))
     }
 
     private fun observeEventTypesViewModel() {

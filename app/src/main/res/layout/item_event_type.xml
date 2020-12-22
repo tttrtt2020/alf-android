@@ -7,48 +7,43 @@
         <variable name="eventType" type="com.example.alf.data.model.event.EventType" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/card_margin"
-        android:layout_marginVertical="@dimen/card_margin_half">
+        android:padding="@dimen/card_margin"
+        android:focusable="true"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground" >
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/item_icon_size"
+            android:layout_height="@dimen/item_icon_size"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/content_description_event_type"
+            app:imageSrc="@{eventType}"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/card_margin">
+            android:layout_toEndOf="@id/icon"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/card_margin"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/card_margin">
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/card_margin_half"
-                android:contentDescription="@string/content_description_event_type"
-                app:imageSrc="@{eventType}"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/icon"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/card_margin_half"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/card_margin">
+                android:gravity="center"
+                android:textSize="@dimen/event_type_name_text_size"
+                android:text="@{eventType.name}" />
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="@dimen/event_type_name_text_size"
-                    android:text="@{eventType.name}" />
+        </LinearLayout>
 
-            </LinearLayout>
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
 </layout>
