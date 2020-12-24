@@ -174,7 +174,7 @@
     </fragment>
     <fragment
         android:id="@+id/refereeSelectionFragment"
-        android:name="com.example.alf.ui.referees.RefereeSelectionFragment"
+        android:name="com.example.alf.ui.match.referees.selection.RefereeSelectionFragment"
         android:label="@string/title_referee_selection"
         tools:layout="@layout/fragment_referee_selection">
         <argument

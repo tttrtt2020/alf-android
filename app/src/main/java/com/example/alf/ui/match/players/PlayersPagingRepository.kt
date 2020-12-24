@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Player
 import com.example.alf.data.paging.PlayersPagingSource
-import com.example.alf.data.paging.PlayersService
+import com.example.alf.service.PlayersService
 import kotlinx.coroutines.flow.Flow
 
 class PlayersPagingRepository(private val service: PlayersService, val matchId: Int, val teamId: Int) {

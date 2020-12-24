@@ -6,13 +6,13 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="refereeSelectionViewModel" type="com.example.alf.ui.referees.SearchRefereesViewModel" />
+        <variable name="refereeSelectionViewModel" type="com.example.alf.ui.match.referees.selection.RefereeSelectionViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.referees.RefereeSelectionFragment">
+        tools:context=".ui.match.referees.selection.RefereeSelectionFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/referees_recycler_view"

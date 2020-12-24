@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.alf.ui.referees
+package com.example.alf.ui.match.referees.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,12 +22,15 @@ import androidx.lifecycle.ViewModelProvider
 /**
  * Factory for ViewModels
  */
-class RefereesViewModelFactory(private val repository: RefereesPagingRepository) : ViewModelProvider.Factory {
+class RefereeSelectionViewModelFactory(
+        private val repository: RefereesPagingRepository,
+        private val matchId: Int
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchRefereesViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(RefereeSelectionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchRefereesViewModel(repository) as T
+            return RefereeSelectionViewModel(repository, matchId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -5,12 +5,15 @@ import com.example.alf.data.repository.RefereeApiService
 
 class RefereesService {
 
-    suspend fun searchRefereesPage(
+    suspend fun searchMatchRefereesPage(
+            matchId: Int,
             query: String,
             sort: String,
             nextPageNumber: Int
     ): RefereesPage {
-        return RefereeApiService().fetchRefereesPage(query, sort, nextPageNumber)
+        return RefereeApiService().fetchAllowableMatchRefereesPage(
+                matchId, query, sort, nextPageNumber
+        )
     }
 
 }

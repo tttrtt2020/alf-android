@@ -1,4 +1,4 @@
-package com.example.alf.ui.referees
+package com.example.alf.ui.match.referees.selection
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,15 +7,16 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.alf.data.model.Referee
-import com.example.alf.data.repository.MatchApiService
+import com.example.alf.data.repository.RefereeApiService
 import kotlinx.coroutines.flow.Flow
 
 
-class SearchRefereesViewModel(
-    private val refereesPagingRepository: RefereesPagingRepository,
+class RefereeSelectionViewModel(
+        private val refereesPagingRepository: RefereesPagingRepository,
+        private val matchId: Int
 ) : ViewModel() {
 
-    private var matchApiService: MatchApiService = MatchApiService()
+    private var refereeApiService: RefereeApiService = RefereeApiService()
 
     private var currentQueryValue: String? = null
 
@@ -38,8 +39,8 @@ class SearchRefereesViewModel(
             return lastResult
         }
         currentQueryValue = query
-        val pager = refereesPagingRepository.getSearchResultPager(query, sort)
-        val newResult: Flow<PagingData<Referee>> = pager.flow
+        val flow = refereesPagingRepository.getSearchResultPager(matchId, query, sort)
+        val newResult: Flow<PagingData<Referee>> = flow
             .cachedIn(viewModelScope)
         currentSearchResult = newResult
         return newResult
@@ -47,7 +48,7 @@ class SearchRefereesViewModel(
 
     fun addRefereeToMatch(matchId: Int, referee: Referee) {
         loadingInProgressLiveData.value = true
-        matchApiService.addMatchReferee(addRefereeToMatchLiveData, matchId, referee)
+        refereeApiService.addMatchReferee(addRefereeToMatchLiveData, matchId, referee)
     }
 
 }

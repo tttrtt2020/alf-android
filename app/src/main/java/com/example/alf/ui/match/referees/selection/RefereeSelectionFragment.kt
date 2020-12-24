@@ -1,4 +1,4 @@
-package com.example.alf.ui.referees
+package com.example.alf.ui.match.referees.selection
 
 import android.app.SearchManager
 import android.content.Context
@@ -39,7 +39,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
 
     private val args: RefereeSelectionFragmentArgs by navArgs()
 
-    private lateinit var refereeSelectionViewModel: SearchRefereesViewModel
+    private lateinit var refereeSelectionViewModel: RefereeSelectionViewModel
 
     private val viewAdapter = RefereesPagingAdapter(RefereesPagingAdapter.RefereeComparator, this)
 
@@ -60,9 +60,10 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     ): View {
         binding = FragmentRefereeSelectionBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        refereeSelectionViewModel = ViewModelProvider(this, Injection.provideRefereesViewModelFactory()).get(
-                SearchRefereesViewModel::class.java
-        )
+        refereeSelectionViewModel = ViewModelProvider(
+                this,
+                Injection.provideRefereesViewModelFactory(args.matchId)
+        ).get(RefereeSelectionViewModel::class.java)
         binding.refereeSelectionViewModel = refereeSelectionViewModel
         return binding.root
     }
@@ -156,7 +157,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
 
     private fun goBack() {
         val action = RefereeSelectionFragmentDirections.actionRefereeSelectionFragmentToMatchRefereesFragment(
-            args.matchId
+                args.matchId
         )
         findNavController().navigate(action)
     }

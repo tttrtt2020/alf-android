@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Person
 import com.example.alf.data.paging.PersonsPagingSource
-import com.example.alf.data.paging.PersonsService
+import com.example.alf.service.PersonsService
 import kotlinx.coroutines.flow.Flow
 
 class PersonsPagingRepository(private val service: PersonsService) {

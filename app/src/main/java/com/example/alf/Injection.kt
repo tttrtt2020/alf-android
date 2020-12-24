@@ -17,18 +17,18 @@
 package com.example.alf
 
 import androidx.lifecycle.ViewModelProvider
-import com.example.alf.data.paging.MatchesService
-import com.example.alf.data.paging.PersonsService
-import com.example.alf.data.paging.PlayersService
-import com.example.alf.data.paging.RefereesService
+import com.example.alf.service.MatchesService
+import com.example.alf.service.PersonsService
+import com.example.alf.service.PlayersService
+import com.example.alf.service.RefereesService
 import com.example.alf.ui.match.players.PlayersPagingRepository
 import com.example.alf.ui.match.players.PlayersViewModelFactory
 import com.example.alf.ui.matches.MatchesPagingRepository
 import com.example.alf.ui.matches.MatchesViewModelFactory
 import com.example.alf.ui.persons.PersonsPagingRepository
 import com.example.alf.ui.persons.PersonsViewModelFactory
-import com.example.alf.ui.referees.RefereesPagingRepository
-import com.example.alf.ui.referees.RefereesViewModelFactory
+import com.example.alf.ui.match.referees.selection.RefereesPagingRepository
+import com.example.alf.ui.match.referees.selection.RefereeSelectionViewModelFactory
 
 /**
  * Class that handles object creation.
@@ -89,8 +89,8 @@ object Injection {
      * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
      * [ViewModel] objects.
      */
-    fun provideRefereesViewModelFactory(): ViewModelProvider.Factory {
-        return RefereesViewModelFactory(provideRefereesRepository())
+    fun provideRefereesViewModelFactory(matchId: Int): ViewModelProvider.Factory {
+        return RefereeSelectionViewModelFactory(provideRefereesRepository(), matchId)
     }
 
     /**

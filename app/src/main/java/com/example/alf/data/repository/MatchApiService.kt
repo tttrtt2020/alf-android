@@ -3,7 +3,6 @@ package com.example.alf.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.*
-import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.data.model.match.MatchPlayer
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
@@ -110,71 +109,6 @@ class MatchApiService {
         return data
 
     }*/
-
-    fun fetchMatchReferees(
-            matchRefereesLiveData: MutableLiveData<List<Referee>?>,
-            matchId: Int
-    ): LiveData<List<Referee>?> {
-
-        matchApiInterface.fetchMatchReferees(matchId).enqueue(object : Callback<List<Referee>> {
-
-            override fun onFailure(call: Call<List<Referee>>, t: Throwable) {
-                matchRefereesLiveData.value = null
-            }
-
-            override fun onResponse(
-                    call: Call<List<Referee>>,
-                    response: Response<List<Referee>>
-            ) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    matchRefereesLiveData.value = res
-                } else {
-                    matchRefereesLiveData.value = null
-                }
-            }
-        })
-
-        return matchRefereesLiveData
-    }
-
-    fun addMatchReferee(
-        addRefereeToMatchLiveData: MutableLiveData<Boolean?>,
-        matchId: Int,
-        referee: Referee
-    ): LiveData<Boolean?> {
-
-        matchApiInterface.addMatchReferee(matchId, referee).enqueue(object : Callback<Referee> {
-            override fun onFailure(call: Call<Referee>, t: Throwable) {
-                addRefereeToMatchLiveData.value = false
-            }
-
-            override fun onResponse(call: Call<Referee>, response: Response<Referee>) {
-                addRefereeToMatchLiveData.value = response.code() == 201
-            }
-        })
-
-        return addRefereeToMatchLiveData
-    }
-
-    fun deleteMatchReferee(
-            resultLiveData: MutableLiveData<Boolean?>,
-            matchId: Int,
-            referee: Referee
-    ): LiveData<Boolean?> {
-
-        matchApiInterface.deleteMatchReferee(matchId, referee.id).enqueue(object : Callback<Unit> {
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                resultLiveData.value = false
-            }
-
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                resultLiveData.value = (response.code() == 200 || response.code() == 204)
-            }
-        })
-
-        return resultLiveData
-    }
 
     fun fetchMatchTeam(
             matchTeamLiveData: MutableLiveData<MatchTeam?>,

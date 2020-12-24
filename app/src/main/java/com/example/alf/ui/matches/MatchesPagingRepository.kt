@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Match
 import com.example.alf.data.paging.MatchesPagingSource
-import com.example.alf.data.paging.MatchesService
+import com.example.alf.service.MatchesService
 import kotlinx.coroutines.flow.Flow
 
 class MatchesPagingRepository(private val service: MatchesService) {
