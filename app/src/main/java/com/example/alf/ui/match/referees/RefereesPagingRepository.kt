@@ -1,4 +1,4 @@
-package com.example.alf.ui.match.referees.selection
+package com.example.alf.ui.match.referees
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -13,7 +13,7 @@ class RefereesPagingRepository(private val service: RefereesService) {
 
     private val networkPageSize = AlfApplication.getProperty("pagination.referees.pageSize").toInt()
 
-    fun getSearchResultPager(matchId: Int, query: String, sort: String): Flow<PagingData<Referee>> {
+    fun getSearchResultStream(matchId: Int, query: String, sort: String): Flow<PagingData<Referee>> {
         return Pager(
             config = PagingConfig(
                 pageSize = networkPageSize,

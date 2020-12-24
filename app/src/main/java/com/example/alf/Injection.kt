@@ -22,12 +22,12 @@ import com.example.alf.service.PersonsService
 import com.example.alf.service.PlayersService
 import com.example.alf.service.RefereesService
 import com.example.alf.ui.match.players.PlayersPagingRepository
-import com.example.alf.ui.match.players.PlayersViewModelFactory
+import com.example.alf.ui.match.players.selection.PlayerSelectionViewModelFactory
 import com.example.alf.ui.matches.MatchesPagingRepository
 import com.example.alf.ui.matches.MatchesViewModelFactory
 import com.example.alf.ui.persons.PersonsPagingRepository
 import com.example.alf.ui.persons.PersonsViewModelFactory
-import com.example.alf.ui.match.referees.selection.RefereesPagingRepository
+import com.example.alf.ui.match.referees.RefereesPagingRepository
 import com.example.alf.ui.match.referees.selection.RefereeSelectionViewModelFactory
 
 /**
@@ -57,8 +57,8 @@ object Injection {
      * Creates an instance of [PlayersRepository] based on the [PlayersService] and a
      * [PlayersLocalCache]
      */
-    private fun providePlayersRepository(matchId: Int, teamId: Int): PlayersPagingRepository {
-        return PlayersPagingRepository(PlayersService(), matchId, teamId)
+    private fun providePlayersRepository(): PlayersPagingRepository {
+        return PlayersPagingRepository(PlayersService())
     }
 
     /**
@@ -98,6 +98,6 @@ object Injection {
      * [ViewModel] objects.
      */
     fun providePlayersViewModelFactory(matchId: Int, teamId: Int): ViewModelProvider.Factory {
-        return PlayersViewModelFactory(providePlayersRepository(matchId, teamId))
+        return PlayerSelectionViewModelFactory(providePlayersRepository(), matchId, teamId)
     }
 }

@@ -1,7 +1,7 @@
 package com.example.alf.service
 
 import com.example.alf.data.model.PlayersPage
-import com.example.alf.data.repository.MatchApiService
+import com.example.alf.data.repository.PlayerApiService
 
 class PlayersService {
 
@@ -10,7 +10,7 @@ class PlayersService {
             query: String,
             sort: String,
             nextPageNumber: Int): PlayersPage {
-        return MatchApiService().fetchMatchTeamAllowablePlayersPage(matchId, teamId, query, sort, nextPageNumber)
+        return PlayerApiService().fetchMatchTeamAllowablePlayersPage(matchId, teamId, query, sort, nextPageNumber)
     }
 
 }

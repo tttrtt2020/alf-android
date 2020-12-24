@@ -1,4 +1,4 @@
-package com.example.alf.ui.match.referees.selection;
+package com.example.alf.ui.match.referees;
 
 import android.net.Uri
 import android.view.LayoutInflater

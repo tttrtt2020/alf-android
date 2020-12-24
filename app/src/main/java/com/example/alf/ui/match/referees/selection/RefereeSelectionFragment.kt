@@ -19,6 +19,7 @@ import com.example.alf.R
 import com.example.alf.data.model.Referee
 import com.example.alf.databinding.FragmentRefereeSelectionBinding
 import com.example.alf.ui.RefereesLoadStateAdapter
+import com.example.alf.ui.match.referees.RefereesPagingAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect

@@ -20,9 +20,9 @@ import java.util.*
 
 
 class PlayersPagingAdapter(
-        diffCallback: DiffUtil.ItemCallback<Player>,
-        private var listener: PlayerListener
-        ): PagingDataAdapter<Player, PlayersPagingAdapter.ViewHolder>(diffCallback) {
+    diffCallback: DiffUtil.ItemCallback<Player>,
+    private var listener: PlayerListener
+) : PagingDataAdapter<Player, PlayersPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
 

@@ -1,4 +1,4 @@
-package com.example.alf.ui.match.players
+package com.example.alf.ui.match.players.selection
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,15 +7,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.alf.data.model.Player
-import com.example.alf.data.repository.MatchApiService
+import com.example.alf.data.repository.PlayerApiService
+import com.example.alf.ui.match.players.PlayersPagingRepository
 import kotlinx.coroutines.flow.Flow
 
 
-class SearchPlayersViewModel(
+class PlayerSelectionViewModel(
     private val playersPagingRepository: PlayersPagingRepository,
+    private val matchId: Int,
+    private val teamId: Int
 ) : ViewModel() {
 
-    private var matchApiService: MatchApiService = MatchApiService()
+    private var playerApiService: PlayerApiService = PlayerApiService()
 
     private var currentQueryValue: String? = null
 
@@ -38,8 +41,8 @@ class SearchPlayersViewModel(
             return lastResult
         }
         currentQueryValue = query
-        val pager = playersPagingRepository.getSearchResultPager(query, sort)
-        val newResult: Flow<PagingData<Player>> = pager.flow
+        val flow = playersPagingRepository.getSearchResultStream(matchId, teamId, query, sort)
+        val newResult: Flow<PagingData<Player>> = flow
             .cachedIn(viewModelScope)
         currentSearchResult = newResult
         return newResult
@@ -47,7 +50,7 @@ class SearchPlayersViewModel(
 
     fun addPlayerToMatch(matchId: Int, teamId: Int, fieldPositionId: Int?, player: Player) {
         loadingInProgressLiveData.value = true
-        matchApiService.addMatchPlayer(addPlayerToMatchLiveData, matchId, teamId, fieldPositionId, player)
+        playerApiService.addMatchPlayer(addPlayerToMatchLiveData, matchId, teamId, fieldPositionId, player)
     }
 
 }

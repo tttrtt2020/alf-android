@@ -5,6 +5,7 @@ import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.repository.MatchApiService
+import com.example.alf.data.repository.PlayerApiService
 
 class TeamViewModel(
         private val matchId: Int,
@@ -12,6 +13,7 @@ class TeamViewModel(
         ) : ViewModel() {
 
     private var matchApiService: MatchApiService = MatchApiService()
+    private var playerApiService: PlayerApiService = PlayerApiService()
 
     var matchTeamLiveData: MutableLiveData<MatchTeam?> = MutableLiveData()
 
@@ -52,7 +54,7 @@ class TeamViewModel(
 
     fun deletePlayer(player: Player) {
         loadingInProgressLiveData.value = true
-        matchApiService.deleteMatchPlayer(deletePlayerLiveData, matchId, player)
+        playerApiService.deleteMatchPlayer(deletePlayerLiveData, matchId, player)
     }
 
     fun replacePlayer(player: Player) {

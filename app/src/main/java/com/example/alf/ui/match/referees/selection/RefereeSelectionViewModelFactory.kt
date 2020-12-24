@@ -18,13 +18,14 @@ package com.example.alf.ui.match.referees.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.alf.ui.match.referees.RefereesPagingRepository
 
 /**
  * Factory for ViewModels
  */
 class RefereeSelectionViewModelFactory(
-        private val repository: RefereesPagingRepository,
-        private val matchId: Int
+    private val repository: RefereesPagingRepository,
+    private val matchId: Int
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

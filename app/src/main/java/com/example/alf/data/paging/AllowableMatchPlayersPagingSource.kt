@@ -7,7 +7,7 @@ import com.example.alf.service.PlayersService
 import retrofit2.HttpException
 import java.io.IOException
 
-class PlayersPagingSource(
+class AllowableMatchPlayersPagingSource(
         private val service: PlayersService,
         private var matchId: Int,
         private var teamId: Int,

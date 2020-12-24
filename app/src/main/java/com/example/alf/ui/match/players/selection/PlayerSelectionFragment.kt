@@ -1,4 +1,4 @@
-package com.example.alf.ui.match.players
+package com.example.alf.ui.match.players.selection
 
 import android.app.SearchManager
 import android.content.Context
@@ -19,6 +19,7 @@ import com.example.alf.R
 import com.example.alf.data.model.Player
 import com.example.alf.databinding.FragmentPlayerSelectionBinding
 import com.example.alf.ui.PlayersLoadStateAdapter
+import com.example.alf.ui.match.players.PlayersPagingAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -28,7 +29,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 
-class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, PlayersPagingAdapter.PlayerListener {
+class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
+    PlayersPagingAdapter.PlayerListener {
 
     companion object {
         private const val LAST_SEARCH_QUERY: String = "last_search_query"
@@ -39,7 +41,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
 
     private val args: PlayerSelectionFragmentArgs by navArgs()
 
-    private lateinit var playerSelectionViewModel: SearchPlayersViewModel
+    private lateinit var playerSelectionViewModel: PlayerSelectionViewModel
 
     private val viewAdapter = PlayersPagingAdapter(PlayersPagingAdapter.PlayerComparator, this)
 
@@ -61,7 +63,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
         binding = FragmentPlayerSelectionBinding.inflate(inflater)
         binding.lifecycleOwner = this
         playerSelectionViewModel = ViewModelProvider(this, Injection.providePlayersViewModelFactory(args.matchId, args.teamId)).get(
-                SearchPlayersViewModel::class.java
+                PlayerSelectionViewModel::class.java
         )
         binding.playerSelectionViewModel = playerSelectionViewModel
         return binding.root
@@ -156,7 +158,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Play
 
     private fun goBack() {
         val action = PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToTeamFragment(
-                args.matchId, args.teamId
+            args.matchId, args.teamId
         )
         findNavController().navigate(action)
     }

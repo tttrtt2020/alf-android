@@ -8,12 +8,13 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.alf.data.model.Referee
 import com.example.alf.data.repository.RefereeApiService
+import com.example.alf.ui.match.referees.RefereesPagingRepository
 import kotlinx.coroutines.flow.Flow
 
 
 class RefereeSelectionViewModel(
-        private val refereesPagingRepository: RefereesPagingRepository,
-        private val matchId: Int
+    private val refereesPagingRepository: RefereesPagingRepository,
+    private val matchId: Int
 ) : ViewModel() {
 
     private var refereeApiService: RefereeApiService = RefereeApiService()
@@ -39,7 +40,7 @@ class RefereeSelectionViewModel(
             return lastResult
         }
         currentQueryValue = query
-        val flow = refereesPagingRepository.getSearchResultPager(matchId, query, sort)
+        val flow = refereesPagingRepository.getSearchResultStream(matchId, query, sort)
         val newResult: Flow<PagingData<Referee>> = flow
             .cachedIn(viewModelScope)
         currentSearchResult = newResult

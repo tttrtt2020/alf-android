@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package com.example.alf.ui.match.players
+package com.example.alf.ui.match.players.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.alf.ui.match.players.PlayersPagingRepository
 
 /**
  * Factory for ViewModels
  */
-class PlayersViewModelFactory(private val repository: PlayersPagingRepository) : ViewModelProvider.Factory {
+class PlayerSelectionViewModelFactory(
+    private val repository: PlayersPagingRepository,
+    private val matchId: Int,
+    private val teamId: Int
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchPlayersViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(PlayerSelectionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchPlayersViewModel(repository) as T
+            return PlayerSelectionViewModel(repository, matchId, teamId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
