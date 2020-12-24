@@ -1,4 +1,4 @@
-package com.example.alf.data.paging
+package com.example.alf.service
 
 import com.example.alf.data.model.RefereesPage
 import com.example.alf.data.repository.RefereeApiService

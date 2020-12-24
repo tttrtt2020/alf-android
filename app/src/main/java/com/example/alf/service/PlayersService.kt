@@ -1,4 +1,4 @@
-package com.example.alf.data.paging
+package com.example.alf.service
 
 import com.example.alf.data.model.PlayersPage
 import com.example.alf.data.repository.MatchApiService

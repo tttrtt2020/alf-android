@@ -3,15 +3,16 @@ package com.example.alf.data.paging
 import androidx.paging.PagingSource
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Player
+import com.example.alf.service.PlayersService
 import retrofit2.HttpException
 import java.io.IOException
 
 class PlayersPagingSource(
-    private val service: PlayersService,
-    private var matchId: Int,
-    private var teamId: Int,
-    private var query: String,
-    private var sort: String
+        private val service: PlayersService,
+        private var matchId: Int,
+        private var teamId: Int,
+        private var query: String,
+        private var sort: String
 ) : PagingSource<Int, Player>() {
 
     private val startingPageIndex = AlfApplication.getProperty("pagination.players.startIndex").toInt()
