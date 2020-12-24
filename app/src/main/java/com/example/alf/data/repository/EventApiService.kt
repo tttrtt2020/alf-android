@@ -15,31 +15,6 @@ class EventApiService {
             EventApiInterface::class.java
     )
 
-    fun fetchAllEvents(): LiveData<List<Event>> {
-        val data = MutableLiveData<List<Event>>()
-
-        eventApiInterface.fetchAllEvents().enqueue(object : Callback<List<Event>> {
-
-            override fun onFailure(call: Call<List<Event>>, t: Throwable) {
-                data.value = null
-            }
-
-            override fun onResponse(
-                    call: Call<List<Event>>,
-                    response: Response<List<Event>>
-            ) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    data.value = res
-                } else {
-                    data.value = null
-                }
-            }
-        })
-
-        return data
-    }
-
     fun updateEvent(resultLiveData: MutableLiveData<Boolean?>, event: Event): LiveData<Boolean?>{
 
         eventApiInterface.updateEvent(event.id, event).enqueue(object : Callback<Event>{

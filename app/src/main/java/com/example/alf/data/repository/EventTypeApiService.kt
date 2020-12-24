@@ -40,30 +40,4 @@ class EventTypeApiService {
         return eventTypesLiveData
     }
 
-    fun fetchEventTypeById(
-            eventTypeLiveData: MutableLiveData<EventType?>,
-            eventTypeId: Int
-    ): LiveData<EventType?> {
-
-        formationApiInterface.fetchEventTypeById(eventTypeId).enqueue(object : Callback<EventType> {
-
-            override fun onFailure(call: Call<EventType>, t: Throwable) {
-                eventTypeLiveData.value = null
-            }
-
-            override fun onResponse(
-                call: Call<EventType>,
-                response: Response<EventType>
-            ) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    eventTypeLiveData.value = res
-                } else {
-                    eventTypeLiveData.value = null
-                }
-            }
-        })
-
-        return eventTypeLiveData
-    }
 }

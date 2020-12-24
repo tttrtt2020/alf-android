@@ -14,32 +14,6 @@ class PersonApiService {
 
     private var personApiInterface: PersonApiInterface = ApiClient.getApiClient().create(PersonApiInterface::class.java)
 
-    /*fun fetchPersonsByQuery(query: String): LiveData<List<Person>> {
-        val data = MutableLiveData<List<Person>>()
-
-        apiInterface?.fetchPersonsPageByQuery(query)?.enqueue(object : Callback<PersonsPage> {
-
-            override fun onFailure(call: Call<PersonsPage>, t: Throwable) {
-                data.value = null
-            }
-
-            override fun onResponse(
-                    call: Call<PersonsPage>,
-                    response: Response<PersonsPage>
-            ) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    data.value = res.content
-                } else {
-                    data.value = null
-                }
-            }
-        })
-
-        return data
-
-    }*/
-
     fun getPersonById(personLiveData: MutableLiveData<Person>, id: Int): LiveData<Person>? {
 
         personApiInterface.fetchPersonById(id).enqueue(object : Callback<Person> {
