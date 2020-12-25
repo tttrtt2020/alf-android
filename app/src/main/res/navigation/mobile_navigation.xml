@@ -128,8 +128,8 @@
             android:name="matchId"
             app:argType="integer" />
         <action
-            android:id="@+id/action_eventTypesFragment_to_eventFragment"
-            app:destination="@id/eventFragment"
+            android:id="@+id/action_eventTypeSelectionFragment_to_teamSelectionFragment"
+            app:destination="@id/teamSelectionFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
@@ -283,19 +283,31 @@
             android:name="guestTeamId"
             app:argType="integer" />
         <action
-            android:id="@+id/action_eventsFragment_to_eventFragment"
-            app:destination="@id/eventFragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:exitAnim="@anim/slide_out_to_left"
-            app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_to_right" />
-        <action
             android:id="@+id/action_eventsFragment_to_eventTypesFragment"
             app:destination="@id/eventTypeSelectionFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right" />
+        <action
+            android:id="@+id/action_eventsFragment_to_eventFragment"
+            app:destination="@id/eventFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/teamSelectionFragment"
+        android:name="com.example.alf.ui.match.team.selection.TeamSelectionFragment"
+        android:label="@string/title_team_selection"
+        tools:layout="@layout/fragment_team_selection" >
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
+        <argument
+            android:name="eventTypeId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

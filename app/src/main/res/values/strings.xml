@@ -25,6 +25,7 @@
     <string name="title_match_referees">Referees</string>
     <string name="title_formations">Formations</string>
     <string name="title_event_type_selection">Select event type</string>
+    <string name="title_team_selection">Select team</string>
     <string name="title_event">Event</string>
     <string name="title_referee_selection">Select referee</string>
     <string name="title_team">Team</string>
@@ -66,5 +67,6 @@
     <string name="empty_collection_events">No events</string>
     <string name="empty_collection_field_positions">No field positions</string>
     <string name="empty_collection_match_players">No players</string>
+    <string name="empty_collection_teams">No teams</string>
 
 </resources>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -67,13 +68,10 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
     }
 
     override fun onItemClick(eventType: EventType) {
-        /*val action = eventType.id.let {
-            EventTypesFragmentDirections.actionEventTypesFragmentToEventFragment(
-                    matchId = args.matchId,
-                    eventTypeId = it,
-                    eventType = eventType
-            )
-        }
-        findNavController().navigate(action)*/
+        val action = EventTypeSelectionFragmentDirections.actionEventTypeSelectionFragmentToTeamSelectionFragment(
+                matchId = args.matchId,
+                eventTypeId = eventType.id,
+        )
+        findNavController().navigate(action)
     }
 }

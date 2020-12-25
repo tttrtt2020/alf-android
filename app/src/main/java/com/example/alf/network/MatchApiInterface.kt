@@ -3,6 +3,7 @@ package com.example.alf.network
 import com.example.alf.data.model.Match
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.MatchesPage
+import com.example.alf.data.model.Team
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -29,5 +30,8 @@ interface MatchApiInterface {
             @Path("matchId") matchId: Int,
             @Path("teamId") teamId: Int
     ): Call<MatchTeam>
+
+    @GET("matches/{matchId}/teams")
+    fun fetchTeams(@Path("matchId") matchId: Int): Call<List<Team>>
 
 }

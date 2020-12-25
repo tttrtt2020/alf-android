@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.Match
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.MatchesPage
+import com.example.alf.data.model.Team
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
 import retrofit2.Call
@@ -72,6 +73,33 @@ class MatchApiService {
         })
 
         return matchTeamLiveData
+    }
+
+    fun fetchTeams(
+            teamsLiveData: MutableLiveData<List<Team>?>,
+            matchId: Int
+    ): LiveData<List<Team>?> {
+
+        matchApiInterface.fetchTeams(matchId).enqueue(object : Callback<List<Team>> {
+
+            override fun onFailure(call: Call<List<Team>>, t: Throwable) {
+                teamsLiveData.value = null
+            }
+
+            override fun onResponse(
+                    call: Call<List<Team>>,
+                    response: Response<List<Team>>
+            ) {
+                val res = response.body()
+                if (response.code() == 200 && res != null) {
+                    teamsLiveData.value = res
+                } else {
+                    teamsLiveData.value = null
+                }
+            }
+        })
+
+        return teamsLiveData
     }
 
 }
