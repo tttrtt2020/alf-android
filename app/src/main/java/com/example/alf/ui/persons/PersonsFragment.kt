@@ -147,10 +147,10 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
     }
 
     private fun openPerson(person: Person) {
-        val action = person.id.let { PersonsFragmentDirections.actionNavPersonsToPersonFragment(
-                personId = it,
+        val action = PersonsFragmentDirections.actionNavPersonsToPersonFragment(
+                personId = person.id,
                 person = person
-        ) }
+        )
         findNavController().navigate(action)
     }
 

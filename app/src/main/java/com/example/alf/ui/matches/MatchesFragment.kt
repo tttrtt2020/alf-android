@@ -170,11 +170,11 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
     }
 
     override fun onItemClick(match: Match) {
-        val action = match.id.let { MatchesFragmentDirections.actionNavMatchesToMatchFragment(
-                matchId = it,
+        val action = MatchesFragmentDirections.actionNavMatchesToMatchFragment(
+                matchId = match.id,
                 hostTeamId = match.hostTeam.id,
                 guestTeamId = match.guestTeam.id
-        ) }
+        )
         findNavController().navigate(action)
     }
 
