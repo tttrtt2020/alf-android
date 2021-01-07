@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.alf.data.model.Player
+import com.example.alf.data.model.event.Event
+import com.example.alf.data.repository.EventApiService
 import com.example.alf.data.repository.PlayerApiService
 import com.example.alf.ui.match.players.PlayersPagingRepository
 import kotlinx.coroutines.flow.Flow
@@ -19,19 +21,20 @@ class PlayerSelectionViewModel(
 ) : ViewModel() {
 
     private var playerApiService: PlayerApiService = PlayerApiService()
+    private var eventApiService: EventApiService = EventApiService()
 
     private var currentQueryValue: String? = null
 
     private var currentSearchResult: Flow<PagingData<Player>>? = null
 
-    var addPlayerToMatchLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+    var selectionResultLiveData: MutableLiveData<Boolean?> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.apply {
             //addSource(currentSearchResult!!.asLiveData()) { loadingInProgressLiveData.value = false }
-            addSource(addPlayerToMatchLiveData) { loadingInProgressLiveData.value = false }
+            addSource(selectionResultLiveData) { loadingInProgressLiveData.value = false }
         }
     }
 
@@ -50,7 +53,12 @@ class PlayerSelectionViewModel(
 
     fun addPlayerToMatch(matchId: Int, teamId: Int, fieldPositionId: Int?, player: Player) {
         loadingInProgressLiveData.value = true
-        playerApiService.addMatchPlayer(addPlayerToMatchLiveData, matchId, teamId, fieldPositionId, player)
+        playerApiService.addMatchPlayer(selectionResultLiveData, matchId, teamId, fieldPositionId, player)
+    }
+
+    fun addEventToMatch(matchId: Int, event: Event) {
+        loadingInProgressLiveData.value = true
+        eventApiService.createEvent(selectionResultLiveData, matchId, event)
     }
 
 }

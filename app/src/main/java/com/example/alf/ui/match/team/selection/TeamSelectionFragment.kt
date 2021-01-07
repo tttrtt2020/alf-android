@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.R
@@ -64,11 +65,17 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
         })
     }
 
-    private fun openPlayerSelection() {
-        /*val action = TeamSelectionFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
-                args.matchId, args.teamId
+    private fun openPlayerSelection(team: Team) {
+        val action = TeamSelectionFragmentDirections.actionTeamSelectionFragmentToPlayerSelectionFragment(
+                matchId = args.matchId,
+                hostTeamId = args.hostTeamId,
+                guestTeamId = args.guestTeamId,
+                teamId = team.id,
+                fieldPosition = null,
+                eventType = args.eventType,
+                team = team
         )
-        findNavController().navigate(action)*/
+        findNavController().navigate(action)
     }
 
     private fun onGetTeamsResult(teams: List<Team>?) {
@@ -85,7 +92,7 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
     }
 
     override fun onItemClick(team: Team) {
-        openPlayerSelection()
+        openPlayerSelection(team)
     }
 
 }

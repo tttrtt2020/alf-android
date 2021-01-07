@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
+import com.example.alf.data.model.Person
 import com.example.alf.data.model.Player
+import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentPlayerSelectionBinding
 import com.example.alf.ui.PlayersLoadStateAdapter
 import com.example.alf.ui.match.players.PlayersPagingAdapter
@@ -50,8 +53,17 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
 
     private val sort = AlfApplication.getProperty("players.sort")
 
+    private lateinit var mode: Mode
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mode = if (args.eventType == null) {
+            // selection of player for addition to team
+            Mode.TO_TEAM
+        } else {
+            // selection of player for event
+            Mode.TO_EVENT
+        }
         setHasOptionsMenu(true)
     }
 
@@ -62,9 +74,20 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
     ): View {
         binding = FragmentPlayerSelectionBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        playerSelectionViewModel = ViewModelProvider(this, Injection.providePlayersViewModelFactory(args.matchId, args.teamId)).get(
-                PlayerSelectionViewModel::class.java
-        )
+        playerSelectionViewModel = when (mode) {
+            Mode.TO_TEAM -> {
+                ViewModelProvider(
+                        this,
+                        Injection.providePlayersViewModelFactory(args.matchId, args.teamId)
+                ).get(PlayerSelectionViewModel::class.java)
+            }
+            Mode.TO_EVENT -> {
+                ViewModelProvider(
+                        this,
+                        Injection.providePlayersViewModelFactory(args.matchId, args.teamId)
+                ).get(PlayerSelectionViewModel::class.java)
+            }
+        }
         binding.playerSelectionViewModel = playerSelectionViewModel
         return binding.root
     }
@@ -130,11 +153,19 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     private fun observePlayerSelectionViewModel() {
-        playerSelectionViewModel.addPlayerToMatchLiveData.observe(viewLifecycleOwner) {
+        playerSelectionViewModel.selectionResultLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
-                onAddMatchPlayerResult(it)
-                playerSelectionViewModel.addPlayerToMatchLiveData.value = null
+                onPlayerSelectionResult(it)
+                playerSelectionViewModel.selectionResultLiveData.value = null
             }
+        }
+    }
+
+    private fun onPlayerSelectionResult(success: Boolean) {
+        if (mode == Mode.TO_TEAM) {
+            onAddMatchPlayerResult(success)
+        } else if (mode == Mode.TO_EVENT) {
+            onAddEventResult(success)
         }
     }
 
@@ -143,9 +174,26 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     private fun selectPlayer(player: Player) {
+        if (mode == Mode.TO_TEAM) {
+            addPlayerToMatch(player)
+        } else if (mode == Mode.TO_EVENT) {
+            addEventToMatch(player)
+        }
+    }
+
+    private fun addPlayerToMatch(player: Player) {
         playerSelectionViewModel.addPlayerToMatch(
                 args.matchId, args.teamId, args.fieldPosition?.id,
                 player
+        )
+    }
+
+    private fun addEventToMatch(player: Player) {
+        val person = Person(player.id, player.firstName, player.patronymic, player.lastName, player.birthDate, player.country, player.height, player.weight)
+        val event = Event(0, args.team!!, person, /*args.minute*/ 70, args.eventType!!, null, null)
+        playerSelectionViewModel.addEventToMatch(
+                args.matchId,
+                event
         )
     }
 
@@ -156,10 +204,26 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
         } else showSnackBar(binding.root, "Add match player failed")
     }
 
+    private fun onAddEventResult(success: Boolean) {
+        if (success) {
+            showSnackBar(binding.root, "Add event success")
+            goBack()
+        } else showSnackBar(binding.root, "Add event failed")
+    }
+
     private fun goBack() {
-        val action = PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToTeamFragment(
-            args.matchId, args.teamId
-        )
+        val action: NavDirections = when (mode) {
+            Mode.TO_TEAM -> {
+                PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToTeamFragment(
+                        args.matchId, args.teamId
+                )
+            }
+            Mode.TO_EVENT -> {
+                PlayerSelectionFragmentDirections.actionPlayerSelectionFragmentToEventsFragment(
+                        args.matchId, args.hostTeamId, args.guestTeamId
+                )
+            }
+        }
         findNavController().navigate(action)
     }
 
@@ -210,5 +274,9 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
 
     private fun showSnackBar(view: View, msg: String) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
+    }
+
+    enum class Mode {
+        TO_TEAM, TO_EVENT
     }
 }

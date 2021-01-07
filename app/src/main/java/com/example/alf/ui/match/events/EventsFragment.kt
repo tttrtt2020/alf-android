@@ -101,7 +101,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     private fun onFabClicked() {
-        val action = EventsFragmentDirections.actionEventsFragmentToEventTypesFragment(args.matchId)
+        val action = EventsFragmentDirections.actionEventsFragmentToEventTypesFragment(
+                args.matchId, args.hostTeamId, args.guestTeamId
+        )
         findNavController().navigate(action)
     }
 

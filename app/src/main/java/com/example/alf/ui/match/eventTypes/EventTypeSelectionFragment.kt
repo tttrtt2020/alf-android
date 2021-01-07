@@ -70,7 +70,9 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
     override fun onItemClick(eventType: EventType) {
         val action = EventTypeSelectionFragmentDirections.actionEventTypeSelectionFragmentToTeamSelectionFragment(
                 matchId = args.matchId,
-                eventTypeId = eventType.id,
+                hostTeamId = args.hostTeamId,
+                guestTeamId = args.guestTeamId,
+                eventType = eventType,
         )
         findNavController().navigate(action)
     }
