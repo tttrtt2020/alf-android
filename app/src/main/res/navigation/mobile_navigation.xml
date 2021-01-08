@@ -133,6 +133,9 @@
         <argument
             android:name="guestTeamId"
             app:argType="integer" />
+        <argument
+            android:name="minute"
+            app:argType="integer" />
         <action
             android:id="@+id/action_eventTypeSelectionFragment_to_teamSelectionFragment"
             app:destination="@id/teamSelectionFragment"
@@ -271,6 +274,9 @@
             app:nullable="true"
             android:defaultValue="@null" />
         <argument
+            android:name="minute"
+            app:argType="integer" />
+        <argument
             android:name="eventType"
             app:argType="com.example.alf.data.model.event.EventType"
             app:nullable="true"
@@ -315,7 +321,7 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_eventsFragment_to_eventTypesFragment"
-            app:destination="@id/eventTypeSelectionFragment"
+            app:destination="@id/minuteSelectionFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
@@ -343,6 +349,9 @@
             android:name="guestTeamId"
             app:argType="integer" />
         <argument
+            android:name="minute"
+            app:argType="integer" />
+        <argument
             android:name="eventType"
             app:argType="com.example.alf.data.model.event.EventType"
             app:nullable="true"
@@ -350,6 +359,28 @@
         <action
             android:id="@+id/action_teamSelectionFragment_to_playerSelectionFragment"
             app:destination="@id/playerSelectionFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/minuteSelectionFragment"
+        android:name="com.example.alf.ui.match.event.selection.minute.MinuteSelectionFragment"
+        android:label="@string/title_minute_selection"
+        tools:layout="@layout/fragment_minute_selection" >
+        <argument
+            android:name="matchId"
+            app:argType="integer" />
+        <argument
+            android:name="hostTeamId"
+            app:argType="integer" />
+        <argument
+            android:name="guestTeamId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_minuteSelectionFragment_to_eventTypeSelectionFragment"
+            app:destination="@id/eventTypeSelectionFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"

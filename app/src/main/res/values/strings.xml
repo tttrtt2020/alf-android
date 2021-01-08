@@ -12,6 +12,7 @@
     <string name="action_open_referees">Referees</string>
     <string name="action_open_events">Events</string>
     <string name="action_skip">Skip</string>
+    <string name="action_proceed">Proceed</string>
     <string name="show_only_finished">Show only finished</string>
 
     <string name="menu_home">Home</string>
@@ -32,6 +33,7 @@
     <string name="title_select_formation">Select formation</string>
     <string name="title_field_position_selection">Select position</string>
     <string name="title_player_selection">Select player</string>
+    <string name="title_minute_selection">Select minute</string>
     <string name="title_events">Events</string>
 
     <string name="content_description_team_logo">Team logo</string>

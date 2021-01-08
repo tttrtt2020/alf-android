@@ -72,6 +72,7 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
                 matchId = args.matchId,
                 hostTeamId = args.hostTeamId,
                 guestTeamId = args.guestTeamId,
+                minute = args.minute,
                 eventType = eventType,
         )
         findNavController().navigate(action)

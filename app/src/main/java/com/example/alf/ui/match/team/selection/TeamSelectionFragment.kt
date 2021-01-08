@@ -70,6 +70,7 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
                 matchId = args.matchId,
                 hostTeamId = args.hostTeamId,
                 guestTeamId = args.guestTeamId,
+                minute = args.minute,
                 teamId = team.id,
                 fieldPosition = null,
                 eventType = args.eventType,

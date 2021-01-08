@@ -155,7 +155,8 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     private fun openPlayerSelection() {
         val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
-                args.matchId, 0, 0, args.teamId
+                args.matchId, 0, 0, args.teamId,
+                null, 0, null, null
         )
         findNavController().navigate(action)
     }

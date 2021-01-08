@@ -190,7 +190,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
 
     private fun addEventToMatch(player: Player) {
         val person = Person(player.id, player.firstName, player.patronymic, player.lastName, player.birthDate, player.country, player.height, player.weight)
-        val event = Event(0, args.team!!, person, /*args.minute*/ 70, args.eventType!!, null, null)
+        val event = Event(0, args.team!!, person, args.minute, args.eventType!!, null, null)
         playerSelectionViewModel.addEventToMatch(
                 args.matchId,
                 event
