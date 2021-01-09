@@ -15,15 +15,15 @@ import com.example.alf.R
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.Formation
-import com.example.alf.data.model.match.MatchPlayer
+import com.example.alf.data.model.match.Appearance
 import com.example.alf.databinding.FragmentTeamBinding
 import com.example.alf.ui.common.ActionModeCallback
 import com.example.alf.ui.match.MatchViewModel
-import com.example.alf.ui.match.squad.MatchPlayersAdapter
+import com.example.alf.ui.match.squad.AppearancesAdapter
 import com.google.android.material.snackbar.Snackbar
 
 
-class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
+class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
 
     private lateinit var binding: FragmentTeamBinding
 
@@ -38,7 +38,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         )
     }
 
-    private lateinit var viewAdapter: MatchPlayersAdapter
+    private lateinit var viewAdapter: AppearancesAdapter
 
     private var formation: Formation? = null
 
@@ -82,7 +82,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
     }
 
     private fun setupViews() {
-        binding.matchPlayersRecyclerView.apply {
+        binding.appearancesRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -118,7 +118,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
         teamViewModel.deletePlayerLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
-                onDeleteMatchPlayerResult(it)
+                onDeleteAppearanceResult(it)
                 teamViewModel.deletePlayerLiveData.value = null
             }
         }
@@ -133,10 +133,10 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         findNavController().navigate(action)
     }
 
-    private fun onDeleteMatchPlayerResult(success: Boolean) {
+    private fun onDeleteAppearanceResult(success: Boolean) {
         if (success) {
             teamViewModel.getSquad()
-            //viewAdapter.deleteMatchPlayer(matchPlayer) todo: should do this but requires match player or position
+            //viewAdapter.deleteAppearance(appearance) todo: should do this but requires appearance or position
             showSnackBar(binding.root, "Delete player success")
         } else showSnackBar(binding.root, "Delete player failed")
     }
@@ -170,8 +170,8 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
 
     private fun onGetTeamResult(matchTeam: MatchTeam?) {
         if (matchTeam != null) {
-            viewAdapter = MatchPlayersAdapter(matchTeam.matchPlayers, this)
-            binding.matchPlayersRecyclerView.adapter = viewAdapter
+            viewAdapter = AppearancesAdapter(matchTeam.appearances, this)
+            binding.appearancesRecyclerView.adapter = viewAdapter
         } else {
             showSnackBar(binding.root, "Get players failed")
         }
@@ -181,21 +181,21 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onItemDeleted(matchPlayer: MatchPlayer, position: Int) {
-        deletePlayer(matchPlayer.player, position)
+    override fun onItemDeleted(appearance: Appearance, position: Int) {
+        deletePlayer(appearance.player, position)
     }
 
-    override fun onItemClick(matchPlayer: MatchPlayer) {
+    override fun onItemClick(appearance: Appearance) {
         TODO("Not yet implemented")
     }
 
-    override fun onItemLongClick(view: View, matchPlayer: MatchPlayer, position: Int): Boolean {
+    override fun onItemLongClick(view: View, appearance: Appearance, position: Int): Boolean {
         // Called when the user long-clicks on match person view
         return when (actionMode) {
             null -> {
                 // Start the CAB using the ActionMode.Callback
                 actionMode = (activity as MainActivity).startSupportActionMode(
-                        MatchPlayerActionModeCallback(this, view, matchPlayer, position)
+                        AppearanceActionModeCallback(this, view, appearance, position)
                 )
                 view.isSelected = true
                 true
@@ -208,10 +208,10 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         teamViewModel.deletePlayer(player)
     }
 
-    class MatchPlayerActionModeCallback(
+    class AppearanceActionModeCallback(
             private val teamFragment: TeamFragment,
             view: View,
-            private val matchPlayer: MatchPlayer,
+            private val appearance: Appearance,
             private val position: Int
     ) : ActionModeCallback(teamFragment.requireContext(), view) {
 
@@ -227,7 +227,7 @@ class TeamFragment : Fragment(), MatchPlayersAdapter.SquadListener {
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             return when (item.itemId) {
                 R.id.action_delete -> {
-                    teamFragment.onItemDeleted(matchPlayer, position)
+                    teamFragment.onItemDeleted(appearance, position)
                     mode.finish() // Action picked, so close the CAB
                     true
                 }

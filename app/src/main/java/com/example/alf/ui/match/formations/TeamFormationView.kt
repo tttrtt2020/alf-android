@@ -15,7 +15,7 @@ class TeamFormationView(context: Context, attrs: AttributeSet?) : FrameLayout(co
 
     private lateinit var listener: OnChangeFormationClickListener
 
-    //private lateinit var matchPlayers: List<MatchPlayer>
+    //private lateinit var appearances: List<Appearance>
 
     init {
         val view = LayoutInflater.from(context)
@@ -30,12 +30,12 @@ class TeamFormationView(context: Context, attrs: AttributeSet?) : FrameLayout(co
         changeFormationView.setOnClickListener { listener.setOnChangeFormationClickListener() }
     }
 
-    /*fun setMatchPlayers(squad: List<MatchPlayer>) {
-        matchPlayers = squad
+    /*fun setAppearances(squad: List<Appearance>) {
+        appearances = squad
         val view = LayoutInflater.from(context)
                 .inflate(R.layout.team_formation_view, this, true)
         val formationView = view.findViewById<FormationView>(R.id.formation)
-        formationView.fieldPositions = matchPlayers.mapNotNull { mpm -> mpm.fieldPosition }
+        formationView.fieldPositions = appearances.mapNotNull { mpm -> mpm.fieldPosition }
         val changeFormationView = view.findViewById<Button>(R.id.change_formation)
         if (formationView.fieldPositions.isEmpty()) {
             changeFormationView.visibility = GONE

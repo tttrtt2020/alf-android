@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.PlayersPage
-import com.example.alf.data.model.match.MatchPlayer
+import com.example.alf.data.model.match.Appearance
 import com.example.alf.network.ApiClient
 import com.example.alf.network.PlayerApiInterface
 import retrofit2.Call
@@ -16,21 +16,21 @@ class PlayerApiService {
     private var playerApiInterface: PlayerApiInterface = ApiClient.getApiClient().create(PlayerApiInterface::class.java)
 
     fun fetchMatchTeamSquad(
-        squadLiveData: MutableLiveData<List<MatchPlayer>?>,
+        squadLiveData: MutableLiveData<List<Appearance>?>,
         matchId: Int,
         teamId: Int
-    ): LiveData<List<MatchPlayer>?> {
+    ): LiveData<List<Appearance>?> {
 
         playerApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object :
-            Callback<List<MatchPlayer>> {
+            Callback<List<Appearance>> {
 
-            override fun onFailure(call: Call<List<MatchPlayer>>, t: Throwable) {
+            override fun onFailure(call: Call<List<Appearance>>, t: Throwable) {
                 squadLiveData.value = null
             }
 
             override fun onResponse(
-                call: Call<List<MatchPlayer>>,
-                response: Response<List<MatchPlayer>>
+                call: Call<List<Appearance>>,
+                response: Response<List<Appearance>>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
@@ -52,7 +52,7 @@ class PlayerApiService {
         return playerApiInterface.fetchMatchTeamAllowablePlayers(matchId, teamId, query, sort, nextPageNumber)
     }
 
-    fun addMatchPlayer(
+    fun addAppearance(
         addPlayerToMatchLiveData: MutableLiveData<Boolean?>,
         matchId: Int,
         teamId: Int,
@@ -60,7 +60,7 @@ class PlayerApiService {
         player: Player
     ): LiveData<Boolean?> {
 
-        playerApiInterface.addMatchPlayer(matchId, teamId, fieldPositionId, player).enqueue(object :
+        playerApiInterface.addAppearance(matchId, teamId, fieldPositionId, player).enqueue(object :
             Callback<Player> {
             override fun onFailure(call: Call<Player>, t: Throwable) {
                 addPlayerToMatchLiveData.value = false
@@ -74,13 +74,13 @@ class PlayerApiService {
         return addPlayerToMatchLiveData
     }
 
-    fun deleteMatchPlayer(
+    fun deleteAppearance(
         resultLiveData: MutableLiveData<Boolean?>,
         matchId: Int,
         player: Player
     ): LiveData<Boolean?> {
 
-        playerApiInterface.deleteMatchPlayer(matchId, player.id).enqueue(object : Callback<Unit> {
+        playerApiInterface.deleteAppearance(matchId, player.id).enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 resultLiveData.value = false
             }

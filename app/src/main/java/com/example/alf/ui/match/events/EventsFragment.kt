@@ -95,7 +95,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     private fun onDeleteEventResult(success: Boolean) {
         if (success) {
             eventsViewModel.getEvents()
-            //viewAdapter.deleteMatchPlayer(matchPlayer) todo: should do this but requires match player or position
+            //viewAdapter.deleteAppearance(appearance) todo: should do this but requires appearance or position
             showSnackBar(binding.root, "Delete event success")
         } else showSnackBar(binding.root, "Delete event failed")
     }

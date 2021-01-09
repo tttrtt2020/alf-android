@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Player
-import com.example.alf.data.paging.AllowableMatchPlayersPagingSource
+import com.example.alf.data.paging.AllowableAppearancesPagingSource
 import com.example.alf.service.PlayersService
 import kotlinx.coroutines.flow.Flow
 
@@ -20,7 +20,7 @@ class PlayersPagingRepository(private val service: PlayersService) {
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                AllowableMatchPlayersPagingSource(service, matchId, teamId, query, sort)
+                AllowableAppearancesPagingSource(service, matchId, teamId, query, sort)
             }
         ).flow
     }

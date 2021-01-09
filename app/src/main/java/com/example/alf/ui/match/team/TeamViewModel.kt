@@ -34,7 +34,7 @@ class TeamViewModel(
         loadingInProgressLiveData.addSource(deletePlayerLiveData) { loadingInProgressLiveData.value = false }
         emptyCollectionLiveData.apply {
             fun update() {
-                value = loadingInProgressLiveData.value == false && matchTeamLiveData.value?.matchPlayers?.isEmpty() ?: false
+                value = loadingInProgressLiveData.value == false && matchTeamLiveData.value?.appearances?.isEmpty() ?: false
             }
 
             addSource(loadingInProgressLiveData) { update() }
@@ -54,7 +54,7 @@ class TeamViewModel(
 
     fun deletePlayer(player: Player) {
         loadingInProgressLiveData.value = true
-        playerApiService.deleteMatchPlayer(deletePlayerLiveData, matchId, player)
+        playerApiService.deleteAppearance(deletePlayerLiveData, matchId, player)
     }
 
     fun replacePlayer(player: Player) {
@@ -64,7 +64,7 @@ class TeamViewModel(
     fun freeFieldPositionsExist(formation: Formation?): Boolean {
         return if (formation == null) {
             false
-        } else matchTeamLiveData.value?.matchPlayers?.count { mp -> mp.fieldPosition != null }!! < formation.fieldPositions.size
+        } else matchTeamLiveData.value?.appearances?.count { mp -> mp.fieldPosition != null }!! < formation.fieldPositions.size
     }
 
 }

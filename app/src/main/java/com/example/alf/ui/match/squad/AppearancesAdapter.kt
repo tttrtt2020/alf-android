@@ -11,14 +11,14 @@ import com.bumptech.glide.Glide
 import com.example.alf.AlfApplication
 import com.example.alf.R
 import com.example.alf.data.model.Player
-import com.example.alf.data.model.match.MatchPlayer
-import com.example.alf.databinding.ItemMatchPlayerBinding
+import com.example.alf.data.model.match.Appearance
+import com.example.alf.databinding.ItemAppearanceBinding
 
-class MatchPlayersAdapter(
-        private var matchPlayers: List<MatchPlayer>,
-        private var listener: SquadListener
+class AppearancesAdapter(
+    private var appearances: List<Appearance>,
+    private var listener: SquadListener
         ) :
-        RecyclerView.Adapter<MatchPlayersAdapter.ViewHolder>() {
+        RecyclerView.Adapter<AppearancesAdapter.ViewHolder>() {
 
     companion object {
 
@@ -55,26 +55,26 @@ class MatchPlayersAdapter(
     }
 
     interface SquadListener {
-        fun onItemDeleted(matchPlayer: MatchPlayer, position: Int)
+        fun onItemDeleted(appearance: Appearance, position: Int)
 
-        fun onItemClick(matchPlayer: MatchPlayer)
+        fun onItemClick(appearance: Appearance)
 
-        fun onItemLongClick(view: View, matchPlayer: MatchPlayer, position: Int): Boolean
+        fun onItemLongClick(view: View, appearance: Appearance, position: Int): Boolean
     }
 
-    fun setMatchPlayers(list: List<MatchPlayer>) {
-        matchPlayers = list
+    fun setAppearances(list: List<Appearance>) {
+        appearances = list
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(private val binding: ItemMatchPlayerBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemAppearanceBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(matchPlayer: MatchPlayer) {
-            binding.matchPlayer = matchPlayer
+        fun bind(appearance: Appearance) {
+            binding.appearance = appearance
 
             // todo: choose correct logic
-            binding.inStart = matchPlayer.fieldPosition != null
-            //binding.inStart = matchPlayer.timeIn == 0
+            binding.inStart = appearance.fieldPosition != null
+            //binding.inStart = appearance.timeIn == 0
 
             binding.executePendingBindings()
         }
@@ -82,17 +82,17 @@ class MatchPlayersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemMatchPlayerBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemAppearanceBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val matchPlayer = matchPlayers[position]
-        holder.bind(matchPlayer)
-        holder.itemView.setOnClickListener { listener.onItemClick(matchPlayer) }
-        holder.itemView.setOnLongClickListener { listener.onItemLongClick(it, matchPlayer, position) }
+        val appearance = appearances[position]
+        holder.bind(appearance)
+        holder.itemView.setOnClickListener { listener.onItemClick(appearance) }
+        holder.itemView.setOnLongClickListener { listener.onItemLongClick(it, appearance, position) }
     }
 
-    override fun getItemCount() = matchPlayers.size
+    override fun getItemCount() = appearances.size
 
 }

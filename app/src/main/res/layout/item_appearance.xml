@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="matchPlayer" type="com.example.alf.data.model.match.MatchPlayer" />
+        <variable name="appearance" type="com.example.alf.data.model.match.Appearance" />
         <variable name="inStart" type="Boolean" />
     </data>
 
@@ -26,7 +26,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/content_description_player_photo"
             android:scaleType="centerCrop"
-            app:imageSrc="@{matchPlayer.player}"/>
+            app:imageSrc="@{appearance.player}"/>
 
         <ImageView
             android:id="@+id/start_icon"
@@ -49,8 +49,8 @@
             android:layout_marginEnd="@dimen/card_margin"
             android:gravity="center"
             android:textSize="@dimen/text_size_small"
-            android:visibility="@{matchPlayer.inForPlayer != null ? View.VISIBLE : View.GONE}"
-            android:text="@{String.format(@string/in_for, matchPlayer.inForPlayer.lastName)}"
+            android:visibility="@{appearance.inForPlayer != null ? View.VISIBLE : View.GONE}"
+            android:text="@{String.format(@string/in_for, appearance.inForPlayer.lastName)}"
             app:drawableEndCompat="@drawable/ic_substitution_in"/>
 
         <TextView
@@ -62,8 +62,8 @@
             android:layout_marginEnd="@dimen/card_margin"
             android:gravity="center"
             android:textSize="@dimen/text_size_small"
-            android:visibility="@{matchPlayer.outForPlayer != null ? View.VISIBLE : View.GONE}"
-            android:text="@{String.format(@string/out_for, matchPlayer.outForPlayer.lastName)}"
+            android:visibility="@{appearance.outForPlayer != null ? View.VISIBLE : View.GONE}"
+            android:text="@{String.format(@string/out_for, appearance.outForPlayer.lastName)}"
             app:drawableEndCompat="@drawable/ic_substitution_out"/>
 
         <TextView
@@ -78,8 +78,8 @@
             android:layout_marginTop="@dimen/card_margin_half"
             android:textSize="@dimen/text_size_medium"
             android:padding="4dp"
-            android:visibility="@{matchPlayer.fieldPosition != null ? View.VISIBLE : View.GONE}"
-            android:text="@{matchPlayer.fieldPosition.shortName}"/>
+            android:visibility="@{appearance.fieldPosition != null ? View.VISIBLE : View.GONE}"
+            android:text="@{appearance.fieldPosition.shortName}"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_medium"
-                android:text="@{matchPlayer.player.lastName}"/>
+                android:text="@{appearance.player.lastName}"/>
 
             <TextView
                 android:id="@+id/first_name"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_small"
-                android:text="@{matchPlayer.player.firstName}"/>
+                android:text="@{appearance.player.firstName}"/>
 
             <TextView
                 android:id="@+id/role"
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_small"
-                android:text="@{matchPlayer.playerRole.name}"/>
+                android:text="@{appearance.playerRole.name}"/>
 
         </LinearLayout>
 

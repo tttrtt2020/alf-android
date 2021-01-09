@@ -2,7 +2,7 @@ package com.example.alf.network
 
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.PlayersPage
-import com.example.alf.data.model.match.MatchPlayer
+import com.example.alf.data.model.match.Appearance
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -12,7 +12,7 @@ interface PlayerApiInterface {
     fun fetchMatchTeamSquad(
         @Path("matchId") matchId: Int,
         @Path("teamId") teamId: Int
-    ): Call<List<MatchPlayer>>
+    ): Call<List<Appearance>>
 
     @GET("matches/{matchId}/{teamId}/allowablePlayers")
     suspend fun fetchMatchTeamAllowablePlayers(
@@ -23,7 +23,7 @@ interface PlayerApiInterface {
     ): PlayersPage
 
     @POST("matches/{matchId}/{teamId}/players")
-    fun addMatchPlayer(
+    fun addAppearance(
         @Path("matchId") matchId: Int,
         @Path("teamId") teamId: Int,
         @Query("fieldPositionId") fieldPositionId: Int?,
@@ -31,7 +31,7 @@ interface PlayerApiInterface {
     ): Call<Player>
 
     @DELETE("matches/{matchId}/{playerId}")
-    fun deleteMatchPlayer(
+    fun deleteAppearance(
         @Path("matchId") matchId: Int,
         @Path("playerId") playerId: Int
     ): Call<Unit>

@@ -163,7 +163,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
 
     private fun onPlayerSelectionResult(success: Boolean) {
         if (mode == Mode.TO_TEAM) {
-            onAddMatchPlayerResult(success)
+            onAddAppearanceResult(success)
         } else if (mode == Mode.TO_EVENT) {
             onAddEventResult(success)
         }
@@ -197,11 +197,11 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
         )
     }
 
-    private fun onAddMatchPlayerResult(success: Boolean) {
+    private fun onAddAppearanceResult(success: Boolean) {
         if (success) {
-            showSnackBar(binding.root, "Add match player success")
+            showSnackBar(binding.root, "Add appearance success")
             goBack()
-        } else showSnackBar(binding.root, "Add match player failed")
+        } else showSnackBar(binding.root, "Add appearance failed")
     }
 
     private fun onAddEventResult(success: Boolean) {
