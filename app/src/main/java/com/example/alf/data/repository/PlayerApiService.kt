@@ -50,7 +50,21 @@ class PlayerApiService {
         query: String,
         sort: String, nextPageNumber: Int
     ): PlayersPage {
-        return playerApiInterface.fetchMatchTeamAllowablePlayers(matchId, teamId, query, sort, nextPageNumber)
+        return playerApiInterface.fetchMatchTeamAllowablePlayers(
+                matchId, teamId,
+                query, sort, nextPageNumber
+        )
+    }
+
+    suspend fun fetchMatchEventAllowablePlayersPage(
+        matchId: Int, teamId: Int, eventTypeId: Int, minute: Int,
+        query: String,
+        sort: String, nextPageNumber: Int
+    ): PlayersPage {
+        return playerApiInterface.fetchMatchEventAllowablePlayers(
+                matchId, teamId, eventTypeId, minute,
+                query, sort, nextPageNumber
+        )
     }
 
     fun addAppearance(

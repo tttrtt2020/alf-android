@@ -22,6 +22,15 @@ interface PlayerApiInterface {
         @Query("page") page: Int
     ): PlayersPage
 
+    @GET("matches/{matchId}/{teamId}/{eventTypeId}/{minute}/allowablePlayers")
+    suspend fun fetchMatchEventAllowablePlayers(
+            @Path("matchId") matchId: Int, @Path("teamId") teamId: Int,
+            @Path("eventTypeId") eventTypeId: Int, @Path("minute") minute: Int,
+            @Query("query") query: String,
+            @Query("sort") field: String,
+            @Query("page") page: Int
+    ): PlayersPage
+
     @POST("matches/{matchId}/{teamId}/players")
     fun addAppearance(
         @Path("matchId") matchId: Int,

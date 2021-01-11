@@ -59,7 +59,16 @@ class PlayerSelectionViewModel(
             return lastResult
         }
         currentQueryValue = query
-        val flow = playersPagingRepository.getSearchResultStream(args.matchId, args.teamId, query, sort)
+        val flow = when (mode) {
+            Mode.TO_TEAM -> playersPagingRepository.getSearchResultStreamForAppearance(
+                    args.matchId, args.teamId,
+                    query, sort
+            )
+            Mode.TO_EVENT -> playersPagingRepository.getSearchResultStreamForEvent(
+                    args.matchId, args.teamId, args.eventType!!.id, args.minute,
+                    query, sort
+            )
+        }
         val newResult: Flow<PagingData<Player>> = flow
             .cachedIn(viewModelScope)
         currentSearchResult = newResult

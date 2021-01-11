@@ -7,12 +7,14 @@ import com.example.alf.service.PlayersService
 import retrofit2.HttpException
 import java.io.IOException
 
-class AllowableAppearancesPagingSource(
+class AllowablePlayersForEventPagingSource(
         private val service: PlayersService,
-        private var matchId: Int,
-        private var teamId: Int,
-        private var query: String,
-        private var sort: String
+        private val matchId: Int,
+        private val teamId: Int,
+        private val eventTypeId: Int,
+        private val minute: Int,
+        private val query: String,
+        private val sort: String
 ) : PagingSource<Int, Player>() {
 
     private val startingPageIndex = AlfApplication.getProperty("pagination.players.startIndex").toInt()
@@ -21,8 +23,8 @@ class AllowableAppearancesPagingSource(
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: startingPageIndex
-            val playersPage = service.searchPlayersPageForAppearance(
-                    matchId, teamId,
+            val playersPage = service.searchPlayersPageForEvent(
+                    matchId, teamId, eventTypeId, minute,
                     query, sort, nextPageNumber
             )
             return LoadResult.Page(
