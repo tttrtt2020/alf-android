@@ -22,6 +22,7 @@ import com.example.alf.service.PersonsService
 import com.example.alf.service.PlayersService
 import com.example.alf.service.RefereesService
 import com.example.alf.ui.match.players.PlayersPagingRepository
+import com.example.alf.ui.match.players.selection.PlayerSelectionFragmentArgs
 import com.example.alf.ui.match.players.selection.PlayerSelectionViewModelFactory
 import com.example.alf.ui.matches.MatchesPagingRepository
 import com.example.alf.ui.matches.MatchesViewModelFactory
@@ -97,7 +98,7 @@ object Injection {
      * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
      * [ViewModel] objects.
      */
-    fun providePlayersViewModelFactory(matchId: Int, teamId: Int): ViewModelProvider.Factory {
-        return PlayerSelectionViewModelFactory(providePlayersRepository(), matchId, teamId)
+    fun providePlayersViewModelFactory(args: PlayerSelectionFragmentArgs): ViewModelProvider.Factory {
+        return PlayerSelectionViewModelFactory(providePlayersRepository(), args)
     }
 }

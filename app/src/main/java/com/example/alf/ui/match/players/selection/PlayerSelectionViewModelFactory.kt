@@ -25,14 +25,13 @@ import com.example.alf.ui.match.players.PlayersPagingRepository
  */
 class PlayerSelectionViewModelFactory(
     private val repository: PlayersPagingRepository,
-    private val matchId: Int,
-    private val teamId: Int
+    private val args: PlayerSelectionFragmentArgs
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PlayerSelectionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return PlayerSelectionViewModel(repository, matchId, teamId) as T
+            return PlayerSelectionViewModel(repository, args) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
