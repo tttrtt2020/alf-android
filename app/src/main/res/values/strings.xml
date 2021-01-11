@@ -56,6 +56,7 @@
     <string name="minute">Minute</string>
     <string name="team">Team</string>
     <string name="person">Person</string>
+    <string name="additional_info">Additional info</string>
     <string name="match_result_unknown">- : -</string>
 
     <string name="in_for">In for: %s</string>
@@ -63,6 +64,7 @@
 
     <string name="hint_minute">25</string>
     <string name="hint_person">Ivanov Ivan Ivanovich</string>
+    <string name="hint_additional_info">Some useful information</string>
     <string name="postfix_minute">\"</string>
 
     <string name="empty_collection_referees">No referees</string>

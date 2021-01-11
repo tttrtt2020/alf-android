@@ -3,6 +3,7 @@ package com.example.alf.ui.match.event
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.RadioButton
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,10 @@ import androidx.navigation.navGraphViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.alf.AlfApplication
 import com.example.alf.R
+import com.example.alf.data.model.Person
+import com.example.alf.data.model.Player
 import com.example.alf.databinding.FragmentEventBinding
 import com.example.alf.ui.match.MatchViewModel
 import com.example.alf.ui.match.MatchViewModelFactory
@@ -26,6 +30,26 @@ class EventFragment : Fragment() {
         fun newInstance() = EventFragment()
 
         const val MAX_MINUTE: Int = 90
+
+        private fun buildPlayerPhotoUrl(person: Person): String {
+            return AlfApplication.getProperty("url.image.person") +
+                    person.id +
+                    AlfApplication.getProperty("extension.image.person")
+        }
+
+        @JvmStatic
+        @BindingAdapter("app:imageSrc")
+        fun loadPlayerPhoto(imageView: ImageView, person: Person) {
+            val url = buildPlayerPhotoUrl(person)
+            if (url.isNotEmpty()) {
+                Glide
+                        .with(imageView.context)
+                        .load(url)
+                        .placeholder(android.R.color.darker_gray)
+                        .error(R.drawable.ic_no_photo_with_padding)
+                        .into(imageView)
+            }
+        }
 
         @JvmStatic
         @BindingAdapter("app:buttonImageUrl")

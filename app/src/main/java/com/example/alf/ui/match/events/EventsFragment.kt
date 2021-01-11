@@ -111,11 +111,19 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
+    override fun onItemClick(event: Event) {
+        //openEvent(event)
+    }
+
     override fun onItemDeleted(event: Event, position: Int) {
         deleteEvent(event, position)
     }
 
-    override fun onItemClick(event: Event) {
+    override fun onItemLongClick(view: View, event: Event, position: Int): Boolean {
+        return startActionMode(view, event, position)
+    }
+
+    private fun openEvent(event: Event) {
         val action = EventsFragmentDirections.actionEventsFragmentToEventFragment(
                 args.matchId,
                 event.id,
@@ -130,7 +138,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
         eventsViewModel.deleteEvent(event)
     }
 
-    override fun onItemLongClick(view: View, event: Event, position: Int): Boolean {
+    private fun startActionMode(view: View, event: Event, position: Int): Boolean {
         // Called when the user long-clicks on match person view
         return when (actionMode) {
             null -> {

@@ -42,11 +42,11 @@ class EventsAdapter(
     }
 
     interface EventsListener {
-        fun onItemDeleted(event: Event, position: Int)
-
         fun onItemClick(event: Event)
 
         fun onItemLongClick(view: View, event: Event, position: Int): Boolean
+
+        fun onItemDeleted(event: Event, position: Int)
     }
 
     fun setEvents(list: List<Event>) {
