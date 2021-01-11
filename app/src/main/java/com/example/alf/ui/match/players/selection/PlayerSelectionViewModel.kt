@@ -12,6 +12,7 @@ import com.example.alf.data.model.Player
 import com.example.alf.data.model.event.Event
 import com.example.alf.data.repository.EventApiService
 import com.example.alf.data.repository.PlayerApiService
+import com.example.alf.ui.common.ViewEvent
 import com.example.alf.ui.match.players.PlayersPagingRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -28,7 +29,7 @@ class PlayerSelectionViewModel(
 
     private var currentSearchResult: Flow<PagingData<Player>>? = null
 
-    var selectionResultLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+    var selectionResultLiveData: MutableLiveData<ViewEvent<Boolean>> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
@@ -126,29 +127,6 @@ class PlayerSelectionViewModel(
                     event
             )
         }
-    }
-
-    open class ViewEvent<out T>(private val content: T) {
-
-        var hasBeenHandled = false
-            private set // Allow external read but not write
-
-        /**
-         * Returns the content and prevents its use again.
-         */
-        fun getContentIfNotHandledOrReturnNull(): T? {
-            return if (hasBeenHandled) {
-                null
-            } else {
-                hasBeenHandled = true
-                content
-            }
-        }
-
-        /**
-         * Returns the content, even if it's already been handled.
-         */
-        fun peekContent(): T = content
     }
 
     enum class Mode {

@@ -133,10 +133,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
 
     private fun observeViewModel() {
         playerSelectionViewModel.selectionResultLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                playerSelectionViewModel.onPlayerSelectionResult(it)
-                playerSelectionViewModel.selectionResultLiveData.value = null
-            }
+            playerSelectionViewModel.onPlayerSelectionResult(it.peekContent())
         }
 
         playerSelectionViewModel.message.observe(viewLifecycleOwner) {
@@ -186,6 +183,8 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
             if (it.isNotEmpty()) {
                 binding.playersRecyclerView.scrollToPosition(0)
                 search(it)
+            } else {
+                // TODO: 1/11/21 handle empty query?
             }
         }
     }

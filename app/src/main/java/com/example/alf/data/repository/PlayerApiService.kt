@@ -7,6 +7,7 @@ import com.example.alf.data.model.PlayersPage
 import com.example.alf.data.model.match.Appearance
 import com.example.alf.network.ApiClient
 import com.example.alf.network.PlayerApiInterface
+import com.example.alf.ui.common.ViewEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,21 +54,21 @@ class PlayerApiService {
     }
 
     fun addAppearance(
-        addPlayerToMatchLiveData: MutableLiveData<Boolean?>,
-        matchId: Int,
-        teamId: Int,
-        fieldPositionId: Int?,
-        player: Player
-    ): LiveData<Boolean?> {
+            addPlayerToMatchLiveData: MutableLiveData<ViewEvent<Boolean>>,
+            matchId: Int,
+            teamId: Int,
+            fieldPositionId: Int?,
+            player: Player
+    ): LiveData<ViewEvent<Boolean>> {
 
         playerApiInterface.addAppearance(matchId, teamId, fieldPositionId, player).enqueue(object :
             Callback<Player> {
             override fun onFailure(call: Call<Player>, t: Throwable) {
-                addPlayerToMatchLiveData.value = false
+                addPlayerToMatchLiveData.value = ViewEvent(false)
             }
 
             override fun onResponse(call: Call<Player>, response: Response<Player>) {
-                addPlayerToMatchLiveData.value = response.code() == 201
+                addPlayerToMatchLiveData.value = ViewEvent(response.code() == 201)
             }
         })
 

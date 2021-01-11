@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.event.Event
 import com.example.alf.network.ApiClient
 import com.example.alf.network.EventApiInterface
+import com.example.alf.ui.common.ViewEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,19 +47,19 @@ class EventApiService {
     }
 
     fun createEvent(
-            addEventToMatchLiveData: MutableLiveData<Boolean?>,
+            addEventToMatchLiveData: MutableLiveData<ViewEvent<Boolean>>,
             matchId: Int,
             event: Event
-    ): LiveData<Boolean?> {
+    ): LiveData<ViewEvent<Boolean>> {
 
         eventApiInterface.createMatchEvent(matchId, event).enqueue(object :
                 Callback<Event> {
             override fun onFailure(call: Call<Event>, t: Throwable) {
-                addEventToMatchLiveData.value = false
+                addEventToMatchLiveData.value = ViewEvent(false)
             }
 
             override fun onResponse(call: Call<Event>, response: Response<Event>) {
-                addEventToMatchLiveData.value = response.code() == 201
+                addEventToMatchLiveData.value = ViewEvent(response.code() == 201)
             }
         })
 
