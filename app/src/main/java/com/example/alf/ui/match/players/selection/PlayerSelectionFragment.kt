@@ -139,16 +139,22 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     private fun observeViewModel() {
-        playerSelectionViewModel.selectionResultLiveData.observe(viewLifecycleOwner) {
-            playerSelectionViewModel.onPlayerSelectionResult(it.peekContent())
+        playerSelectionViewModel.selectionResultLiveData.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
+                playerSelectionViewModel.onPlayerSelectionResult(viewEvent.peekContent())
+            }
         }
 
-        playerSelectionViewModel.message.observe(viewLifecycleOwner) {
-            showSnackBar(binding.root, it.peekContent())
+        playerSelectionViewModel.message.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
+                showSnackBar(binding.root, viewEvent.peekContent())
+            }
         }
 
-        playerSelectionViewModel.goBack.observe(viewLifecycleOwner) {
-            goBack(it.peekContent())
+        playerSelectionViewModel.goBack.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
+                goBack(viewEvent.peekContent())
+            }
         }
     }
 
