@@ -36,6 +36,9 @@
     <string name="title_minute_selection">Select minute</string>
     <string name="title_events">Events</string>
 
+    <string name="loading_failed">Loading failed</string>
+    <string name="retry">Retry</string>
+
     <string name="content_description_team_logo">Team logo</string>
     <string name="content_description_person_photo">Person photo</string>
     <string name="content_description_player_photo">Player photo</string>

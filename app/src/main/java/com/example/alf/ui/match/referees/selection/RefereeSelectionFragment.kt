@@ -71,11 +71,11 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViews()
-        initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        initSearch(query)
-        search(query)
+        setupViews(query)
+        initAdapter()
+        initSearch()
+        getReferees(query)
 
         observeRefereeSelectionViewModel()
     }
@@ -99,13 +99,16 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
     }
 
-    private fun setupViews() {
+    private fun setupViews(query: String) {
         binding.refereesRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             adapter = viewAdapter.withLoadStateHeaderAndFooter(
                     header = RefereesLoadStateAdapter { viewAdapter.retry() },
                     footer = RefereesLoadStateAdapter { viewAdapter.retry() }
             )
+        }
+        binding.retryButton.setOnClickListener {
+            getReferees(query)
         }
     }
 
@@ -116,7 +119,11 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
             // Show loading spinner during initial load or refresh.
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails.
-            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+            binding.errorLayout.isVisible = loadState.source.refresh is LoadState.Error
+
+            if (loadState.source.refresh is LoadState.Error) {
+                refereeSelectionViewModel.currentSearchResult = null
+            }
 
             // Show exception on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
@@ -164,7 +171,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
     }
 
 
-    private fun search(query: String) {
+    private fun getReferees(query: String) {
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
@@ -174,7 +181,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         }
     }
 
-    private fun initSearch(query: String) {
+    private fun initSearch() {
         //...
         // First part of the method is unchanged
 
@@ -193,7 +200,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
         query.trim().let {
             if (it.isNotEmpty()) {
                 binding.refereesRecyclerView.scrollToPosition(0)
-                search(it)
+                getReferees(it)
             }
         }
     }

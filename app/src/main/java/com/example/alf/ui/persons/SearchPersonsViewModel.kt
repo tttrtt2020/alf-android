@@ -13,19 +13,17 @@ class SearchPersonsViewModel(
 ) : ViewModel() {
 
     private var personApiService: PersonApiService? = null
-    var personListLiveData: LiveData<List<Person>>? = null
     /*var createPersonLiveData: LiveData<Person>? = null
     var deletePersonLiveData: LiveData<Boolean>? = null*/
 
     private var currentQueryValue: String? = null
 
-    private var currentSearchResult: Flow<PagingData<Person>>? = null
+    var currentSearchResult: Flow<PagingData<Person>>? = null
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
         personApiService = PersonApiService()
-        personListLiveData = MutableLiveData()
         /*createPersonLiveData = MutableLiveData()
         deletePersonLiveData = MutableLiveData()*/
 

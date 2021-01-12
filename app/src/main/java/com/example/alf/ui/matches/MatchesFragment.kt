@@ -67,11 +67,11 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViews()
-        initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        initSearch(query)
-        search(query)
+        setupViews(query)
+        initAdapter()
+        initSearch()
+        getMatches(query)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -101,13 +101,16 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
         }
     }
 
-    private fun setupViews() {
+    private fun setupViews(query: String) {
         binding.matchesRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+        binding.retryButton.setOnClickListener {
+            getMatches(query)
+        }
     }
 
-    private fun search(query: String) {
+    private fun getMatches(query: String) {
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
@@ -117,7 +120,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
         }
     }
 
-    private fun initSearch(query: String) {
+    private fun initSearch() {
         //...
         // First part of the method is unchanged
 
@@ -136,7 +139,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
         query.trim().let {
             if (it.isNotEmpty()) {
                 binding.matchesRecyclerView.scrollToPosition(0)
-                search(it)
+                getMatches(it)
             }
         }
     }
@@ -152,7 +155,11 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
             // Show loading spinner during initial load or refresh.
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails.
-            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+            binding.errorLayout.isVisible = loadState.source.refresh is LoadState.Error
+
+            if (loadState.source.refresh is LoadState.Error) {
+                matchesViewModel.currentSearchResult = null
+            }
 
             // Show exception on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error

@@ -21,7 +21,7 @@ class RefereeSelectionViewModel(
 
     private var currentQueryValue: String? = null
 
-    private var currentSearchResult: Flow<PagingData<Referee>>? = null
+    var currentSearchResult: Flow<PagingData<Referee>>? = null
 
     var addRefereeToMatchLiveData: MutableLiveData<Boolean?> = MutableLiveData()
 

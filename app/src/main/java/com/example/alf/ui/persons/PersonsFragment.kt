@@ -67,12 +67,11 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupView()
-        setupFab()
-        initAdapter()
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
-        initSearch(query)
-        search(query)
+        setupView(query)
+        initAdapter()
+        initSearch()
+        getPersons(query)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -94,7 +93,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         //outState.putString(LAST_SEARCH_QUERY, binding.searchRepo.text.trim().toString())
     }
 
-    private fun setupView() {
+    private fun setupView(query: String) {
         binding.personsRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -108,10 +107,10 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
                 }
             })
         }
-    }
-
-    private fun setupFab() {
         binding.fab.setOnClickListener { openCreateNewPerson() }
+        binding.retryButton.setOnClickListener {
+            getPersons(query)
+        }
     }
 
     private fun initAdapter() {
@@ -125,7 +124,11 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
             // Show loading spinner during initial load or refresh.
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails.
-            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+            binding.errorLayout.isVisible = loadState.source.refresh is LoadState.Error
+
+            if (loadState.source.refresh is LoadState.Error) {
+                personsViewModel.currentSearchResult = null
+            }
 
             // Show exception on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
@@ -162,7 +165,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         findNavController().navigate(action)
     }
 
-    private fun search(query: String) {
+    private fun getPersons(query: String) {
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
@@ -172,7 +175,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         }
     }
 
-    private fun initSearch(query: String) {
+    private fun initSearch() {
         //...
         // First part of the method is unchanged
 
@@ -191,7 +194,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
         query.trim().let {
             if (it.isNotEmpty()) {
                 binding.personsRecyclerView.scrollToPosition(0)
-                search(it)
+                getPersons(it)
             }
         }
     }

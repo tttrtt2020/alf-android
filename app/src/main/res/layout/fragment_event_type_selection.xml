@@ -41,13 +41,31 @@
             android:text="@string/empty_collection_events"
             android:visibility="@{eventTypeSelectionViewModel.emptyCollectionLiveData ? View.VISIBLE : View.GONE}"/>
 
-        <Button
-            android:id="@+id/retry_button"
+        <LinearLayout
+            android:id="@+id/error_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Retry"
+            android:layout_margin="@dimen/card_margin"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/card_margin_double"
+                android:textSize="@dimen/text_size_large"
+                android:text="@string/loading_failed" />
+
+            <Button
+                android:id="@+id/retry_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/card_margin_double"
+                android:text="@string/retry" />
+
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -27,7 +27,7 @@ class PlayerSelectionViewModel(
 
     private var currentQueryValue: String? = null
 
-    private var currentSearchResult: Flow<PagingData<Player>>? = null
+    var currentSearchResult: Flow<PagingData<Player>>? = null
 
     var selectionResultLiveData: MutableLiveData<ViewEvent<Boolean>> = MutableLiveData()
 
