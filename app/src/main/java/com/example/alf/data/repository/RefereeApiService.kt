@@ -6,6 +6,9 @@ import com.example.alf.data.model.RefereesPage
 import com.example.alf.data.model.Referee
 import com.example.alf.network.ApiClient
 import com.example.alf.network.RefereeApiInterface
+import com.example.alf.network.Resource
+import com.example.alf.network.errorHandling.ApiError
+import com.example.alf.network.errorHandling.ErrorUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -89,14 +92,14 @@ class RefereeApiService {
     }
 
     fun fetchMatchReferees(
-            matchRefereesLiveData: MutableLiveData<List<Referee>?>,
+            matchRefereesLiveData: MutableLiveData<Resource<List<Referee>>>,
             matchId: Int
-    ): LiveData<List<Referee>?> {
+    ): LiveData<Resource<List<Referee>>> {
 
         refereeApiInterface.fetchMatchReferees(matchId).enqueue(object : Callback<List<Referee>> {
 
             override fun onFailure(call: Call<List<Referee>>, t: Throwable) {
-                matchRefereesLiveData.value = null
+                matchRefereesLiveData.value = Resource.Error(t.localizedMessage!!, null)
             }
 
             override fun onResponse(
@@ -105,9 +108,10 @@ class RefereeApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    matchRefereesLiveData.value = res
+                    matchRefereesLiveData.value = Resource.Success(response.body()!!)
                 } else {
-                    matchRefereesLiveData.value = null
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    matchRefereesLiveData.value = Resource.Error(apiError.message, null)
                 }
             }
         })

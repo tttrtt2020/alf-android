@@ -89,10 +89,17 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
                 }
             })
         }
+        binding.retryButton.setOnClickListener {
+            getMatchReferees()
+        }
     }
 
     private fun setupFab() {
         binding.fab.setOnClickListener { onFabClicked() }
+    }
+
+    private fun getMatchReferees() {
+        matchRefereesViewModel.getReferees()
     }
 
     private fun onDeleteMatchRefereeResult(success: Boolean) {

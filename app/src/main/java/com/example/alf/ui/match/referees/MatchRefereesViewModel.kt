@@ -1,16 +1,18 @@
 package com.example.alf.ui.match.referees
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.alf.data.model.Referee
 import com.example.alf.data.repository.RefereeApiService
+import com.example.alf.network.Resource
 
 class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
 
     private var refereeApiService: RefereeApiService = RefereeApiService()
 
-    var refereesLiveData: MutableLiveData<List<Referee>?> = MutableLiveData()
+    var refereesResourceLiveData: MutableLiveData<Resource<List<Referee>>> = MutableLiveData()
+    var refereesLiveData: LiveData<List<Referee>?> = Transformations.map(refereesResourceLiveData) { resource -> resource.data }
+    var refereesLoadingLiveData: LiveData<Boolean> = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Loading }
+    var refereesErrorLiveData: LiveData<Boolean> = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Error }
 
     var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
@@ -37,7 +39,7 @@ class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
 
     fun getReferees() {
         loadingInProgressLiveData.value = true
-        refereeApiService.fetchMatchReferees(refereesLiveData, matchId)
+        refereeApiService.fetchMatchReferees(refereesResourceLiveData, matchId)
     }
 
     fun deleteReferee(referee: Referee) {
