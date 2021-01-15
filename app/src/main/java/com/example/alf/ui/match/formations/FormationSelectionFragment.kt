@@ -40,7 +40,14 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViews()
         observeFormationSelectionViewModel()
+    }
+
+    private fun setupViews() {
+        binding.retryButton.setOnClickListener {
+            getFormations()
+        }
     }
 
     private fun observeFormationSelectionViewModel() {
@@ -54,6 +61,10 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
                 formationSelectionViewModel.addFormationToMatchLiveData.value = null
             }
         }
+    }
+
+    private fun getFormations() {
+        formationSelectionViewModel.getFormations()
     }
 
     private fun onGetFormationsResult(formations: List<Formation>?) {

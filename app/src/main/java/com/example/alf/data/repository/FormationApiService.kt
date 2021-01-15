@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.match.Formation
 import com.example.alf.network.ApiClient
 import com.example.alf.network.FormationApiInterface
+import com.example.alf.network.Resource
+import com.example.alf.network.errorHandling.ApiError
+import com.example.alf.network.errorHandling.ErrorUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,15 +19,15 @@ class FormationApiService {
     )
 
     fun fetchAllowableFormations(
-            formationsLiveData: MutableLiveData<List<Formation>?>,
+            formationsLiveData: MutableLiveData<Resource<List<Formation>>>,
             matchId: Int,
             teamId: Int
-    ): LiveData<List<Formation>?> {
+    ): LiveData<Resource<List<Formation>>> {
 
         formationApiInterface.fetchAllowableFormations(matchId, teamId).enqueue(object : Callback<List<Formation>> {
 
             override fun onFailure(call: Call<List<Formation>>, t: Throwable) {
-                formationsLiveData.value = null
+                formationsLiveData.value = Resource.Error(t.localizedMessage!!, null)
             }
 
             override fun onResponse(
@@ -33,9 +36,10 @@ class FormationApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    formationsLiveData.value = res
+                    formationsLiveData.value = Resource.Success(response.body()!!)
                 } else {
-                    formationsLiveData.value = null
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    formationsLiveData.value = Resource.Error(apiError.message, null)
                 }
             }
         })

@@ -3,6 +3,7 @@ package com.example.alf.ui.match.formations
 import androidx.lifecycle.*
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.repository.FormationApiService
+import com.example.alf.network.Resource
 
 class FormationSelectionViewModel(
         private val matchId: Int,
@@ -11,7 +12,10 @@ class FormationSelectionViewModel(
 
     private var formationApiService = FormationApiService()
 
-    var formationsLiveData: MutableLiveData<List<Formation>?> = MutableLiveData()
+    var formationsResourceLiveData: MutableLiveData<Resource<List<Formation>>> = MutableLiveData()
+    var formationsLiveData: LiveData<List<Formation>?> = Transformations.map(formationsResourceLiveData) { resource -> resource.data }
+    var formationsLoadingLiveData: LiveData<Boolean> = Transformations.map(formationsResourceLiveData) { resource -> resource is Resource.Loading }
+    var formationsErrorLiveData: LiveData<Boolean> = Transformations.map(formationsResourceLiveData) { resource -> resource is Resource.Error }
 
     var addFormationToMatchLiveData: MutableLiveData<Boolean?> = MutableLiveData()
 
@@ -32,12 +36,12 @@ class FormationSelectionViewModel(
             update()
         }
 
-        fetchFormations()
+        getFormations()
     }
 
-    private fun fetchFormations() {
+    fun getFormations() {
         loadingInProgressLiveData.value = true
-        formationApiService.fetchAllowableFormations(formationsLiveData, matchId, teamId)
+        formationApiService.fetchAllowableFormations(formationsResourceLiveData, matchId, teamId)
     }
 
     fun setFormation(formation: Formation) {
