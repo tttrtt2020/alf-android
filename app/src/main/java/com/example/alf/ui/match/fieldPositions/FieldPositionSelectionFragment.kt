@@ -68,12 +68,19 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
         binding.fieldPositionsRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+        binding.retryButton.setOnClickListener {
+            getFieldPositions()
+        }
     }
 
     private fun observeFieldPositionSelectionViewModel() {
         fieldPositionsViewModel.fieldPositionsLiveData.observe(viewLifecycleOwner, {
             onGetFieldPositionsResult(it)
         })
+    }
+
+    private fun getFieldPositions() {
+        fieldPositionsViewModel.getFieldPositions()
     }
 
     private fun onGetFieldPositionsResult(fieldPositions: List<FieldPosition>?) {

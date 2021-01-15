@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.network.ApiClient
 import com.example.alf.network.FieldPositionApiInterface
+import com.example.alf.network.Resource
+import com.example.alf.network.errorHandling.ApiError
+import com.example.alf.network.errorHandling.ErrorUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,15 +19,15 @@ class FieldPositionApiService {
     )
 
     fun fetchFreeFieldPositions(
-            fieldPositionsLiveData: MutableLiveData<List<FieldPosition>?>,
+            fieldPositionsLiveData: MutableLiveData<Resource<List<FieldPosition>>>,
             matchId: Int,
             teamId: Int
-    ): LiveData<List<FieldPosition>?> {
+    ): LiveData<Resource<List<FieldPosition>>> {
 
         fieldPositionApiInterface.fetchFreeFieldPositions(matchId, teamId).enqueue(object : Callback<List<FieldPosition>> {
 
             override fun onFailure(call: Call<List<FieldPosition>>, t: Throwable) {
-                fieldPositionsLiveData.value = null
+                fieldPositionsLiveData.value = Resource.Error(t.localizedMessage!!, null)
             }
 
             override fun onResponse(
@@ -33,9 +36,10 @@ class FieldPositionApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    fieldPositionsLiveData.value = res
+                    fieldPositionsLiveData.value = Resource.Success(response.body()!!)
                 } else {
-                    fieldPositionsLiveData.value = null
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    fieldPositionsLiveData.value = Resource.Error(apiError.message, null)
                 }
             }
         })

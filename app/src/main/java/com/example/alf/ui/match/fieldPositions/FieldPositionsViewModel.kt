@@ -1,10 +1,9 @@
 package com.example.alf.ui.match.fieldPositions
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.data.repository.FieldPositionApiService
+import com.example.alf.network.Resource
 
 class FieldPositionsViewModel(
         private val matchId: Int,
@@ -13,7 +12,10 @@ class FieldPositionsViewModel(
 
     private var fieldPositionApiService = FieldPositionApiService()
 
-    var fieldPositionsLiveData: MutableLiveData<List<FieldPosition>?> = MutableLiveData()
+    var fieldPositionsResourceLiveData: MutableLiveData<Resource<List<FieldPosition>>> = MutableLiveData()
+    var fieldPositionsLiveData: LiveData<List<FieldPosition>?> = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource.data }
+    var fieldPositionsLoadingLiveData: LiveData<Boolean> = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource is Resource.Loading }
+    var fieldPositionsErrorLiveData: LiveData<Boolean> = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource is Resource.Error }
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
     var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
@@ -31,12 +33,12 @@ class FieldPositionsViewModel(
             update()
         }
 
-        fetchFieldPositions()
+        getFieldPositions()
     }
 
-    private fun fetchFieldPositions() {
+    fun getFieldPositions() {
         loadingInProgressLiveData.value = true
-        fieldPositionApiService.fetchFreeFieldPositions(fieldPositionsLiveData, matchId, teamId)
+        fieldPositionApiService.fetchFreeFieldPositions(fieldPositionsResourceLiveData, matchId, teamId)
     }
 
 }
