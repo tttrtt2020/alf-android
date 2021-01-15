@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.event.Event
 import com.example.alf.network.ApiClient
 import com.example.alf.network.EventApiInterface
+import com.example.alf.network.Resource
+import com.example.alf.network.errorHandling.ApiError
+import com.example.alf.network.errorHandling.ErrorUtils
 import com.example.alf.ui.common.ViewEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -81,23 +84,27 @@ class EventApiService {
         return resultLiveData
     }
 
-    fun fetchMatchEvents(eventsLiveData: MutableLiveData<List<Event>?>, matchId: Int): LiveData<List<Event>?> {
+    fun fetchMatchEvents(
+            eventsLiveData: MutableLiveData<Resource<List<Event>>>,
+            matchId: Int
+    ): LiveData<Resource<List<Event>>> {
 
-        eventApiInterface.fetchMatchEvents(matchId).enqueue(object : Callback<List<Event>?> {
+        eventApiInterface.fetchMatchEvents(matchId).enqueue(object : Callback<List<Event>> {
 
-            override fun onFailure(call: Call<List<Event>?>, t: Throwable) {
-                eventsLiveData.value = null
+            override fun onFailure(call: Call<List<Event>>, t: Throwable) {
+                eventsLiveData.value = Resource.Error(t.localizedMessage!!, null)
             }
 
             override fun onResponse(
-                    call: Call<List<Event>?>,
-                    response: Response<List<Event>?>
+                    call: Call<List<Event>>,
+                    response: Response<List<Event>>
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    eventsLiveData.value = res
+                    eventsLiveData.value = Resource.Success(response.body()!!)
                 } else {
-                    eventsLiveData.value = null
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    eventsLiveData.value = Resource.Error(apiError.message, null)
                 }
             }
         })

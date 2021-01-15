@@ -66,6 +66,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
                 }
             })
         }
+        binding.retryButton.setOnClickListener {
+            getEvents()
+        }
     }
 
     private fun observeEventsViewModel() {
@@ -79,6 +82,10 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
                 eventsViewModel.deleteEventLiveData.value = null
             }
         }
+    }
+
+    private fun getEvents() {
+        eventsViewModel.getEvents()
     }
 
     private fun onGetEventsResult(events: List<Event>?) {

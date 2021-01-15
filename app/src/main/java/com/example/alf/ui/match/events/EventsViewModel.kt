@@ -3,14 +3,16 @@ package com.example.alf.ui.match.events
 import androidx.lifecycle.*
 import com.example.alf.data.model.event.Event
 import com.example.alf.data.repository.EventApiService
+import com.example.alf.network.Resource
 
 class EventsViewModel(private val matchId: Int) : ViewModel() {
 
     private var eventApiService: EventApiService = EventApiService()
 
-    var eventsLiveData: MutableLiveData<List<Event>?> = MutableLiveData()
-
-    var getEventsResultLiveData: MutableLiveData<Boolean?> = Transformations.map(eventsLiveData) { es -> es != null } as MutableLiveData<Boolean?>
+    var eventsResourceLiveData: MutableLiveData<Resource<List<Event>>> = MutableLiveData()
+    var eventsLiveData: LiveData<List<Event>?> = Transformations.map(eventsResourceLiveData) { resource -> resource.data }
+    var eventsLoadingLiveData: LiveData<Boolean> = Transformations.map(eventsResourceLiveData) { resource -> resource is Resource.Loading }
+    var eventsErrorLiveData: LiveData<Boolean> = Transformations.map(eventsResourceLiveData) { resource -> resource is Resource.Error }
 
     var deleteEventLiveData: MutableLiveData<Boolean?> = MutableLiveData()
 
@@ -36,8 +38,7 @@ class EventsViewModel(private val matchId: Int) : ViewModel() {
 
     fun getEvents() {
         loadingInProgressLiveData.value = true
-        //eventsLiveData.value = null
-        eventApiService.fetchMatchEvents(eventsLiveData, matchId)
+        eventApiService.fetchMatchEvents(eventsResourceLiveData, matchId)
     }
 
     fun deleteEvent(event: Event) {
