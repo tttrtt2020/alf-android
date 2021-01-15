@@ -95,6 +95,9 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
                 }
             })
         }
+        binding.retryButton.setOnClickListener {
+            getTeam()
+        }
     }
 
     private fun setTitle(title: String) {
@@ -126,6 +129,10 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
 
     private fun setupFab() {
         binding.fab.setOnClickListener { onFabClicked() }
+    }
+
+    private fun getTeam() {
+        teamViewModel.getSquad()
     }
 
     private fun openFormationSelection() {

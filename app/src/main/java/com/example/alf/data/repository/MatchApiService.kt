@@ -8,6 +8,9 @@ import com.example.alf.data.model.MatchesPage
 import com.example.alf.data.model.Team
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
+import com.example.alf.network.Resource
+import com.example.alf.network.errorHandling.ApiError
+import com.example.alf.network.errorHandling.ErrorUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,15 +51,15 @@ class MatchApiService {
     }
 
     fun fetchMatchTeam(
-            matchTeamLiveData: MutableLiveData<MatchTeam?>,
+            matchTeamLiveData: MutableLiveData<Resource<MatchTeam>>,
             matchId: Int,
             teamId: Int
-    ): LiveData<MatchTeam?> {
+    ): LiveData<Resource<MatchTeam>> {
 
         matchApiInterface.fetchMatchTeam(matchId, teamId).enqueue(object : Callback<MatchTeam> {
 
             override fun onFailure(call: Call<MatchTeam>, t: Throwable) {
-                matchTeamLiveData.value = null
+                matchTeamLiveData.value = Resource.Error(t.localizedMessage!!, null)
             }
 
             override fun onResponse(
@@ -65,9 +68,10 @@ class MatchApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    matchTeamLiveData.value = res
+                    matchTeamLiveData.value = Resource.Success(response.body()!!)
                 } else {
-                    matchTeamLiveData.value = null
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    matchTeamLiveData.value = Resource.Error(apiError.message, null)
                 }
             }
         })
