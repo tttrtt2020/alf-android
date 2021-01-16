@@ -10,34 +10,24 @@ class FieldPositionsViewModel(
         private val teamId: Int
 ) : ViewModel() {
 
-    private var fieldPositionApiService = FieldPositionApiService()
+    private val fieldPositionApiService = FieldPositionApiService()
 
-    var fieldPositionsResourceLiveData: MutableLiveData<Resource<List<FieldPosition>>> = MutableLiveData()
-    var fieldPositionsLiveData: LiveData<List<FieldPosition>?> = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource.data }
-    var fieldPositionsLoadingLiveData: LiveData<Boolean> = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource is Resource.Loading }
-    var fieldPositionsErrorLiveData: LiveData<Boolean> = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource is Resource.Error }
+    private val fieldPositionsResourceLiveData = MutableLiveData<Resource<List<FieldPosition>>>()
+    val fieldPositionsLiveData = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource.data }
+    private val fieldPositionsLoadingLiveData = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource is Resource.Loading }
+    val fieldPositionsErrorLiveData = Transformations.map(fieldPositionsResourceLiveData) { resource -> resource is Resource.Error }
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
-    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val emptyCollectionLiveData = Transformations.map(fieldPositionsLiveData) { it != null && it.isEmpty() }
+
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
-        loadingInProgressLiveData.addSource(fieldPositionsLiveData) { loadingInProgressLiveData.value = false }
-        emptyCollectionLiveData.apply {
-            fun update() {
-                value = loadingInProgressLiveData.value == false && fieldPositionsLiveData.value?.isEmpty() ?: false
-            }
-
-            addSource(loadingInProgressLiveData) { update() }
-            addSource(fieldPositionsLiveData) { update() }
-
-            update()
-        }
+        loadingInProgressLiveData.addSource(fieldPositionsLoadingLiveData) { loadingInProgressLiveData.value = it }
 
         getFieldPositions()
     }
 
     fun getFieldPositions() {
-        loadingInProgressLiveData.value = true
         fieldPositionApiService.fetchFreeFieldPositions(fieldPositionsResourceLiveData, matchId, teamId)
     }
 

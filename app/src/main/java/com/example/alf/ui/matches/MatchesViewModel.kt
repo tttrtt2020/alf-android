@@ -20,7 +20,7 @@ class MatchesViewModel(
     var currentSearchResult: Flow<PagingData<Match>>? = null
 
     // todo: rework to MediatorLiveData depending on flow or similar
-    var loadingInProgressLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(true)
+    var loadingInProgressLiveData = MutableLiveData(true)
 
     init {
         matchApiService = MatchApiService()

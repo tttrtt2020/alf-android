@@ -14,28 +14,28 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
     private val dateFormat = SimpleDateFormat(AlfApplication.getProperty("match.dateFormat"), Locale.getDefault())
     private val timeFormat = SimpleDateFormat(AlfApplication.getProperty("match.timeFormat"), Locale.getDefault())
 
-    private var matchApiService: MatchApiService = MatchApiService()
+    private val matchApiService: MatchApiService = MatchApiService()
 
-    var matchLiveData: MutableLiveData<Match> = MutableLiveData()
+    val matchLiveData = MutableLiveData<Resource<Match>>()
 
-    var hostTeamLiveData: LiveData<Team> = Transformations.map(matchLiveData) { m -> m.hostTeam }
-    var guestTeamLiveData: LiveData<Team> = Transformations.map(matchLiveData) { m -> m.guestTeam }
-    var hostTeamNameLiveData: LiveData<String> = Transformations.map(hostTeamLiveData) { t -> t.name }
-    var guestTeamNameLiveData: LiveData<String> = Transformations.map(guestTeamLiveData) { t -> t.name }
-    var hostTeamLogoUrlLiveData: LiveData<String> = Transformations.map(hostTeamLiveData) { t -> buildTeamLogoUrl(t) }
-    var guestTeamLogoUrlLiveData: LiveData<String> = Transformations.map(guestTeamLiveData) { t -> buildTeamLogoUrl(t) }
-    var statusLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> m.status }
-    var stadiumPhotoUrlLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> buildStadiumPhotoUrl(m.stadium!!) }
-    var resultLiveData: LiveData<String> = Transformations.map(matchLiveData) { m ->
-        if (m.status == "FINISHED") (m.resultHostGoals.toString() + ":" + m.resultGuestGoals.toString())
+    val hostTeamLiveData = Transformations.map(matchLiveData) { m -> m.data?.hostTeam }
+    val guestTeamLiveData = Transformations.map(matchLiveData) { m -> m.data?.guestTeam }
+    val hostTeamNameLiveData = Transformations.map(hostTeamLiveData) { t -> t?.name }
+    val guestTeamNameLiveData = Transformations.map(guestTeamLiveData) { t -> t?.name }
+    val hostTeamLogoUrlLiveData = Transformations.map(hostTeamLiveData) { t -> t?.let { buildTeamLogoUrl(it) } }
+    val guestTeamLogoUrlLiveData = Transformations.map(guestTeamLiveData) { t -> t?.let { buildTeamLogoUrl(it) } }
+    val statusLiveData = Transformations.map(matchLiveData) { m -> m.data?.status }
+    val stadiumPhotoUrlLiveData = Transformations.map(matchLiveData) { m -> m.data?.stadium?.let { buildStadiumPhotoUrl(it) } }
+    val resultLiveData = Transformations.map(matchLiveData) { m ->
+        if (m.data?.status == "FINISHED") (m.data.resultHostGoals.toString() + ":" + m.data.resultGuestGoals.toString())
         else "- : -"
     }
-    var dateLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> dateFormat.format(m.dateTime) }
-    var timeLiveData: LiveData<String> = Transformations.map(matchLiveData) { m -> timeFormat.format(m.dateTime) }
+    val dateLiveData = Transformations.map(matchLiveData) { m -> m.data?.dateTime?.let { dateFormat.format(m.data.dateTime!!) } }
+    val timeLiveData = Transformations.map(matchLiveData) { m -> m.data?.dateTime?.let { timeFormat.format(m.data.dateTime!!) } }
 
-    var getMatchResultLiveData: MutableLiveData<Boolean?> = Transformations.map(matchLiveData) { mi -> mi != null } as MutableLiveData<Boolean?>
+    val getMatchResultLiveData = Transformations.map(matchLiveData) { mi -> mi != null } as MutableLiveData<Boolean?>
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(matchLiveData) { loadingInProgressLiveData.value = false }

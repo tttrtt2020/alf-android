@@ -1,9 +1,11 @@
 package com.example.alf.ui.match.team
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
-import com.example.alf.data.model.match.Appearance
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.repository.MatchApiService
 import com.example.alf.data.repository.PlayerApiService
@@ -15,24 +17,24 @@ class TeamViewModel(
         private val teamId: Int
 ) : ViewModel() {
 
-    private var matchApiService: MatchApiService = MatchApiService()
-    private var playerApiService: PlayerApiService = PlayerApiService()
+    private val matchApiService: MatchApiService = MatchApiService()
+    private val playerApiService: PlayerApiService = PlayerApiService()
 
-    var matchTeamResourceLiveData: MutableLiveData<Resource<MatchTeam>> = MutableLiveData()
-    var matchTeamLiveData: LiveData<MatchTeam?> = Transformations.map(matchTeamResourceLiveData) { resource -> resource.data }
-    var matchTeamLoadingLiveData: LiveData<Boolean> = Transformations.map(matchTeamResourceLiveData) { resource -> resource is Resource.Loading }
-    var matchTeamErrorLiveData: LiveData<Boolean> = Transformations.map(matchTeamResourceLiveData) { resource -> resource is Resource.Error }
+    private val matchTeamResourceLiveData = MutableLiveData<Resource<MatchTeam>>()
+    private val matchTeamLiveData = Transformations.map(matchTeamResourceLiveData) { resource -> resource.data }
+    private val matchTeamLoadingLiveData = Transformations.map(matchTeamResourceLiveData) { resource -> resource is Resource.Loading }
+    val matchTeamErrorLiveData = Transformations.map(matchTeamResourceLiveData) { resource -> resource is Resource.Error }
 
-    var titleLiveData: LiveData<String?> = Transformations.map(matchTeamLiveData) { mt ->
+    val titleLiveData = Transformations.map(matchTeamLiveData) { mt ->
         if (mt != null ) mt.team.name + (if (mt.formation != null) (": " + mt.formation!!.name) else "") else null
     }
-    var formationLiveData: LiveData<Formation?> = Transformations.map(matchTeamLiveData) { sq -> sq?.formation }
-    var squadLiveData: LiveData<List<Appearance>?> = Transformations.map(matchTeamLiveData) { it?.appearances }
-    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(squadLiveData) { it != null && it.isEmpty() }
+    val formationLiveData = Transformations.map(matchTeamLiveData) { sq -> sq?.formation }
+    val squadLiveData = Transformations.map(matchTeamLiveData) { it?.appearances }
+    val emptyCollectionLiveData = Transformations.map(squadLiveData) { it != null && it.isEmpty() }
 
-    var deletePlayerActionLiveData: MutableLiveData<ViewEvent<Int>> = MutableLiveData()
+    val deletePlayerActionLiveData = MutableLiveData<ViewEvent<Int>>()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(matchTeamLoadingLiveData) { loadingInProgressLiveData.value = it }

@@ -9,16 +9,16 @@ class TeamSelectionViewModel(
         private val matchId: Int
 ) : ViewModel() {
 
-    private var matchApiService: MatchApiService = MatchApiService()
+    private val matchApiService: MatchApiService = MatchApiService()
 
-    var teamsResourceLiveData = MutableLiveData<Resource<List<Team>>>()
-    var teamsLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource.data }
-    var teamsLoadingLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource is Resource.Loading }
-    var teamsErrorLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource is Resource.Error }
+    private val teamsResourceLiveData = MutableLiveData<Resource<List<Team>>>()
+    val teamsLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource.data }
+    private val teamsLoadingLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource is Resource.Loading }
+    val teamsErrorLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource is Resource.Error }
 
-    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(teamsLiveData) { it != null && it.isEmpty() }
+    val emptyCollectionLiveData = Transformations.map(teamsLiveData) { it != null && it.isEmpty() }
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(teamsLoadingLiveData) { loadingInProgressLiveData.value = it }

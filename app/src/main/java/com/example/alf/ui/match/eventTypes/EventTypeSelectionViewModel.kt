@@ -7,16 +7,16 @@ import com.example.alf.network.Resource
 
 class EventTypeSelectionViewModel(private val matchId: Int) : ViewModel() {
 
-    private var eventTypeApiService: EventTypeApiService = EventTypeApiService()
+    private val eventTypeApiService: EventTypeApiService = EventTypeApiService()
 
-    private val eventTypesResourceLiveData: MutableLiveData<Resource<List<EventType>>> = MutableLiveData()
-    val eventTypesLiveData: LiveData<List<EventType>?> = Transformations.map(eventTypesResourceLiveData) { resource -> resource.data }
-    private val eventTypesLoadingLiveData: LiveData<Boolean> = Transformations.map(eventTypesResourceLiveData) { resource -> resource is Resource.Loading }
-    val eventTypesErrorLiveData: LiveData<Boolean> = Transformations.map(eventTypesResourceLiveData) { resource -> resource is Resource.Error }
+    private val eventTypesResourceLiveData = MutableLiveData<Resource<List<EventType>>>()
+    val eventTypesLiveData = Transformations.map(eventTypesResourceLiveData) { resource -> resource.data }
+    private val eventTypesLoadingLiveData = Transformations.map(eventTypesResourceLiveData) { resource -> resource is Resource.Loading }
+    val eventTypesErrorLiveData = Transformations.map(eventTypesResourceLiveData) { resource -> resource is Resource.Error }
 
-    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(eventTypesLiveData) { it != null && it.isEmpty() }
+    val emptyCollectionLiveData = Transformations.map(eventTypesLiveData) { it != null && it.isEmpty() }
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(eventTypesLoadingLiveData) { loadingInProgressLiveData.value = it }

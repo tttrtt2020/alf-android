@@ -20,7 +20,7 @@ class SearchPersonsViewModel(
 
     var currentSearchResult: Flow<PagingData<Person>>? = null
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         personApiService = PersonApiService()

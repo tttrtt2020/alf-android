@@ -103,7 +103,7 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
     }
 
     private fun observeMatchTeamViewModel() {
-        teamViewModel.matchTeamLiveData.observe(viewLifecycleOwner, {
+        teamViewModel.squadLiveData.observe(viewLifecycleOwner, {
             onGetTeamResult(it)
         })
 
@@ -137,9 +137,9 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
         findNavController().navigate(action)
     }
 
-    private fun onGetTeamResult(matchTeam: MatchTeam?) {
-        matchTeam?.let {
-            viewAdapter = AppearancesAdapter(it.appearances, this)
+    private fun onGetTeamResult(appearances: List<Appearance>?) {
+        appearances?.let {
+            viewAdapter = AppearancesAdapter(it, this)
             binding.appearancesRecyclerView.adapter = viewAdapter
         }
     }

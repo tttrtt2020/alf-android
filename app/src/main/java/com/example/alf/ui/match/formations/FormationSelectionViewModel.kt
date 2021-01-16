@@ -10,31 +10,21 @@ class FormationSelectionViewModel(
         private val teamId: Int
         ) : ViewModel() {
 
-    private var formationApiService = FormationApiService()
+    private val formationApiService = FormationApiService()
 
-    var formationsResourceLiveData: MutableLiveData<Resource<List<Formation>>> = MutableLiveData()
-    var formationsLiveData: LiveData<List<Formation>?> = Transformations.map(formationsResourceLiveData) { resource -> resource.data }
-    var formationsLoadingLiveData: LiveData<Boolean> = Transformations.map(formationsResourceLiveData) { resource -> resource is Resource.Loading }
-    var formationsErrorLiveData: LiveData<Boolean> = Transformations.map(formationsResourceLiveData) { resource -> resource is Resource.Error }
+    private val formationsResourceLiveData = MutableLiveData<Resource<List<Formation>>>()
+    val formationsLiveData = Transformations.map(formationsResourceLiveData) { resource -> resource.data }
+    private val formationsLoadingLiveData = Transformations.map(formationsResourceLiveData) { resource -> resource is Resource.Loading }
+    val formationsErrorLiveData = Transformations.map(formationsResourceLiveData) { resource -> resource is Resource.Error }
 
-    var addFormationToMatchLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+    val emptyCollectionLiveData = Transformations.map(formationsLiveData) { it != null && it.isEmpty() }
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
-    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val addFormationToMatchLiveData = MutableLiveData<Boolean?>()
+
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
-        loadingInProgressLiveData.addSource(formationsLiveData) { loadingInProgressLiveData.value = false }
-        loadingInProgressLiveData.addSource(addFormationToMatchLiveData) { loadingInProgressLiveData.value = false }
-        emptyCollectionLiveData.apply {
-            fun update() {
-                value = loadingInProgressLiveData.value == false && formationsLiveData.value?.isEmpty() ?: false
-            }
-
-            addSource(loadingInProgressLiveData) { update() }
-            addSource(formationsLiveData) { update() }
-
-            update()
-        }
+        loadingInProgressLiveData.addSource(formationsLoadingLiveData) { loadingInProgressLiveData.value = it }
 
         getFormations()
     }

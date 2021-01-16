@@ -8,18 +8,18 @@ import com.example.alf.ui.common.ViewEvent
 
 class EventsViewModel(private val matchId: Int) : ViewModel() {
 
-    private var eventApiService: EventApiService = EventApiService()
+    private val eventApiService: EventApiService = EventApiService()
 
-    var eventsResourceLiveData: MutableLiveData<Resource<List<Event>>> = MutableLiveData()
-    var eventsLiveData: LiveData<List<Event>?> = Transformations.map(eventsResourceLiveData) { resource -> resource.data }
-    var eventsLoadingLiveData: LiveData<Boolean> = Transformations.map(eventsResourceLiveData) { resource -> resource is Resource.Loading }
-    var eventsErrorLiveData: LiveData<Boolean> = Transformations.map(eventsResourceLiveData) { resource -> resource is Resource.Error }
+    private val eventsResourceLiveData = MutableLiveData<Resource<List<Event>>>()
+    val eventsLiveData = Transformations.map(eventsResourceLiveData) { resource -> resource.data }
+    private val eventsLoadingLiveData = Transformations.map(eventsResourceLiveData) { resource -> resource is Resource.Loading }
+    val eventsErrorLiveData = Transformations.map(eventsResourceLiveData) { resource -> resource is Resource.Error }
 
-    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(eventsLiveData) { it != null && it.isEmpty() }
+    val emptyCollectionLiveData = Transformations.map(eventsLiveData) { it != null && it.isEmpty() }
 
-    var deleteEventActionLiveData: MutableLiveData<ViewEvent<Int>> = MutableLiveData()
+    val deleteEventActionLiveData = MutableLiveData<ViewEvent<Int>>()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(eventsLoadingLiveData) { loadingInProgressLiveData.value = it }

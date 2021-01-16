@@ -17,15 +17,15 @@ class RefereeSelectionViewModel(
     private val matchId: Int
 ) : ViewModel() {
 
-    private var refereeApiService: RefereeApiService = RefereeApiService()
+    private val refereeApiService: RefereeApiService = RefereeApiService()
 
     private var currentQueryValue: String? = null
 
     var currentSearchResult: Flow<PagingData<Referee>>? = null
 
-    var addRefereeToMatchLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+    val addRefereeToMatchLiveData = MutableLiveData<Boolean?>()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.apply {

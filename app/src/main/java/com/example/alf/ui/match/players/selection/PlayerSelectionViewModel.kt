@@ -22,16 +22,16 @@ class PlayerSelectionViewModel(
     private val args: PlayerSelectionFragmentArgs
 ) : ViewModel() {
 
-    private var playerApiService: PlayerApiService = PlayerApiService()
-    private var eventApiService: EventApiService = EventApiService()
+    private val playerApiService: PlayerApiService = PlayerApiService()
+    private val eventApiService: EventApiService = EventApiService()
 
     private var currentQueryValue: String? = null
 
     var currentSearchResult: Flow<PagingData<Player>>? = null
 
-    var selectionResultLiveData: MutableLiveData<ViewEvent<Boolean>> = MutableLiveData()
+    val selectionResultLiveData = MutableLiveData<ViewEvent<Boolean>>()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     private var mode: Mode
 

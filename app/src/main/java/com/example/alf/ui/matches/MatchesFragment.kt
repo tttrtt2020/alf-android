@@ -105,9 +105,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
         binding.matchesRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
-        binding.retryButton.setOnClickListener {
-            getMatches(query)
-        }
+        binding.retryButton.setOnClickListener { getMatches(query) }
     }
 
     private fun getMatches(query: String) {

@@ -7,15 +7,15 @@ import com.example.alf.ui.common.ViewEvent
 
 class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewModel() {
 
-    private var eventService: EventApiService = EventApiService()
+    private val eventService: EventApiService = EventApiService()
 
-    var eventLiveData: MutableLiveData<Event> = MutableLiveData(event)
-    //var saveEnabledLiveData: LiveData<Boolean> = Transformations.map(eventLiveData) { li -> li != null }
+    var eventLiveData = MutableLiveData(event)
+    //var saveEnabledLiveData = Transformations.map(eventLiveData) { li -> li != null }
 
-    var updateEventResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
-    var deleteEventResultLiveData: MutableLiveData<ViewEvent<Boolean>> = MutableLiveData()
+    val updateEventResultLiveData = MutableLiveData<Boolean?>()
+    val deleteEventResultLiveData = MutableLiveData<ViewEvent<Boolean>>()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.apply {

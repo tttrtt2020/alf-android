@@ -8,18 +8,18 @@ import com.example.alf.ui.common.ViewEvent
 
 class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
 
-    private var refereeApiService: RefereeApiService = RefereeApiService()
+    private val refereeApiService: RefereeApiService = RefereeApiService()
 
-    var refereesResourceLiveData: MutableLiveData<Resource<List<Referee>>> = MutableLiveData()
-    var refereesLiveData: LiveData<List<Referee>?> = Transformations.map(refereesResourceLiveData) { resource -> resource.data }
-    var refereesLoadingLiveData: LiveData<Boolean> = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Loading }
-    var refereesErrorLiveData: LiveData<Boolean> = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Error }
+    private val refereesResourceLiveData = MutableLiveData<Resource<List<Referee>>>()
+    val refereesLiveData = Transformations.map(refereesResourceLiveData) { resource -> resource.data }
+    private val refereesLoadingLiveData = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Loading }
+    val refereesErrorLiveData = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Error }
 
-    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(refereesLiveData) { it != null && it.isEmpty() }
+    val emptyCollectionLiveData = Transformations.map(refereesLiveData) { it != null && it.isEmpty() }
 
-    var deleteRefereeActionLiveData: MutableLiveData<ViewEvent<Int>> = MutableLiveData()
+    val deleteRefereeActionLiveData = MutableLiveData<ViewEvent<Int>>()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {
         loadingInProgressLiveData.addSource(refereesLoadingLiveData) { loadingInProgressLiveData.value = it }

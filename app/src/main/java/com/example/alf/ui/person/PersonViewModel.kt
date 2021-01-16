@@ -13,23 +13,23 @@ import java.util.*
 class PersonViewModel(
         private val personId: Int,
         private val person: Person?
-        ) : ViewModel() {
+) : ViewModel() {
 
-    private var personService: PersonApiService = PersonApiService()
+    private val personService: PersonApiService = PersonApiService()
 
-    var personLiveData: MediatorLiveData<Person> = MediatorLiveData<Person>()
+    val personLiveData = MediatorLiveData<Person>()
     //var personLiveData: MutableLiveData<Person> = MutableLiveData<Person>(person)
 
-    var getPersonResultLiveData: MutableLiveData<Boolean?> = Transformations.map(personLiveData) { p -> p != null } as MutableLiveData<Boolean?>
-    var createPersonLiveData: MutableLiveData<Person> = MutableLiveData<Person>()
-    var createPersonResultLiveData: MutableLiveData<Boolean?> = Transformations.map(createPersonLiveData) { p -> p != null } as MutableLiveData<Boolean?>
-    var updatePersonResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
-    var deletePersonResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
+    val getPersonResultLiveData = Transformations.map(personLiveData) { p -> p != null } as MutableLiveData<Boolean?>
+    private val createPersonLiveData = MutableLiveData<Person>()
+    val createPersonResultLiveData = Transformations.map(createPersonLiveData) { p -> p != null } as MutableLiveData<Boolean?>
+    val updatePersonResultLiveData = MutableLiveData<Boolean?>()
+    val deletePersonResultLiveData = MutableLiveData<Boolean?>()
 
-    var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
-    var personDataLiveData: LiveData<Boolean> = Transformations.map(personLiveData) { p -> p != null }
+    val loadingInProgressLiveData = MediatorLiveData<Boolean>()
+    val personDataLiveData = Transformations.map(personLiveData) { p -> p != null }
 
-    var photoUrlLiveData: LiveData<String> = Transformations.map(personLiveData) { p -> buildPhotoUrl(p) }
+    val photoUrlLiveData = Transformations.map(personLiveData) { p -> buildPhotoUrl(p) }
 
     private fun buildPhotoUrl(person: Person): String {
         return AlfApplication.getProperty("url.image.person") + person.id + AlfApplication.getProperty("extension.image.person")
