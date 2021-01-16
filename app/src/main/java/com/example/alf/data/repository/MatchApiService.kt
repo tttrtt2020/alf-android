@@ -80,14 +80,14 @@ class MatchApiService {
     }
 
     fun fetchTeams(
-            teamsLiveData: MutableLiveData<List<Team>?>,
-            matchId: Int
-    ): LiveData<List<Team>?> {
-
+            matchId: Int,
+            successCallback: (eventTypes: List<Team>) -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
+    ) {
         matchApiInterface.fetchTeams(matchId).enqueue(object : Callback<List<Team>> {
 
             override fun onFailure(call: Call<List<Team>>, t: Throwable) {
-                teamsLiveData.value = null
+                failureCallback(t.localizedMessage!!)
             }
 
             override fun onResponse(
@@ -96,14 +96,13 @@ class MatchApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    teamsLiveData.value = res
+                    successCallback(res)
                 } else {
-                    teamsLiveData.value = null
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    failureCallback(apiError.message)
                 }
             }
         })
-
-        return teamsLiveData
     }
 
 }

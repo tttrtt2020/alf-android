@@ -57,12 +57,17 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
         binding.teamsRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+        binding.retryButton.setOnClickListener { getTeams() }
     }
 
     private fun observeTeamSelectionViewModel() {
         teamSelectionViewModel.teamsLiveData.observe(viewLifecycleOwner, {
             onGetTeamsResult(it)
         })
+    }
+
+    private fun getTeams() {
+        teamSelectionViewModel.getTeams()
     }
 
     private fun openPlayerSelection(team: Team) {
@@ -80,11 +85,9 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
     }
 
     private fun onGetTeamsResult(teams: List<Team>?) {
-        if (teams != null) {
-            viewAdapter = TeamsAdapter(teams, this)
+        teams?.let {
+            viewAdapter = TeamsAdapter(it, this)
             binding.teamsRecyclerView.adapter = viewAdapter
-        } else {
-            showSnackBar(binding.root, "Get teams failed")
         }
     }
 

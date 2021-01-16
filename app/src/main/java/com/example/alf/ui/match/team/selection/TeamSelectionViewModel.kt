@@ -3,6 +3,7 @@ package com.example.alf.ui.match.team.selection
 import androidx.lifecycle.*
 import com.example.alf.data.model.Team
 import com.example.alf.data.repository.MatchApiService
+import com.example.alf.network.Resource
 
 class TeamSelectionViewModel(
         private val matchId: Int
@@ -10,30 +11,28 @@ class TeamSelectionViewModel(
 
     private var matchApiService: MatchApiService = MatchApiService()
 
-    var teamsLiveData: MutableLiveData<List<Team>?> = MutableLiveData()
+    var teamsResourceLiveData = MutableLiveData<Resource<List<Team>>>()
+    var teamsLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource.data }
+    var teamsLoadingLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource is Resource.Loading }
+    var teamsErrorLiveData = Transformations.map(teamsResourceLiveData) { resource -> resource is Resource.Error }
+
+    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(teamsLiveData) { it != null && it.isEmpty() }
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
-    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
-        loadingInProgressLiveData.addSource(teamsLiveData) { loadingInProgressLiveData.value = false }
-        emptyCollectionLiveData.apply {
-            fun update() {
-                value = loadingInProgressLiveData.value == false && teamsLiveData.value?.isEmpty() ?: false
-            }
-
-            addSource(loadingInProgressLiveData) { update() }
-            addSource(teamsLiveData) { update() }
-
-            update()
-        }
+        loadingInProgressLiveData.addSource(teamsLoadingLiveData) { loadingInProgressLiveData.value = it }
 
         getTeams()
     }
 
-    private fun getTeams() {
+    fun getTeams() {
         loadingInProgressLiveData.value = true
-        matchApiService.fetchTeams(teamsLiveData, matchId)
+        matchApiService.fetchTeams(
+                matchId,
+                { teamsResourceLiveData.value = Resource.Success(it) },
+                { teamsResourceLiveData.value = Resource.Error(it) }
+        )
     }
 
 }
