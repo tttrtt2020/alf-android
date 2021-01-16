@@ -95,9 +95,7 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
                 }
             })
         }
-        binding.retryButton.setOnClickListener {
-            getTeam()
-        }
+        binding.retryButton.setOnClickListener { getTeam() }
     }
 
     private fun setTitle(title: String) {
@@ -141,7 +139,7 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
 
     private fun onGetTeamResult(matchTeam: MatchTeam?) {
         matchTeam?.let {
-            viewAdapter = AppearancesAdapter(matchTeam.appearances, this)
+            viewAdapter = AppearancesAdapter(it.appearances, this)
             binding.appearancesRecyclerView.adapter = viewAdapter
         }
     }

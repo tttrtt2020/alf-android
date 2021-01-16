@@ -8,7 +8,7 @@ import com.example.alf.network.Resource
 class FieldPositionsViewModel(
         private val matchId: Int,
         private val teamId: Int
-        ) : ViewModel() {
+) : ViewModel() {
 
     private var fieldPositionApiService = FieldPositionApiService()
 

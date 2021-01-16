@@ -109,9 +109,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
                     footer = PlayersLoadStateAdapter { viewAdapter.retry() }
             )
         }
-        binding.retryButton.setOnClickListener {
-            getPlayers(query)
-        }
+        binding.retryButton.setOnClickListener { getPlayers(query) }
     }
 
     private fun initAdapter() {

@@ -64,7 +64,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private fun onGetRefereesResult(referees: List<Referee>?) {
         referees?.let {
-            viewAdapter = MatchRefereesAdapter(referees, this)
+            viewAdapter = MatchRefereesAdapter(it, this)
             binding.refereesRecyclerView.adapter = viewAdapter
         }
     }
@@ -83,9 +83,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
                 }
             })
         }
-        binding.retryButton.setOnClickListener {
-            getMatchReferees()
-        }
+        binding.retryButton.setOnClickListener { getMatchReferees() }
     }
 
     private fun setupFab() {

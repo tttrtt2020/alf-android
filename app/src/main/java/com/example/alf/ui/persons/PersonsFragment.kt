@@ -108,9 +108,7 @@ class PersonsFragment : Fragment(), SearchView.OnQueryTextListener, PersonsPagin
             })
         }
         binding.fab.setOnClickListener { openCreateNewPerson() }
-        binding.retryButton.setOnClickListener {
-            getPersons(query)
-        }
+        binding.retryButton.setOnClickListener { getPersons(query) }
     }
 
     private fun initAdapter() {

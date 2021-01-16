@@ -62,7 +62,7 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
 
     private fun onGetEventTypesResult(eventTypes: List<EventType>?) {
         eventTypes?.let {
-            viewAdapter = EventTypesAdapter(eventTypes, this)
+            viewAdapter = EventTypesAdapter(it, this)
             binding.eventTypesRecyclerView.adapter = viewAdapter
         }
     }

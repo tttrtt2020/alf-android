@@ -107,9 +107,7 @@ class RefereeSelectionFragment : Fragment(), SearchView.OnQueryTextListener, Ref
                     footer = RefereesLoadStateAdapter { viewAdapter.retry() }
             )
         }
-        binding.retryButton.setOnClickListener {
-            getReferees(query)
-        }
+        binding.retryButton.setOnClickListener { getReferees(query) }
     }
 
     private fun initAdapter() {

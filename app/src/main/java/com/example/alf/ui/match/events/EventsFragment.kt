@@ -66,9 +66,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
                 }
             })
         }
-        binding.retryButton.setOnClickListener {
-            getEvents()
-        }
+        binding.retryButton.setOnClickListener { getEvents() }
     }
 
     private fun observeEventsViewModel() {
@@ -89,7 +87,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private fun onGetEventsResult(events: List<Event>?) {
         events?.let {
-            viewAdapter = EventsAdapter(events, args.hostTeamId, args.guestTeamId, this)
+            viewAdapter = EventsAdapter(it, args.hostTeamId, args.guestTeamId, this)
             binding.eventsRecyclerView.adapter = viewAdapter
         }
     }

@@ -45,9 +45,7 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
     }
 
     private fun setupViews() {
-        binding.retryButton.setOnClickListener {
-            getFormations()
-        }
+        binding.retryButton.setOnClickListener { getFormations() }
     }
 
     private fun observeFormationSelectionViewModel() {
