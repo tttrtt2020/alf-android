@@ -76,10 +76,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
             onGetEventsResult(it)
         })
 
-        eventsViewModel.deleteEventLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
+        eventsViewModel.deleteEventActionLiveData.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
                 onDeleteEventResult(it)
-                eventsViewModel.deleteEventLiveData.value = null
             }
         }
     }
@@ -89,20 +88,22 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     private fun onGetEventsResult(events: List<Event>?) {
-        if (events != null) {
-            viewAdapter = EventsAdapter(events, args.hostTeamId, args.guestTeamId, this)
+        events?.let {
+            viewAdapter = EventsAdapter(if (events is ArrayList) events else ArrayList(events), args.hostTeamId, args.guestTeamId, this)
             binding.eventsRecyclerView.adapter = viewAdapter
-        } else showSnackBar(binding.root, "Get events failed")
+        }
     }
 
     private fun setupFab() {
         binding.fab.setOnClickListener { onFabClicked() }
     }
 
-    private fun onDeleteEventResult(success: Boolean) {
-        if (success) {
-            eventsViewModel.getEvents()
-            //viewAdapter.deleteAppearance(appearance) todo: should do this but requires appearance or position
+    private fun onDeleteEventResult(position: Int) {
+        if (position >= 0) {
+            viewAdapter.removeEvent(position) {
+                // reset to enable empty state
+                eventsViewModel.reset()
+            }
             showSnackBar(binding.root, "Delete event success")
         } else showSnackBar(binding.root, "Delete event failed")
     }
@@ -142,7 +143,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
     }
 
     private fun deleteEvent(event: Event, position: Int) {
-        eventsViewModel.deleteEvent(event)
+        eventsViewModel.deleteEvent(event, position)
     }
 
     private fun startActionMode(view: View, event: Event, position: Int): Boolean {

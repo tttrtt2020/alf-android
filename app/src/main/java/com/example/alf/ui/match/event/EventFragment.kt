@@ -99,7 +99,7 @@ class EventFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        eventViewModel.eventLiveData.observe(viewLifecycleOwner, {
+        /*eventViewModel.eventLiveData.observe(viewLifecycleOwner, {
             (activity as AppCompatActivity).supportActionBar?.title = it.eventType.name
         })
 
@@ -115,7 +115,7 @@ class EventFragment : Fragment() {
                 onDeleteEventResult(it)
                 eventViewModel.deleteEventResultLiveData.value = null
             }
-        })
+        })*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

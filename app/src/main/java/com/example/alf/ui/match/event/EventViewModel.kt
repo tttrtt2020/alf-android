@@ -3,6 +3,7 @@ package com.example.alf.ui.match.event
 import androidx.lifecycle.*
 import com.example.alf.data.model.event.Event
 import com.example.alf.data.repository.EventApiService
+import com.example.alf.ui.common.ViewEvent
 
 class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewModel() {
 
@@ -12,7 +13,7 @@ class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewMod
     //var saveEnabledLiveData: LiveData<Boolean> = Transformations.map(eventLiveData) { li -> li != null }
 
     var updateEventResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
-    var deleteEventResultLiveData: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>()
+    var deleteEventResultLiveData: MutableLiveData<ViewEvent<Boolean>> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
@@ -38,8 +39,8 @@ class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewMod
     }
 
     fun deleteEvent() {
-        loadingInProgressLiveData.value = true
-        eventService.deleteEvent(deleteEventResultLiveData, eventLiveData.value!!)
+        /*loadingInProgressLiveData.value = true
+        eventService.deleteEvent(deleteEventResultLiveData, eventLiveData.value!!)*/
     }
 
 }

@@ -14,11 +14,11 @@ import com.example.alf.databinding.ItemEventBinding
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
 class EventsAdapter(
-        private var events: List<Event>,
+        private var events: ArrayList<Event>,
         private var hostTeamId: Int,
         private var guestTeamId: Int,
         private var listener: EventsListener
-        ) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
     companion object {
 
@@ -49,9 +49,16 @@ class EventsAdapter(
         fun onItemDeleted(event: Event, position: Int)
     }
 
-    fun setEvents(list: List<Event>) {
+    fun setEvents(list: ArrayList<Event>) {
         events = list
         notifyDataSetChanged()
+    }
+
+    fun removeEvent(position: Int, resultCallback: () -> Unit) {
+        events.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, events.size)
+        if (position == 0) resultCallback()
     }
 
     inner class ViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
