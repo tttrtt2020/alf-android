@@ -55,23 +55,17 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
             onGetRefereesResult(it)
         })
 
-        matchRefereesViewModel.deleteRefereeLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
+        matchRefereesViewModel.deleteRefereeActionLiveData.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
                 onDeleteMatchRefereeResult(it)
-                matchRefereesViewModel.deleteRefereeLiveData.value = null
             }
         }
     }
 
     private fun onGetRefereesResult(referees: List<Referee>?) {
-        if (referees != null) {
-            viewAdapter = MatchRefereesAdapter(
-                    if (referees is ArrayList) referees else ArrayList(referees),
-                    this
-            )
+        referees?.let {
+            viewAdapter = MatchRefereesAdapter(if (referees is ArrayList) referees else ArrayList(referees), this)
             binding.refereesRecyclerView.adapter = viewAdapter
-        } else {
-            showSnackBar(binding.root, "Get referees failed")
         }
     }
 
@@ -102,10 +96,12 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
         matchRefereesViewModel.getReferees()
     }
 
-    private fun onDeleteMatchRefereeResult(success: Boolean) {
-        if (success) {
-            matchRefereesViewModel.getReferees()
-            //viewAdapter.deleteReferee(referee) todo: should do this but requires referee or position
+    private fun onDeleteMatchRefereeResult(position: Int) {
+        if (position >= 0) {
+            viewAdapter.removeReferee(position) {
+                // reset to enable empty state
+                matchRefereesViewModel.reset()
+            }
             showSnackBar(binding.root, "Delete match referee success")
         } else showSnackBar(binding.root, "Delete match referee failed")
     }
@@ -149,7 +145,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
     }
 
     private fun deleteReferee(referee: Referee, position: Int) {
-        matchRefereesViewModel.deleteReferee(referee)
+        matchRefereesViewModel.deleteReferee(referee, position)
     }
 
     class RefereeActionModeCallback(

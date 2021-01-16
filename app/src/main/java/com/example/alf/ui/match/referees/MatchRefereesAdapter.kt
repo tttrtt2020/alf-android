@@ -15,8 +15,8 @@ import com.example.alf.databinding.ItemRefereeBinding
 
 class MatchRefereesAdapter(
         private var referees: ArrayList<Referee>,
-        private var listener: MatchRefereeListener) :
-        RecyclerView.Adapter<MatchRefereesAdapter.ViewHolder>() {
+        private var listener: MatchRefereeListener
+) : RecyclerView.Adapter<MatchRefereesAdapter.ViewHolder>() {
 
     companion object {
 
@@ -65,9 +65,11 @@ class MatchRefereesAdapter(
         notifyDataSetChanged()
     }
 
-    fun deleteReferee(referee: Referee) {
-        referees.remove(referee)
-        notifyDataSetChanged()
+    fun removeReferee(position: Int, resultCallback: () -> Unit) {
+        referees.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, referees.size)
+        if (position == 0) resultCallback()
     }
 
     inner class ViewHolder(private val binding: ItemRefereeBinding) : RecyclerView.ViewHolder(binding.root) {

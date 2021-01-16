@@ -143,22 +143,20 @@ class RefereeApiService {
     }
 
     fun deleteMatchReferee(
-            resultLiveData: MutableLiveData<Boolean?>,
             matchId: Int,
-            referee: Referee
-    ): LiveData<Boolean?> {
-
+            referee: Referee,
+            resultCallback: (result: Boolean) -> Unit
+    ) {
         refereeApiInterface.deleteMatchReferee(matchId, referee.id).enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                resultLiveData.value = false
+                resultCallback(false)
             }
 
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+                val result = response.code() == 200 || response.code() == 204
+                resultCallback(result)
             }
         })
-
-        return resultLiveData
     }
 
 }

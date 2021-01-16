@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.alf.data.model.Referee
 import com.example.alf.data.repository.RefereeApiService
 import com.example.alf.network.Resource
+import com.example.alf.ui.common.ViewEvent
 
 class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
 
@@ -14,37 +15,33 @@ class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
     var refereesLoadingLiveData: LiveData<Boolean> = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Loading }
     var refereesErrorLiveData: LiveData<Boolean> = Transformations.map(refereesResourceLiveData) { resource -> resource is Resource.Error }
 
-    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
+    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(refereesLiveData) { it != null && it.isEmpty() }
 
-    var deleteRefereeLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+    var deleteRefereeActionLiveData: MutableLiveData<ViewEvent<Int>> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
-        loadingInProgressLiveData.addSource(refereesLiveData) { loadingInProgressLiveData.value = false }
-        loadingInProgressLiveData.addSource(deleteRefereeLiveData) { loadingInProgressLiveData.value = false }
-        emptyCollectionLiveData.apply {
-            fun update() {
-                value = loadingInProgressLiveData.value == false && refereesLiveData.value?.isEmpty() ?: false
-            }
-
-            addSource(loadingInProgressLiveData) { update() }
-            addSource(refereesLiveData) { update() }
-
-            update()
-        }
+        loadingInProgressLiveData.addSource(refereesLoadingLiveData) { loadingInProgressLiveData.value = it }
+        loadingInProgressLiveData.addSource(deleteRefereeActionLiveData) { loadingInProgressLiveData.value = false }
 
         getReferees()
     }
 
+    fun reset() {
+        refereesResourceLiveData.value = refereesResourceLiveData.value
+    }
+
     fun getReferees() {
-        loadingInProgressLiveData.value = true
+        refereesResourceLiveData.value = Resource.Loading()
         refereeApiService.fetchMatchReferees(refereesResourceLiveData, matchId)
     }
 
-    fun deleteReferee(referee: Referee) {
+    fun deleteReferee(referee: Referee, position: Int) {
         loadingInProgressLiveData.value = true
-        refereeApiService.deleteMatchReferee(deleteRefereeLiveData, matchId, referee)
+        refereeApiService.deleteMatchReferee(matchId, referee) {
+            deleteRefereeActionLiveData.value = if (it) ViewEvent(position) else ViewEvent(-1)
+        }
     }
 
 }
