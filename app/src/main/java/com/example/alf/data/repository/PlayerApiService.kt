@@ -90,22 +90,20 @@ class PlayerApiService {
     }
 
     fun deleteAppearance(
-        resultLiveData: MutableLiveData<Boolean?>,
         matchId: Int,
-        player: Player
-    ): LiveData<Boolean?> {
-
+        player: Player,
+        resultCallback: (result: Boolean) -> Unit
+    ) {
         playerApiInterface.deleteAppearance(matchId, player.id).enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                resultLiveData.value = false
+                resultCallback(false)
             }
 
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                resultLiveData.value = (response.code() == 200 || response.code() == 204)
+                val result = response.code() == 200 || response.code() == 204
+                resultCallback(result)
             }
         })
-
-        return resultLiveData
     }
 
 }

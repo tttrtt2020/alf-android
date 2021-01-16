@@ -119,10 +119,9 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
             formation = it
         })
 
-        teamViewModel.deletePlayerLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
+        teamViewModel.deletePlayerActionLiveData.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
                 onDeleteAppearanceResult(it)
-                teamViewModel.deletePlayerLiveData.value = null
             }
         }
     }
@@ -140,10 +139,20 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
         findNavController().navigate(action)
     }
 
-    private fun onDeleteAppearanceResult(success: Boolean) {
-        if (success) {
-            teamViewModel.getSquad()
-            //viewAdapter.deleteAppearance(appearance) todo: should do this but requires appearance or position
+    private fun onGetTeamResult(matchTeam: MatchTeam?) {
+        matchTeam?.let {
+            val appearances = matchTeam.appearances
+            viewAdapter = AppearancesAdapter(if (appearances is ArrayList) appearances else ArrayList(matchTeam.appearances), this)
+            binding.appearancesRecyclerView.adapter = viewAdapter
+        }
+    }
+
+    private fun onDeleteAppearanceResult(position: Int) {
+        if (position >= 0) {
+            viewAdapter.removeAppearance(position) {
+                // reset to enable empty state
+                teamViewModel.reset()
+            }
             showSnackBar(binding.root, "Delete player success")
         } else showSnackBar(binding.root, "Delete player failed")
     }
@@ -175,15 +184,6 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
         findNavController().navigate(action)
     }
 
-    private fun onGetTeamResult(matchTeam: MatchTeam?) {
-        if (matchTeam != null) {
-            viewAdapter = AppearancesAdapter(matchTeam.appearances, this)
-            binding.appearancesRecyclerView.adapter = viewAdapter
-        } else {
-            showSnackBar(binding.root, "Get players failed")
-        }
-    }
-
     private fun showSnackBar(view: View, msg: String) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
@@ -212,7 +212,7 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
     }
 
     private fun deletePlayer(player: Player, position: Int) {
-        teamViewModel.deletePlayer(player)
+        teamViewModel.deletePlayer(player, position)
     }
 
     class AppearanceActionModeCallback(

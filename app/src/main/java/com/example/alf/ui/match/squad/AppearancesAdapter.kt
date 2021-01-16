@@ -15,10 +15,9 @@ import com.example.alf.data.model.match.Appearance
 import com.example.alf.databinding.ItemAppearanceBinding
 
 class AppearancesAdapter(
-    private var appearances: List<Appearance>,
-    private var listener: SquadListener
-        ) :
-        RecyclerView.Adapter<AppearancesAdapter.ViewHolder>() {
+        private var appearances: ArrayList<Appearance>,
+        private var listener: SquadListener
+) : RecyclerView.Adapter<AppearancesAdapter.ViewHolder>() {
 
     companion object {
 
@@ -62,9 +61,16 @@ class AppearancesAdapter(
         fun onItemLongClick(view: View, appearance: Appearance, position: Int): Boolean
     }
 
-    fun setAppearances(list: List<Appearance>) {
+    fun setAppearances(list: ArrayList<Appearance>) {
         appearances = list
         notifyDataSetChanged()
+    }
+
+    fun removeAppearance(position: Int, resultCallback: () -> Unit) {
+        appearances.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, appearances.size)
+        if (position == 0) resultCallback()
     }
 
     inner class ViewHolder(private val binding: ItemAppearanceBinding) : RecyclerView.ViewHolder(binding.root) {

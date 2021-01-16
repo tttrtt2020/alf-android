@@ -3,10 +3,12 @@ package com.example.alf.ui.match.team
 import androidx.lifecycle.*
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
+import com.example.alf.data.model.match.Appearance
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.repository.MatchApiService
 import com.example.alf.data.repository.PlayerApiService
 import com.example.alf.network.Resource
+import com.example.alf.ui.common.ViewEvent
 
 class TeamViewModel(
         private val matchId: Int,
@@ -25,39 +27,33 @@ class TeamViewModel(
         if (mt != null ) mt.team.name + (if (mt.formation != null) (": " + mt.formation!!.name) else "") else null
     }
     var formationLiveData: LiveData<Formation?> = Transformations.map(matchTeamLiveData) { sq -> sq?.formation }
+    var squadLiveData: LiveData<List<Appearance>?> = Transformations.map(matchTeamLiveData) { it?.appearances }
+    var emptyCollectionLiveData: LiveData<Boolean> = Transformations.map(squadLiveData) { it != null && it.isEmpty() }
 
-    var getSquadResultLiveData: MutableLiveData<Boolean?> = Transformations.map(matchTeamLiveData) { s -> s != null } as MutableLiveData<Boolean?>
-
-    var deletePlayerLiveData: MutableLiveData<Boolean?> = MutableLiveData()
+    var deletePlayerActionLiveData: MutableLiveData<ViewEvent<Int>> = MutableLiveData()
 
     var loadingInProgressLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
-    var emptyCollectionLiveData: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>()
 
     init {
-        loadingInProgressLiveData.addSource(matchTeamLiveData) { loadingInProgressLiveData.value = false }
-        loadingInProgressLiveData.addSource(deletePlayerLiveData) { loadingInProgressLiveData.value = false }
-        emptyCollectionLiveData.apply {
-            fun update() {
-                value = loadingInProgressLiveData.value == false && matchTeamLiveData.value?.appearances?.isEmpty() ?: false
-            }
-
-            addSource(loadingInProgressLiveData) { update() }
-            addSource(matchTeamLiveData) { update() }
-
-            update()
-        }
+        loadingInProgressLiveData.addSource(matchTeamLoadingLiveData) { loadingInProgressLiveData.value = it }
+        loadingInProgressLiveData.addSource(deletePlayerActionLiveData) { loadingInProgressLiveData.value = false }
 
         getSquad()
     }
 
+    fun reset() {
+        matchTeamResourceLiveData.value = matchTeamResourceLiveData.value
+    }
+
     fun getSquad() {
-        loadingInProgressLiveData.value = true
         matchApiService.fetchMatchTeam(matchTeamResourceLiveData, matchId, teamId)
     }
 
-    fun deletePlayer(player: Player) {
+    fun deletePlayer(player: Player, position: Int) {
         loadingInProgressLiveData.value = true
-        playerApiService.deleteAppearance(deletePlayerLiveData, matchId, player)
+        playerApiService.deleteAppearance(matchId, player) {
+            deletePlayerActionLiveData.value = if (it) ViewEvent(position) else ViewEvent(-1)
+        }
     }
 
     fun replacePlayer(player: Player) {
