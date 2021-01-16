@@ -40,7 +40,6 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews()
-
         observeEventTypesViewModel()
     }
 
@@ -48,6 +47,7 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
         binding.eventTypesRecyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+        binding.retryButton.setOnClickListener { getEventTypes() }
     }
 
     private fun observeEventTypesViewModel() {
@@ -56,11 +56,15 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
         })
     }
 
+    private fun getEventTypes() {
+        eventTypeSelectionViewModel.getEventTypes()
+    }
+
     private fun onGetEventTypesResult(eventTypes: List<EventType>?) {
-        if (eventTypes != null) {
+        eventTypes?.let {
             viewAdapter = EventTypesAdapter(eventTypes, this)
             binding.eventTypesRecyclerView.adapter = viewAdapter
-        } else showSnackBar(binding.root, "Get event types failed")
+        }
     }
 
     private fun showSnackBar(view: View, msg: String) {

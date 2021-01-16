@@ -48,7 +48,8 @@
             android:layout_margin="@dimen/card_margin"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{eventTypeSelectionViewModel.eventTypesErrorLiveData ? View.VISIBLE : View.GONE}" >
 
             <TextView
                 android:id="@+id/error_message"
