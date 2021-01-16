@@ -14,7 +14,7 @@ import com.example.alf.databinding.ItemEventBinding
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 
 class EventsAdapter(
-        private var events: ArrayList<Event>,
+        events: List<Event>,
         private var hostTeamId: Int,
         private var guestTeamId: Int,
         private var listener: EventsListener
@@ -41,16 +41,10 @@ class EventsAdapter(
         }
     }
 
-    interface EventsListener {
-        fun onItemClick(event: Event)
+    private var events = if (events is ArrayList) events else ArrayList(events)
 
-        fun onItemLongClick(view: View, event: Event, position: Int): Boolean
-
-        fun onItemDeleted(event: Event, position: Int)
-    }
-
-    fun setEvents(list: ArrayList<Event>) {
-        events = list
+    fun setEvents(events: List<Event>) {
+        this.events = if (events is ArrayList) events else ArrayList(events)
         notifyDataSetChanged()
     }
 
@@ -59,16 +53,6 @@ class EventsAdapter(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, events.size)
         if (position == 0) resultCallback()
-    }
-
-    inner class ViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(event: Event) {
-            binding.event = event
-            binding.hostTeamId = hostTeamId
-            binding.guestTeamId = guestTeamId
-            binding.executePendingBindings()
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -85,5 +69,23 @@ class EventsAdapter(
     }
 
     override fun getItemCount() = events.size
+
+    inner class ViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(event: Event) {
+            binding.event = event
+            binding.hostTeamId = hostTeamId
+            binding.guestTeamId = guestTeamId
+            binding.executePendingBindings()
+        }
+    }
+
+    interface EventsListener {
+        fun onItemClick(event: Event)
+
+        fun onItemLongClick(view: View, event: Event, position: Int): Boolean
+
+        fun onItemDeleted(event: Event, position: Int)
+    }
 
 }

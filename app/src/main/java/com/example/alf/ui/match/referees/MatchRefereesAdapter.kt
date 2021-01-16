@@ -14,8 +14,8 @@ import com.example.alf.data.model.Referee
 import com.example.alf.databinding.ItemRefereeBinding
 
 class MatchRefereesAdapter(
-        private var referees: ArrayList<Referee>,
-        private var listener: MatchRefereeListener
+        referees: List<Referee>,
+        private val listener: MatchRefereeListener
 ) : RecyclerView.Adapter<MatchRefereesAdapter.ViewHolder>() {
 
     companion object {
@@ -52,16 +52,10 @@ class MatchRefereesAdapter(
         }
     }
 
-    interface MatchRefereeListener {
-        fun onItemDeleted(referee: Referee, position: Int)
+    private var referees: ArrayList<Referee> = if (referees is ArrayList) referees else ArrayList(referees)
 
-        fun onItemClick(referee: Referee)
-
-        fun onItemLongClick(view: View, referee: Referee, position: Int): Boolean
-    }
-
-    fun setReferees(list: List<Referee>) {
-        referees = if (list is ArrayList) list else ArrayList(list)
+    fun setReferees(referees: List<Referee>) {
+        this.referees = if (referees is ArrayList) referees else ArrayList(referees)
         notifyDataSetChanged()
     }
 
@@ -70,14 +64,6 @@ class MatchRefereesAdapter(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, referees.size)
         if (position == 0) resultCallback()
-    }
-
-    inner class ViewHolder(private val binding: ItemRefereeBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(referee: Referee) {
-            binding.referee = referee
-            binding.executePendingBindings()
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -94,5 +80,21 @@ class MatchRefereesAdapter(
     }
 
     override fun getItemCount() = referees.size
+
+    inner class ViewHolder(private val binding: ItemRefereeBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(referee: Referee) {
+            binding.referee = referee
+            binding.executePendingBindings()
+        }
+    }
+
+    interface MatchRefereeListener {
+        fun onItemDeleted(referee: Referee, position: Int)
+
+        fun onItemClick(referee: Referee)
+
+        fun onItemLongClick(view: View, referee: Referee, position: Int): Boolean
+    }
 
 }

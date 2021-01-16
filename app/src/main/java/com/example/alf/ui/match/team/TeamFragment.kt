@@ -141,8 +141,7 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
 
     private fun onGetTeamResult(matchTeam: MatchTeam?) {
         matchTeam?.let {
-            val appearances = matchTeam.appearances
-            viewAdapter = AppearancesAdapter(if (appearances is ArrayList) appearances else ArrayList(matchTeam.appearances), this)
+            viewAdapter = AppearancesAdapter(matchTeam.appearances, this)
             binding.appearancesRecyclerView.adapter = viewAdapter
         }
     }

@@ -89,7 +89,7 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private fun onGetEventsResult(events: List<Event>?) {
         events?.let {
-            viewAdapter = EventsAdapter(if (events is ArrayList) events else ArrayList(events), args.hostTeamId, args.guestTeamId, this)
+            viewAdapter = EventsAdapter(events, args.hostTeamId, args.guestTeamId, this)
             binding.eventsRecyclerView.adapter = viewAdapter
         }
     }

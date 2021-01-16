@@ -64,7 +64,7 @@ class MatchRefereesFragment : Fragment(), MatchRefereesAdapter.MatchRefereeListe
 
     private fun onGetRefereesResult(referees: List<Referee>?) {
         referees?.let {
-            viewAdapter = MatchRefereesAdapter(if (referees is ArrayList) referees else ArrayList(referees), this)
+            viewAdapter = MatchRefereesAdapter(referees, this)
             binding.refereesRecyclerView.adapter = viewAdapter
         }
     }
