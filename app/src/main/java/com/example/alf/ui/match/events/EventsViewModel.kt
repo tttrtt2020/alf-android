@@ -43,9 +43,11 @@ class EventsViewModel(private val matchId: Int) : ViewModel() {
 
     fun deleteEvent(event: Event, position: Int) {
         loadingInProgressLiveData.value = true
-        eventApiService.deleteEvent(event) {
-            deleteEventActionLiveData.value = if (it) ViewEvent(position) else ViewEvent(-1)
-        }
+        eventApiService.deleteEvent(
+                event,
+                { deleteEventActionLiveData.value = ViewEvent(position) },
+                { deleteEventActionLiveData.value = ViewEvent(-1) }
+        )
     }
 
 }

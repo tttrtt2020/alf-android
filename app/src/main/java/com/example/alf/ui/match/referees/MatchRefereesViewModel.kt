@@ -43,9 +43,12 @@ class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
 
     fun deleteReferee(referee: Referee, position: Int) {
         loadingInProgressLiveData.value = true
-        refereeApiService.deleteMatchReferee(matchId, referee) {
-            deleteRefereeActionLiveData.value = if (it) ViewEvent(position) else ViewEvent(-1)
-        }
+        refereeApiService.deleteMatchReferee(
+                matchId,
+                referee,
+                { deleteRefereeActionLiveData.value = ViewEvent(position) },
+                { deleteRefereeActionLiveData.value = ViewEvent(-1) }
+        )
     }
 
 }

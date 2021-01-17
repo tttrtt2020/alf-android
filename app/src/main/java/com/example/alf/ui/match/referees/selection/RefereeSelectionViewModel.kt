@@ -49,7 +49,12 @@ class RefereeSelectionViewModel(
 
     fun addRefereeToMatch(matchId: Int, referee: Referee) {
         loadingInProgressLiveData.value = true
-        refereeApiService.addMatchReferee(addRefereeToMatchLiveData, matchId, referee)
+        refereeApiService.addMatchReferee(
+                matchId,
+                referee,
+                { addRefereeToMatchLiveData.value = true },
+                { addRefereeToMatchLiveData.value = false }
+        )
     }
 
 }

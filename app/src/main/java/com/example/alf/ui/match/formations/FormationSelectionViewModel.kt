@@ -41,7 +41,13 @@ class FormationSelectionViewModel(
 
     fun setFormation(formation: Formation) {
         loadingInProgressLiveData.value = true
-        formationApiService.setFormation(addFormationToMatchLiveData, matchId, teamId, formation)
+        formationApiService.setFormation(
+                matchId,
+                teamId,
+                formation,
+                { addFormationToMatchLiveData.value = true },
+                { addFormationToMatchLiveData.value = false }
+        )
     }
 
 }

@@ -77,12 +77,24 @@ class PlayerSelectionViewModel(
 
     private fun addPlayerToMatch(matchId: Int, teamId: Int, fieldPositionId: Int?, player: Player) {
         loadingInProgressLiveData.value = true
-        playerApiService.addAppearance(selectionResultLiveData, matchId, teamId, fieldPositionId, player)
+        playerApiService.addAppearance(
+                matchId,
+                teamId,
+                fieldPositionId,
+                player,
+                { selectionResultLiveData.value = ViewEvent(true) },
+                { selectionResultLiveData.value = ViewEvent(false) }
+        )
     }
 
     private fun addEventToMatch(matchId: Int, event: Event) {
         loadingInProgressLiveData.value = true
-        eventApiService.createEvent(selectionResultLiveData, matchId, event)
+        eventApiService.createEvent(
+                matchId,
+                event,
+                { selectionResultLiveData.value = ViewEvent(true) },
+                { selectionResultLiveData.value = ViewEvent(false) }
+        )
     }
 
     fun onPlayerSelectionResult(success: Boolean) {

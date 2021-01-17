@@ -6,6 +6,7 @@ import com.example.alf.data.model.Match
 import com.example.alf.data.model.Stadium
 import com.example.alf.data.model.Team
 import com.example.alf.data.repository.MatchApiService
+import com.example.alf.network.Resource
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,8 +55,12 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
 
     private fun getMatch() {
         loadingInProgressLiveData.value = true
-        //matchLiveData.value = null
-        matchApiService.getMatchById(matchLiveData, matchId)
+        matchLiveData.value = Resource.Loading()
+        matchApiService.getMatchById(
+                matchId,
+                { matchLiveData.value = Resource.Success(it) },
+                { matchLiveData.value = Resource.Error(it) }
+        )
     }
 
 }

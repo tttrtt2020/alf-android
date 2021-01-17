@@ -35,7 +35,12 @@ class EventViewModel(val matchId: Int, val eventId: Int, event: Event) : ViewMod
 
     fun updateEvent() {
         loadingInProgressLiveData.value = true
-        eventService.updateMatchEvent(updateEventResultLiveData, matchId, eventLiveData.value!!)
+        eventService.updateEvent(
+                matchId,
+                eventLiveData.value!!,
+                { updateEventResultLiveData.value = true },
+                { updateEventResultLiveData.value = false }
+        )
     }
 
     fun deleteEvent() {

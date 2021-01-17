@@ -61,23 +61,39 @@ class PersonViewModel(
                     null, Country(0, "nj", "mrep"), null, null)
         } else {
             // get existing person
-            personService.getPersonById(personLiveData, personId)
+            personService.getPersonById(
+                    personId,
+                    { personLiveData.value = it },
+                    { personLiveData.value = null }
+            )
         }
     }
 
     fun createPerson() {
         loadingInProgressLiveData.value = true
-        personService.createPerson(createPersonLiveData, personLiveData.value!!)
+        personService.createPerson(
+                personLiveData.value!!,
+                { createPersonLiveData.value = it },
+                { createPersonLiveData.value = null }
+        )
     }
 
     fun updatePerson() {
         loadingInProgressLiveData.value = true
-        personService.updatePerson(updatePersonResultLiveData, personLiveData.value!!)
+        personService.updatePerson(
+                personLiveData.value!!,
+                { updatePersonResultLiveData.value = true },
+                { updatePersonResultLiveData.value = false }
+        )
     }
 
     fun deletePerson() {
         loadingInProgressLiveData.value = true
-        personService.deletePerson(deletePersonResultLiveData, personLiveData.value!!)
+        personService.deletePerson(
+                personLiveData.value!!,
+                { deletePersonResultLiveData.value = true },
+                { deletePersonResultLiveData.value = false }
+        )
     }
 
     fun getBirthDate(): Date? {

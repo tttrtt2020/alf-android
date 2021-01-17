@@ -48,14 +48,23 @@ class TeamViewModel(
     }
 
     fun getSquad() {
-        matchApiService.fetchMatchTeam(matchTeamResourceLiveData, matchId, teamId)
+        matchTeamResourceLiveData.value = Resource.Loading()
+        matchApiService.fetchMatchTeam(
+                matchId,
+                teamId,
+                { matchTeamResourceLiveData.value = Resource.Success(it) },
+                { matchTeamResourceLiveData.value = Resource.Error(it) }
+        )
     }
 
     fun deletePlayer(player: Player, position: Int) {
         loadingInProgressLiveData.value = true
-        playerApiService.deleteAppearance(matchId, player) {
-            deletePlayerActionLiveData.value = if (it) ViewEvent(position) else ViewEvent(-1)
-        }
+        playerApiService.deleteAppearance(
+                matchId,
+                player,
+                { deletePlayerActionLiveData.value = ViewEvent(position) },
+                { deletePlayerActionLiveData.value = ViewEvent(-1) }
+        )
     }
 
     fun replacePlayer(player: Player) {

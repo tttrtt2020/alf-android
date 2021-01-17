@@ -31,14 +31,14 @@ class FieldPositionApiService {
                     call: Call<List<FieldPosition>>,
                     response: Response<List<FieldPosition>>
             ) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    successCallback(res)
+                if (response.isSuccessful) {
+                    successCallback(response.body()!!)
                 } else {
                     val apiError: ApiError = ErrorUtils.parseError(response)
                     failureCallback(apiError.message)
                 }
             }
+
         })
     }
 }

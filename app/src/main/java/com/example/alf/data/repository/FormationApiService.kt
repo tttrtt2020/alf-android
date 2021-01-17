@@ -1,7 +1,5 @@
 package com.example.alf.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.match.Formation
 import com.example.alf.network.ApiClient
 import com.example.alf.network.FormationApiInterface
@@ -33,59 +31,40 @@ class FormationApiService {
                 call: Call<List<Formation>>,
                 response: Response<List<Formation>>
             ) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    successCallback(res)
+                if (response.isSuccessful) {
+                    successCallback(response.body()!!)
                 } else {
                     val apiError: ApiError = ErrorUtils.parseError(response)
                     failureCallback(apiError.message)
                 }
             }
+
         })
-    }
-
-    fun fetchFormationById(id: Int): LiveData<Formation>? {
-        val data = MutableLiveData<Formation>()
-
-        formationApiInterface.fetchFormationById(id).enqueue(object : Callback<Formation> {
-
-            override fun onFailure(call: Call<Formation>, t: Throwable) {
-                data.value = null
-            }
-
-            override fun onResponse(
-                    call: Call<Formation>,
-                    response: Response<Formation>
-            ) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    data.value = res
-                } else {
-                    data.value = null
-                }
-            }
-        })
-
-        return data
     }
 
     fun setFormation(
-            addFormationToMatchLiveData: MutableLiveData<Boolean?>,
             matchId: Int,
             teamId: Int,
-            formation: Formation
-    ): LiveData<Boolean?> {
+            formation: Formation,
+            successCallback: (formation: Formation) -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
+    ) {
         formationApiInterface.setFormation(matchId, teamId, formation).enqueue(object : Callback<Formation> {
+
             override fun onFailure(call: Call<Formation>, t: Throwable) {
-                addFormationToMatchLiveData.value = false
+                failureCallback(t.localizedMessage!!)
             }
 
             override fun onResponse(call: Call<Formation>, response: Response<Formation>) {
-                addFormationToMatchLiveData.value = (response.code() >= 200 || response.code() <= 299)
+                if (response.isSuccessful) {
+                    successCallback(response.body()!!)
+                } else {
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    failureCallback(apiError.message)
+                }
             }
-        })
 
-        return addFormationToMatchLiveData
+        })
     }
 
 }

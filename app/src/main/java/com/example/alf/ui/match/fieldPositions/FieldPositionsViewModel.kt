@@ -28,7 +28,13 @@ class FieldPositionsViewModel(
     }
 
     fun getFieldPositions() {
-        fieldPositionApiService.fetchFreeFieldPositions(fieldPositionsResourceLiveData, matchId, teamId)
+        fieldPositionsResourceLiveData.value = Resource.Loading()
+        fieldPositionApiService.fetchFreeFieldPositions(
+                matchId,
+                teamId,
+                { fieldPositionsResourceLiveData.value = Resource.Success(it) },
+                { fieldPositionsResourceLiveData.value = Resource.Error(it) }
+        )
     }
 
 }
