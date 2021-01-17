@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.event.Event
 import com.example.alf.network.ApiClient
 import com.example.alf.network.EventApiInterface
-import com.example.alf.network.Resource
 import com.example.alf.network.errorHandling.ApiError
 import com.example.alf.network.errorHandling.ErrorUtils
 import com.example.alf.ui.common.ViewEvent
@@ -86,13 +85,14 @@ class EventApiService {
     }
 
     fun fetchMatchEvents(
-            eventsLiveData: MutableLiveData<Resource<List<Event>>>,
-            matchId: Int
+            matchId: Int,
+            successCallback: (events: List<Event>) -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
     ) {
         eventApiInterface.fetchMatchEvents(matchId).enqueue(object : Callback<List<Event>> {
 
             override fun onFailure(call: Call<List<Event>>, t: Throwable) {
-                eventsLiveData.value = Resource.Error(t.localizedMessage!!, null)
+                failureCallback(t.localizedMessage!!)
             }
 
             override fun onResponse(
@@ -101,10 +101,10 @@ class EventApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    eventsLiveData.value = Resource.Success(response.body()!!)
+                    successCallback(res)
                 } else {
                     val apiError: ApiError = ErrorUtils.parseError(response)
-                    eventsLiveData.value = Resource.Error(apiError.message, null)
+                    failureCallback(apiError.message)
                 }
             }
         })

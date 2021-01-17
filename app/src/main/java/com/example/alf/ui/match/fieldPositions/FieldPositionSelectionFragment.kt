@@ -82,11 +82,9 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
     }
 
     private fun onGetFieldPositionsResult(fieldPositions: List<FieldPosition>?) {
-        if (fieldPositions != null) {
+        fieldPositions?.let {
             viewAdapter = FieldPositionsAdapter(fieldPositions, this)
             binding.fieldPositionsRecyclerView.adapter = viewAdapter
-        } else {
-            showSnackBar(binding.root, "Get available field positions failed")
         }
     }
 

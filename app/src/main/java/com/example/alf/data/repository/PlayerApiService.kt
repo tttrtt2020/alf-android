@@ -7,6 +7,8 @@ import com.example.alf.data.model.PlayersPage
 import com.example.alf.data.model.match.Appearance
 import com.example.alf.network.ApiClient
 import com.example.alf.network.PlayerApiInterface
+import com.example.alf.network.errorHandling.ApiError
+import com.example.alf.network.errorHandling.ErrorUtils
 import com.example.alf.ui.common.ViewEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,16 +19,16 @@ class PlayerApiService {
     private var playerApiInterface: PlayerApiInterface = ApiClient.getApiClient().create(PlayerApiInterface::class.java)
 
     fun fetchMatchTeamSquad(
-        squadLiveData: MutableLiveData<List<Appearance>?>,
-        matchId: Int,
-        teamId: Int
-    ): LiveData<List<Appearance>?> {
-
+            matchId: Int,
+            teamId: Int,
+            successCallback: (appearances: List<Appearance>) -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
+    ) {
         playerApiInterface.fetchMatchTeamSquad(matchId, teamId).enqueue(object :
             Callback<List<Appearance>> {
 
             override fun onFailure(call: Call<List<Appearance>>, t: Throwable) {
-                squadLiveData.value = null
+                failureCallback(t.localizedMessage!!)
             }
 
             override fun onResponse(
@@ -35,14 +37,13 @@ class PlayerApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    squadLiveData.value = res
+                    successCallback(res)
                 } else {
-                    squadLiveData.value = null
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    failureCallback(apiError.message)
                 }
             }
         })
-
-        return squadLiveData
     }
 
     suspend fun fetchMatchTeamAllowablePlayersPage(

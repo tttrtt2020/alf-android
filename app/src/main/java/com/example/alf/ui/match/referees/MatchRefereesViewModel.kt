@@ -34,7 +34,11 @@ class MatchRefereesViewModel(private val matchId: Int) : ViewModel() {
 
     fun getReferees() {
         refereesResourceLiveData.value = Resource.Loading()
-        refereeApiService.fetchMatchReferees(refereesResourceLiveData, matchId)
+        refereeApiService.fetchMatchReferees(
+                matchId,
+                { refereesResourceLiveData.value = Resource.Success(it) },
+                { refereesResourceLiveData.value = Resource.Error(it) }
+        )
     }
 
     fun deleteReferee(referee: Referee, position: Int) {

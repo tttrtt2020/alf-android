@@ -2,11 +2,10 @@ package com.example.alf.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.alf.data.model.RefereesPage
 import com.example.alf.data.model.Referee
+import com.example.alf.data.model.RefereesPage
 import com.example.alf.network.ApiClient
 import com.example.alf.network.RefereeApiInterface
-import com.example.alf.network.Resource
 import com.example.alf.network.errorHandling.ApiError
 import com.example.alf.network.errorHandling.ErrorUtils
 import retrofit2.Call
@@ -92,14 +91,14 @@ class RefereeApiService {
     }
 
     fun fetchMatchReferees(
-            matchRefereesLiveData: MutableLiveData<Resource<List<Referee>>>,
-            matchId: Int
-    ): LiveData<Resource<List<Referee>>> {
-
+            matchId: Int,
+            successCallback: (referees: List<Referee>) -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
+    ) {
         refereeApiInterface.fetchMatchReferees(matchId).enqueue(object : Callback<List<Referee>> {
 
             override fun onFailure(call: Call<List<Referee>>, t: Throwable) {
-                matchRefereesLiveData.value = Resource.Error(t.localizedMessage!!, null)
+                failureCallback(t.localizedMessage!!)
             }
 
             override fun onResponse(
@@ -108,15 +107,13 @@ class RefereeApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    matchRefereesLiveData.value = Resource.Success(response.body()!!)
+                    successCallback(res)
                 } else {
                     val apiError: ApiError = ErrorUtils.parseError(response)
-                    matchRefereesLiveData.value = Resource.Error(apiError.message, null)
+                    failureCallback(apiError.message)
                 }
             }
         })
-
-        return matchRefereesLiveData
     }
 
     suspend fun fetchAllowableMatchRefereesPage(matchId: Int, query: String, sort: String, nextPageNumber: Int): RefereesPage {

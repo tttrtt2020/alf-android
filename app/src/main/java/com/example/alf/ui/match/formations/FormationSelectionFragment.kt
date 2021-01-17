@@ -66,11 +66,9 @@ class FormationSelectionFragment : Fragment(), FormationsAdapter.FormationsListe
     }
 
     private fun onGetFormationsResult(formations: List<Formation>?) {
-        if (formations != null) {
+        formations?.let {
             viewAdapter = FormationsAdapter(formations, this)
             binding.formationsRecyclerView.adapter = viewAdapter
-        } else {
-            showSnackBar(binding.root, "Get available formations failed")
         }
     }
 

@@ -34,7 +34,11 @@ class EventsViewModel(private val matchId: Int) : ViewModel() {
 
     fun getEvents() {
         eventsResourceLiveData.value = Resource.Loading()
-        eventApiService.fetchMatchEvents(eventsResourceLiveData, matchId)
+        eventApiService.fetchMatchEvents(
+                matchId,
+                { eventsResourceLiveData.value = Resource.Success(it) },
+                { eventsResourceLiveData.value = Resource.Error(it) }
+        )
     }
 
     fun deleteEvent(event: Event, position: Int) {

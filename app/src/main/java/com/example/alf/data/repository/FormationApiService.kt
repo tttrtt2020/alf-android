@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.alf.data.model.match.Formation
 import com.example.alf.network.ApiClient
 import com.example.alf.network.FormationApiInterface
-import com.example.alf.network.Resource
 import com.example.alf.network.errorHandling.ApiError
 import com.example.alf.network.errorHandling.ErrorUtils
 import retrofit2.Call
@@ -19,15 +18,15 @@ class FormationApiService {
     )
 
     fun fetchAllowableFormations(
-            formationsLiveData: MutableLiveData<Resource<List<Formation>>>,
             matchId: Int,
-            teamId: Int
-    ): LiveData<Resource<List<Formation>>> {
-
+            teamId: Int,
+            successCallback: (formations: List<Formation>) -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
+    ) {
         formationApiInterface.fetchAllowableFormations(matchId, teamId).enqueue(object : Callback<List<Formation>> {
 
             override fun onFailure(call: Call<List<Formation>>, t: Throwable) {
-                formationsLiveData.value = Resource.Error(t.localizedMessage!!, null)
+                failureCallback(t.localizedMessage!!)
             }
 
             override fun onResponse(
@@ -36,15 +35,13 @@ class FormationApiService {
             ) {
                 val res = response.body()
                 if (response.code() == 200 && res != null) {
-                    formationsLiveData.value = Resource.Success(response.body()!!)
+                    successCallback(res)
                 } else {
                     val apiError: ApiError = ErrorUtils.parseError(response)
-                    formationsLiveData.value = Resource.Error(apiError.message, null)
+                    failureCallback(apiError.message)
                 }
             }
         })
-
-        return formationsLiveData
     }
 
     fun fetchFormationById(id: Int): LiveData<Formation>? {

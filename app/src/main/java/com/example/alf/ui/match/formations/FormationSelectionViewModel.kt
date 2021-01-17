@@ -31,7 +31,12 @@ class FormationSelectionViewModel(
 
     fun getFormations() {
         loadingInProgressLiveData.value = true
-        formationApiService.fetchAllowableFormations(formationsResourceLiveData, matchId, teamId)
+        formationApiService.fetchAllowableFormations(
+                matchId,
+                teamId,
+                { formationsResourceLiveData.value = Resource.Success(it) },
+                { formationsResourceLiveData.value = Resource.Error(it) }
+        )
     }
 
     fun setFormation(formation: Formation) {
