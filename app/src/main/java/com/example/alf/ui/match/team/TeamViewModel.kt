@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.match.Formation
+import com.example.alf.data.repository.AppearanceApiService
 import com.example.alf.data.repository.MatchApiService
-import com.example.alf.data.repository.PlayerApiService
 import com.example.alf.network.Resource
 import com.example.alf.ui.common.ViewEvent
 
@@ -17,8 +17,8 @@ class TeamViewModel(
         private val teamId: Int
 ) : ViewModel() {
 
-    private val matchApiService: MatchApiService = MatchApiService()
-    private val playerApiService: PlayerApiService = PlayerApiService()
+    private val matchApiService = MatchApiService()
+    private val appearanceApiService = AppearanceApiService()
 
     private val matchTeamResourceLiveData = MutableLiveData<Resource<MatchTeam>>()
     private val matchTeamLiveData = Transformations.map(matchTeamResourceLiveData) { resource -> resource.data }
@@ -59,7 +59,7 @@ class TeamViewModel(
 
     fun deletePlayer(player: Player, position: Int) {
         loadingInProgressLiveData.value = true
-        playerApiService.deleteAppearance(
+        appearanceApiService.deleteAppearance(
                 matchId,
                 player,
                 { deletePlayerActionLiveData.value = ViewEvent(position) },

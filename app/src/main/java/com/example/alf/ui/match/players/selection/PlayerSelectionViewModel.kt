@@ -10,8 +10,8 @@ import androidx.paging.cachedIn
 import com.example.alf.data.model.Person
 import com.example.alf.data.model.Player
 import com.example.alf.data.model.event.Event
+import com.example.alf.data.repository.AppearanceApiService
 import com.example.alf.data.repository.EventApiService
-import com.example.alf.data.repository.PlayerApiService
 import com.example.alf.ui.common.ViewEvent
 import com.example.alf.ui.match.players.PlayersPagingRepository
 import kotlinx.coroutines.flow.Flow
@@ -22,8 +22,8 @@ class PlayerSelectionViewModel(
     private val args: PlayerSelectionFragmentArgs
 ) : ViewModel() {
 
-    private val playerApiService: PlayerApiService = PlayerApiService()
-    private val eventApiService: EventApiService = EventApiService()
+    private val appearanceApiService = AppearanceApiService()
+    private val eventApiService = EventApiService()
 
     private var currentQueryValue: String? = null
 
@@ -77,7 +77,7 @@ class PlayerSelectionViewModel(
 
     private fun addPlayerToMatch(matchId: Int, teamId: Int, fieldPositionId: Int?, player: Player) {
         loadingInProgressLiveData.value = true
-        playerApiService.addAppearance(
+        appearanceApiService.addAppearance(
                 matchId,
                 teamId,
                 fieldPositionId,
