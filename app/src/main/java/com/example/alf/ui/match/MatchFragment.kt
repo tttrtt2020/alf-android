@@ -91,7 +91,7 @@ class MatchFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_open_youtube -> {
-                // TODO: 1/24/21 openYoutube()
+                openYoutube()
                 true
             }
             R.id.action_open_referees -> {
@@ -132,6 +132,11 @@ class MatchFragment : Fragment() {
                 matchViewModel.getMatchResultLiveData.value = null
             } else showSnackBar(binding.root, "Get failed")
         }
+    }
+
+    private fun openYoutube() {
+        val action = MatchFragmentDirections.actionMatchFragmentToYoutubeFragment(args.matchId)
+        findNavController().navigate(action)
     }
 
     private fun openReferees() {
