@@ -33,14 +33,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/card_margin">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:id="@+id/result_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/card_margin"
+                        android:layout_margin="@dimen/card_margin"
                         android:orientation="vertical"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
@@ -78,10 +77,14 @@
                     <RelativeLayout
                         android:id="@+id/host_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_toStartOf="@id/result_layout"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true">
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/card_margin"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
 
                         <ImageView
                             android:id="@+id/host_logo"
@@ -113,10 +116,14 @@
                     <RelativeLayout
                         android:id="@+id/guest_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_toEndOf="@id/result_layout"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true">
+                        android:layout_centerVertical="true"
+                        android:padding="@dimen/card_margin"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
 
                         <ImageView
                             android:id="@+id/guest_logo"
