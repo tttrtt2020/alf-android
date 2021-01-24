@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_open_youtube"
+        android:title="@string/action_open_youtube"
+        android:icon="@drawable/ic_youtube" />
+
+    <item
+        android:id="@+id/action_open_referees"
+        android:title="@string/action_open_referees"
+        android:icon="@drawable/ic_whistle_colored" />
+
+    <item
+        android:id="@+id/action_open_events"
+        android:title="@string/action_open_events"
+        android:icon="@drawable/ic_events_colored" />
+
+    <item
+        android:id="@+id/action_open_substitutions"
+        android:title="@string/action_open_substitutions"
+        android:icon="@drawable/ic_swap_colored" />
+
+</menu>

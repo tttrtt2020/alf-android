@@ -9,8 +9,10 @@
     <string name="action_photo">Take photo</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
+    <string name="action_open_youtube">Youtube</string>
     <string name="action_open_referees">Referees</string>
     <string name="action_open_events">Events</string>
+    <string name="action_open_substitutions">Substitutions</string>
     <string name="action_skip">Skip</string>
     <string name="action_proceed">Proceed</string>
     <string name="show_only_finished">Show only finished</string>

@@ -8,8 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="blue">#1890FF</color>
-    <color name="dark_blue">#0880EF</color>
+    <color name="alf_blue">#1890FF</color>
+    <color name="alf_dark_blue">#0880EF</color>
 
     <color name="gray">#555555</color>
     <color name="dark_gray">#333333</color>
@@ -17,8 +17,15 @@
     <color name="dark_transparent_foreground">#C0444444</color>
     <color name="transparent_foreground">#88888888</color>
 
-    <color name="green">#33AA33</color>
-    <color name="red">#AA3333</color>
+    <color name="red">@color/google_red</color>
+    <color name="green">@color/google_green</color>
+    <color name="blue">@color/google_blue</color>
+    <color name="yellow">@color/google_yellow</color>
+
+    <color name="google_red">#DB4437</color>
+    <color name="google_green">#0F9D58</color>
+    <color name="google_blue">#4285F4</color>
+    <color name="google_yellow">#F4B400</color>
 
     <color name="item_color">@color/white</color>
     <color name="item_selected_color">#88CC0000</color>

@@ -2,7 +2,10 @@ package com.example.alf.ui.match
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.Nullable
 import androidx.databinding.BindingAdapter
@@ -81,80 +84,67 @@ class MatchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        matchViewModel.getMatchResultLiveData.observe(viewLifecycleOwner, {
-            if (it != null) {
-                onGetMatchResult(it)
-                matchViewModel.getMatchResultLiveData.value = null
-            }
-        })
-
-        //setupViewPager()
-
-        binding.hostLayout.setOnClickListener { onHostClicked() }
-        binding.guestLayout.setOnClickListener { onGuestClicked() }
-    }
-
-    /*private fun setupViewPager() {
-        binding.pager.adapter = MatchInfoAdapter(
-                this,
-                args.matchId,
-                args.hostTeamId,
-                args.guestTeamId
-        )
-        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
-            tab.text = when (position) {
-                0 -> getString(R.string.tab_name_host_squad)
-                2 -> getString(R.string.tab_name_guest_squad)
-                1 -> getString(R.string.tab_name_events)
-                else -> null
-            }
-        }.attach()
-
-        binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person_add))
-                    2 -> binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person_add))
-                    1 -> binding.fab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_event_add))
-                }
-            }
-        })
-    }*/
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.match, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+        setupViews()
+        observeMatchViewModel()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_open_youtube -> {
+                // TODO: 1/24/21 openYoutube()
+                true
+            }
             R.id.action_open_referees -> {
-                openMatchReferees()
+                openReferees()
                 true
             }
             R.id.action_open_events -> {
-                openMatchEvents()
+                openEvents()
+                true
+            }
+            R.id.action_open_substitutions -> {
+                // TODO: 1/24/21 openSubstitutions()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun onGetMatchResult(success: Boolean) {
-        if (success) showSnackBar(binding.root, "Get success") else showSnackBar(binding.root, "Get failed")
+    private fun setupViews() {
+        binding.hostLayout.setOnClickListener { onHostClicked() }
+        binding.guestLayout.setOnClickListener { onGuestClicked() }
+
+        binding.bottomNavigation.apply {
+            itemIconTintList = null
+            setOnNavigationItemSelectedListener { item -> onOptionsItemSelected(item) }
+        }
     }
 
-    private fun openMatchReferees() {
+    private fun observeMatchViewModel() {
+        matchViewModel.getMatchResultLiveData.observe(viewLifecycleOwner, {
+            onGetMatchResult(it)
+        })
+    }
+
+    private fun onGetMatchResult(success: Boolean?) {
+        if (success != null) {
+            if (success) {
+                matchViewModel.getMatchResultLiveData.value = null
+            } else showSnackBar(binding.root, "Get failed")
+        }
+    }
+
+    private fun openReferees() {
         val action = MatchFragmentDirections.actionMatchFragmentToMatchRefereesFragment(args.matchId)
         findNavController().navigate(action)
     }
 
-    private fun openMatchEvents() {
+    private fun openEvents() {
         matchViewModel.matchLiveData.value?.let {
             val action = MatchFragmentDirections.actionMatchFragmentToEventsFragment(
                     args.matchId,
-                    it.hostTeam.id,
-                    it.guestTeam.id
+                    it.data!!.hostTeam.id,
+                    it.data.guestTeam.id
             )
             findNavController().navigate(action)
         }

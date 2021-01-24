@@ -47,7 +47,6 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setHasOptionsMenu(true)
     }
 
