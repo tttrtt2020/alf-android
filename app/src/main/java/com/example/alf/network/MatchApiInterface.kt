@@ -4,10 +4,9 @@ import com.example.alf.data.model.Match
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.MatchesPage
 import com.example.alf.data.model.Team
+import com.example.alf.data.model.match.YoutubeUrl
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MatchApiInterface {
 
@@ -33,5 +32,11 @@ interface MatchApiInterface {
 
     @GET("matches/{matchId}/teams")
     fun fetchTeams(@Path("matchId") matchId: Int): Call<List<Team>>
+
+    @PUT("matches/{matchId}/youtubeId")
+    fun updateYoutubeId(
+        @Path("matchId") matchId: Int,
+        @Body youtubeId: YoutubeUrl
+    ): Call<YoutubeUrl>
 
 }

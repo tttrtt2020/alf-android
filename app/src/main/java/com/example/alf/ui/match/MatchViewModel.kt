@@ -41,7 +41,7 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
     init {
         loadingInProgressLiveData.addSource(matchLiveData) { loadingInProgressLiveData.value = false }
 
-        getMatch()
+        fetchMatch()
     }
 
     private fun buildStadiumPhotoUrl(stadium: Stadium): String {
@@ -53,7 +53,7 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
         return AlfApplication.getProperty("url.logo.club") + team.club.id + AlfApplication.getProperty("extension.logo.club")
     }
 
-    private fun getMatch() {
+    private fun fetchMatch() {
         loadingInProgressLiveData.value = true
         matchLiveData.value = Resource.Loading()
         matchApiService.getMatchById(
@@ -61,6 +61,10 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
                 { matchLiveData.value = Resource.Success(it) },
                 { matchLiveData.value = Resource.Error(it) }
         )
+    }
+
+    fun getMatch(): Match? {
+        return matchLiveData.value?.data
     }
 
 }

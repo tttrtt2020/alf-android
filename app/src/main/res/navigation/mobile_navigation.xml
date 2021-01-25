@@ -396,11 +396,11 @@
     <fragment
         android:id="@+id/youtubeFragment"
         android:name="com.example.alf.ui.match.youtube.YoutubeFragment"
-        android:label="YoutubeFragment"
+        android:label="@string/title_youtube_video"
         tools:layout="@layout/fragment_youtube" >
         <argument
-            android:name="matchId"
-            app:argType="integer" />
+            android:name="match"
+            app:argType="com.example.alf.data.model.Match" />
     </fragment>
 
 </navigation>

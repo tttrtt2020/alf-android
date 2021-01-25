@@ -38,6 +38,7 @@
     <string name="title_player_selection">Select player</string>
     <string name="title_minute_selection">Select minute</string>
     <string name="title_events">Events</string>
+    <string name="title_youtube_video">YouTube video</string>
 
     <string name="loading_failed">Loading failed</string>
     <string name="retry">Retry</string>

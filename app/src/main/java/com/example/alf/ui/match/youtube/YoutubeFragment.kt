@@ -6,7 +6,7 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.alf.R
 import com.example.alf.databinding.FragmentYoutubeBinding
@@ -19,6 +19,10 @@ class YoutubeFragment : Fragment() {
 
     private val args: YoutubeFragmentArgs by navArgs()
 
+    private val youtubeViewModel: YoutubeViewModel by viewModels {
+        YoutubeViewModelFactory(args.match)
+    }
+
     private lateinit var doneMenuItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,16 +34,42 @@ class YoutubeFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         binding = FragmentYoutubeBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        binding.youtubeViewModel = youtubeViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViews()
+        observeYoutubeViewModel()
+    }
+
+    private fun setupViews() {
         binding.videoUrl.requestFocus()
         binding.videoUrl.setOnEditorActionListener { _, actionId, event ->
             if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 onDoneClicked()
                 true
             } else false
+        }
+    }
+
+    private fun observeYoutubeViewModel() {
+        youtubeViewModel.setYoutubeIdActionLiveData.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
+                youtubeViewModel.onSetYoutubeViewModelResult(viewEvent.peekContent())
+            }
+        }
+
+        youtubeViewModel.message.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
+                showSnackBar(binding.root, viewEvent.peekContent())
+            }
+        }
+
+        youtubeViewModel.goBack.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
+                goBack()
+            }
         }
     }
 
@@ -61,7 +91,7 @@ class YoutubeFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_proceed -> {
+            R.id.action_done -> {
                 onDoneClicked()
                 true
             }
@@ -71,8 +101,7 @@ class YoutubeFragment : Fragment() {
 
     private fun onDoneClicked() {
         if (validateVideoUrl()) {
-            // TODO: 1/24/21 implement set video URL logic
-            //done()
+            youtubeViewModel.setYoutubeId()
         } else showSnackBar(binding.root, "Please set correct URL")
     }
 
@@ -82,12 +111,8 @@ class YoutubeFragment : Fragment() {
         return true
     }
 
-    private fun getVideoUrl(): String {
-        return binding.videoUrl.text.toString().trim()
-    }
-
-    private fun done() {
-
+    private fun goBack() {
+        activity?.onBackPressed()
     }
 
     private fun showKeyboard() {

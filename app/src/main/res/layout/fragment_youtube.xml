@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <import type="android.view.View" />
+        <variable name="youtubeViewModel" type="com.example.alf.ui.match.youtube.YoutubeViewModel" />
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,9 +39,18 @@
                 android:focusable="true"
                 android:imeOptions="actionDone"
                 android:hint="@string/hint_video_url"
-                android:inputType="textUri" />
+                android:inputType="textUri"
+                android:text="@={youtubeViewModel.youtubeIdLiveData.id}"/>
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{youtubeViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            style="?android:attr/progressBarStyle" />
 
     </FrameLayout>
 

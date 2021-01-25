@@ -135,8 +135,10 @@ class MatchFragment : Fragment() {
     }
 
     private fun openYoutube() {
-        val action = MatchFragmentDirections.actionMatchFragmentToYoutubeFragment(args.matchId)
-        findNavController().navigate(action)
+        matchViewModel.getMatch()?.let {
+            val action = MatchFragmentDirections.actionMatchFragmentToYoutubeFragment(it)
+            findNavController().navigate(action)
+        }
     }
 
     private fun openReferees() {

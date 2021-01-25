@@ -4,6 +4,7 @@ import com.example.alf.data.model.Match
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.MatchesPage
 import com.example.alf.data.model.Team
+import com.example.alf.data.model.match.YoutubeUrl
 import com.example.alf.network.ApiClient
 import com.example.alf.network.MatchApiInterface
 import com.example.alf.network.errorHandling.ApiError
@@ -87,6 +88,33 @@ class MatchApiService {
             override fun onResponse(
                     call: Call<List<Team>>,
                     response: Response<List<Team>>
+            ) {
+                if (response.isSuccessful) {
+                    successCallback(response.body()!!)
+                } else {
+                    val apiError: ApiError = ErrorUtils.parseError(response)
+                    failureCallback(apiError.message)
+                }
+            }
+
+        })
+    }
+
+    fun setYoutubeId(
+            matchId: Int,
+            youtubeId: YoutubeUrl,
+            successCallback: (youtubeId: YoutubeUrl) -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
+    ) {
+        matchApiInterface.updateYoutubeId(matchId, youtubeId).enqueue(object : Callback<YoutubeUrl> {
+
+            override fun onFailure(call: Call<YoutubeUrl>, t: Throwable) {
+                failureCallback(t.localizedMessage!!)
+            }
+
+            override fun onResponse(
+                    call: Call<YoutubeUrl>,
+                    response: Response<YoutubeUrl>
             ) {
                 if (response.isSuccessful) {
                     successCallback(response.body()!!)
