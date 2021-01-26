@@ -14,7 +14,7 @@ class YoutubeViewModel(
 
     private val matchApiService = MatchApiService()
 
-    val setYoutubeIdActionLiveData = MutableLiveData<ViewEvent<Boolean>>()
+    private val setYoutubeIdActionLiveData = MutableLiveData<ViewEvent<Boolean>>()
 
     val youtubeIdLiveData = MutableLiveData(YoutubeUrl("", if (match.youtubeId == null) "" else match.youtubeId!!))
 
@@ -35,16 +35,13 @@ class YoutubeViewModel(
                 {
                     match.youtubeId = youtubeIdLiveData.value!!.id
                     setYoutubeIdActionLiveData.value = ViewEvent(true)
+                    goBack.value = ViewEvent(Unit)
                 },
-                { setYoutubeIdActionLiveData.value = ViewEvent(false) }
+                {
+                    setYoutubeIdActionLiveData.value = ViewEvent(false)
+                    message.value = ViewEvent(it)
+                }
         )
-    }
-
-    fun onSetYoutubeViewModelResult(success: Boolean) {
-        if (success) {
-            //message.value = ViewEvent("Set video ID success")
-            goBack.value = ViewEvent(Unit)
-        } else message.value = ViewEvent("Set video ID failed")
     }
 
 }

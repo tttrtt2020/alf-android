@@ -54,12 +54,6 @@ class YoutubeFragment : Fragment() {
     }
 
     private fun observeYoutubeViewModel() {
-        youtubeViewModel.setYoutubeIdActionLiveData.observe(viewLifecycleOwner) { viewEvent ->
-            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
-                youtubeViewModel.onSetYoutubeViewModelResult(viewEvent.peekContent())
-            }
-        }
-
         youtubeViewModel.message.observe(viewLifecycleOwner) { viewEvent ->
             viewEvent.getContentIfNotHandledOrReturnNull()?.let {
                 showSnackBar(binding.root, viewEvent.peekContent())
