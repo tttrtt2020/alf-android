@@ -5,7 +5,7 @@ import java.util.*
 
 data class ApiError(
         var status: String,
-        var timestamp: Date,
+        var timestamp: String,
         var message: String,
         var debugMessage: String,
         var subErrors: List<ApiSubError>

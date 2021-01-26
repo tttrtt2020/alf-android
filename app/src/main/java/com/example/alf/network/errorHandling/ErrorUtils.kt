@@ -19,7 +19,7 @@ class ErrorUtils {
             } catch (e: IOException) {
                 return ApiError(
                         "Unknown status",
-                        Date(),
+                        Date().toString(),
                         "Unknown error",
                         "Unknown error",
                         emptyList()
