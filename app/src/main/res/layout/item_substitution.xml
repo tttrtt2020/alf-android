@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <import type="android.view.View" />
@@ -9,61 +8,62 @@
         <variable name="guestTeamId" type="Integer" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/card_margin"
         android:focusable="true"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:layoutDirection="@{substitution.team.id == hostTeamId ? View.LAYOUT_DIRECTION_LTR : View.LAYOUT_DIRECTION_RTL}">
+        android:layoutDirection="@{substitution.team.id == hostTeamId ? View.LAYOUT_DIRECTION_LTR : View.LAYOUT_DIRECTION_RTL}"
+        android:orientation="vertical" >
 
-        <!--<ImageView
-            android:id="@+id/icon"
-            android:layout_width="@dimen/item_icon_size"
-            android:layout_height="@dimen/item_icon_size"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/content_description_substitution"
-            android:src="@drawable/ic_swap_colored" />-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/minute"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical" >
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_margin"
+            android:drawableStart="@drawable/ic_time"
+            android:drawableTint="@color/yellow"
+            android:textSize="@dimen/substitution_minute_text_size"
+            android:textStyle="bold"
+            android:text="@{String.valueOf(substitution.minute)}" />
 
-            <TextView
-                android:id="@+id/minute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/substitution_minute_text_size"
-                android:textStyle="bold"
-                android:text="@{String.valueOf(substitution.minute)}" />
+        <!-- todo: set appropriate icon and add team color to it -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_margin"
+            android:drawableStart="@drawable/ic_people"
+            android:drawableTint="@color/blue"
+            android:textSize="@dimen/substitution_team_text_size"
+            android:text="@{String.valueOf(substitution.team.name)}" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/player_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/substitution_player_in_text_size"
-                android:text="@{String.format(@string/player_in, substitution.playerIn.lastName, substitution.playerIn.firstName)}"
-                android:drawableStart="@{substitution.team.id == hostTeamId ? @drawable/ic_forward : @drawable/ic_backward}"
-                android:drawableTint="@color/green" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/player_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_margin"
+            android:drawableStart="@{substitution.team.id == hostTeamId ? @drawable/ic_forward : @drawable/ic_backward}"
+            android:drawableTint="@color/green"
+            android:textSize="@dimen/substitution_player_in_text_size"
+            android:text="@{String.format(@string/player_in, substitution.playerIn.lastName, substitution.playerIn.firstName)}" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/player_out"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/substitution_player_out_text_size"
-                android:text="@{String.format(@string/player_out, substitution.playerOut.lastName, substitution.playerOut.firstName)}"
-                android:drawableStart="@{substitution.team.id == hostTeamId ? @drawable/ic_backward : @drawable/ic_forward}"
-                android:drawableTint="@color/red" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/player_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_margin"
+            android:drawableStart="@{substitution.team.id == hostTeamId ? @drawable/ic_backward : @drawable/ic_forward}"
+            android:drawableTint="@color/red"
+            android:textSize="@dimen/substitution_player_out_text_size"
+            android:text="@{String.format(@string/player_out, substitution.playerOut.lastName, substitution.playerOut.firstName)}" />
 
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

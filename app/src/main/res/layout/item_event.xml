@@ -10,58 +10,51 @@
         <variable name="guestTeamId" type="Integer" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/card_margin"
         android:focusable="true"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
         android:layoutDirection="@{event.team.id == hostTeamId ? View.LAYOUT_DIRECTION_LTR : View.LAYOUT_DIRECTION_RTL}">
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="@dimen/item_icon_size"
-            android:layout_height="@dimen/item_icon_size"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/content_description_event_type"
-            app:imageUrl="@{event}"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/minute"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/icon"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/card_margin"
-            android:orientation="vertical" >
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_margin"
+            android:drawableStart="@drawable/ic_time"
+            android:drawableTint="@color/yellow"
+            android:textSize="@dimen/event_minute_text_size"
+            android:textStyle="bold"
+            android:text="@{String.valueOf(event.minute)}" />
 
-            <TextView
-                android:id="@+id/minute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/event_minute_text_size"
-                android:textStyle="bold"
-                android:text="@{String.valueOf(event.minute)}" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/event_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_margin"
+            app:drawableUrl="@{event}"
+            app:host="@{event.team.id == hostTeamId}"
+            android:textSize="@dimen/event_minute_text_size"
+            android:text="@{event.eventType.name}" />
 
-            <TextView
-                android:id="@+id/event_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/event_minute_text_size"
-                android:text="@{event.eventType.name}" />
+        <!-- todo: set appropriate icon and add team color to it -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_margin"
+            android:drawableStart="@drawable/ic_person"
+            android:drawableTint="@color/blue"
+            android:textSize="@dimen/event_type_name_text_size"
+            android:text="@{String.format(@string/event_person, event.person.lastName, event.person.firstName)}" />
 
-            <TextView
-                android:id="@+id/person"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/event_type_name_text_size"
-                android:text="@{String.format(@string/event_person, event.person.lastName, event.person.firstName)}" />
-
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

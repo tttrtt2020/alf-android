@@ -20,6 +20,7 @@
     <dimen name="event_minute_text_size">@dimen/text_size_medium</dimen>
     <dimen name="event_type_name_text_size">@dimen/text_size_medium</dimen>
     <dimen name="substitution_minute_text_size">@dimen/text_size_medium</dimen>
+    <dimen name="substitution_team_text_size">@dimen/text_size_medium</dimen>
     <dimen name="substitution_player_in_text_size">@dimen/text_size_medium</dimen>
     <dimen name="substitution_player_out_text_size">@dimen/text_size_medium</dimen>
     <dimen name="team_name_text_size">@dimen/text_size_medium</dimen>
