@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/event_type_name_text_size"
-                android:text="@{event.person.lastName}" />
+                android:text="@{String.format(@string/event_person, event.person.lastName, event.person.firstName)}" />
 
         </LinearLayout>
     </RelativeLayout>

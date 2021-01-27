@@ -36,6 +36,8 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
 
     val getMatchResultLiveData = Transformations.map(matchLiveData) { mi -> mi != null } as MutableLiveData<Boolean?>
 
+    val buttonsEnabledLiveData = Transformations.map(matchLiveData) { m -> m is Resource.Success }
+
     val loadingInProgressLiveData = MediatorLiveData<Boolean>()
 
     init {

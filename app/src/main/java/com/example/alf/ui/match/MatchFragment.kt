@@ -103,7 +103,7 @@ class MatchFragment : Fragment() {
                 true
             }
             R.id.action_open_substitutions -> {
-                // TODO: 1/24/21 openSubstitutions()
+                openSubstitutions()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -147,14 +147,21 @@ class MatchFragment : Fragment() {
     }
 
     private fun openEvents() {
-        matchViewModel.matchLiveData.value?.let {
-            val action = MatchFragmentDirections.actionMatchFragmentToEventsFragment(
-                    args.matchId,
-                    it.data!!.hostTeam.id,
-                    it.data.guestTeam.id
-            )
-            findNavController().navigate(action)
-        }
+        val action = MatchFragmentDirections.actionMatchFragmentToEventsFragment(
+                args.matchId,
+                args.hostTeamId,
+                args.guestTeamId
+        )
+        findNavController().navigate(action)
+    }
+
+    private fun openSubstitutions() {
+        val action = MatchFragmentDirections.actionMatchFragmentToSubstitutionsFragment(
+                args.matchId,
+                args.hostTeamId,
+                args.guestTeamId
+        )
+        findNavController().navigate(action)
     }
 
     private fun showSnackBar(view: View, msg: String) {

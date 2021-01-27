@@ -26,7 +26,6 @@
     <string name="search_hint">Search</string>
     <string name="title_person">Person</string>
     <string name="title_match">Match</string>
-    <string name="title_match_referees">Referees</string>
     <string name="title_formations">Formations</string>
     <string name="title_event_type_selection">Select event type</string>
     <string name="title_team_selection">Select team</string>
@@ -37,8 +36,10 @@
     <string name="title_field_position_selection">Select position</string>
     <string name="title_player_selection">Select player</string>
     <string name="title_minute_selection">Select minute</string>
-    <string name="title_events">Events</string>
     <string name="title_youtube_video">YouTube video</string>
+    <string name="title_match_referees">Referees</string>
+    <string name="title_events">Events</string>
+    <string name="title_substitutions">Substitutions</string>
 
     <string name="loading_failed">Loading failed</string>
     <string name="retry">Retry</string>
@@ -48,11 +49,13 @@
     <string name="content_description_player_photo">Player photo</string>
     <string name="content_description_flag_image">Flag image</string>
     <string name="content_description_event_type">Event type</string>
+    <string name="content_description_substitution">Substitution</string>
     <string name="content_description_in_start">In start icon</string>
     <string name="content_description_add_person">Add person</string>
     <string name="content_description_add_player">Add player</string>
     <string name="content_description_add_referee">Add referee</string>
     <string name="content_description_add_event">Add event</string>
+    <string name="content_description_add_substitution">Add substitution</string>
 
     <string name="change_formation">Change formation</string>
 
@@ -68,6 +71,9 @@
 
     <string name="in_for">In for: %s</string>
     <string name="out_for">Out for: %s</string>
+    <string name="event_person">%s %s</string>
+    <string name="player_in">%s %s</string>
+    <string name="player_out">%s %s</string>
 
     <string name="hint_minute">25</string>
     <string name="hint_video_url">Video URL</string>
@@ -81,5 +87,6 @@
     <string name="empty_collection_field_positions">No field positions</string>
     <string name="empty_collection_appearances">No players</string>
     <string name="empty_collection_teams">No teams</string>
+    <string name="empty_collection_substitutions">No substitutions</string>
 
 </resources>

@@ -172,6 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:visibility="@{matchViewModel.buttonsEnabledLiveData ? View.VISIBLE : View.GONE}"
                 app:labelVisibilityMode="labeled"
                 app:menu="@menu/match_bottom_navigation_menu" />
 
