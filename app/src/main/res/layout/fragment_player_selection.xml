@@ -24,11 +24,18 @@
             app:layoutManager="LinearLayoutManager" />
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/progress_bar_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="@{playerSelectionViewModel.loadingInProgressLiveData ? View.VISIBLE : View.GONE}"
+            style="?android:attr/progressBarStyle" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             style="?android:attr/progressBarStyle" />
 
         <LinearLayout

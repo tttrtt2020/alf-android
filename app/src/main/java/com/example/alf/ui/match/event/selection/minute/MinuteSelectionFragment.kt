@@ -94,11 +94,11 @@ class MinuteSelectionFragment : Fragment() {
     }
 
     private fun proceed() {
-        val action = MinuteSelectionFragmentDirections.actionMinuteSelectionFragmentToEventTypeSelectionFragment(
+        val action = MinuteSelectionFragmentDirections.actionMinuteSelectionFragmentToTeamSelectionFragment(
                 matchId = args.matchId,
-                hostTeamId = args.hostTeamId,
-                guestTeamId = args.guestTeamId,
-                minute = getMinute()
+                hostTeamId = args.hostTeamId, guestTeamId = args.guestTeamId,
+                minute = getMinute(),
+                mode = args.mode
         )
         findNavController().navigate(action)
     }

@@ -8,7 +8,9 @@ interface SubstitutionApiInterface {
 
     @GET("matches/{matchId}/substitutions")
     fun fetchMatchSubstitutions(
-            @Path("matchId") matchId: Int
+            @Path("matchId") matchId: Int,
+            @Query("sort") sort: String,
+            @Query("sort") sort2: String
     ): Call<List<Substitution>>
 
     @POST("matches/{matchId}/substitutions")
@@ -17,10 +19,10 @@ interface SubstitutionApiInterface {
             @Body substitution: Substitution
     ): Call<Substitution>
 
-    @DELETE("matches/{matchId}/substitutions")
+    @DELETE("matches/{matchId}/substitutions/{substitutionId}")
     fun deleteMatchSubstitution(
             @Path("matchId") matchId: Int,
-            @Body substitution: Substitution
+            @Path("substitutionId") substitutionId: Int
     ): Call<Unit>
 
 }

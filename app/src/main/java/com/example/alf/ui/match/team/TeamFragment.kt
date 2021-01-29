@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.alf.MainActivity
 import com.example.alf.R
-import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
-import com.example.alf.data.model.match.Formation
 import com.example.alf.data.model.match.Appearance
+import com.example.alf.data.model.match.Formation
 import com.example.alf.databinding.FragmentTeamBinding
 import com.example.alf.ui.common.ActionModeCallback
 import com.example.alf.ui.match.MatchViewModel
+import com.example.alf.ui.match.players.selection.Mode
 import com.example.alf.ui.match.squad.AppearancesAdapter
 import com.google.android.material.snackbar.Snackbar
 
@@ -168,8 +168,14 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
 
     private fun openPlayerSelection() {
         val action = TeamFragmentDirections.actionTeamFragmentToPlayerSelectionFragment(
-                args.matchId, 0, 0, args.teamId,
-                null, 0, null, null
+                args.matchId,
+                hostTeamId = 0, guestTeamId = 0,
+                minute = 0,
+                teamId = args.teamId, team = null,
+                fieldPosition = null,
+                eventType = null,
+                playerOut = null,
+                mode = Mode.TEAM_PLAYER
         )
         findNavController().navigate(action)
     }

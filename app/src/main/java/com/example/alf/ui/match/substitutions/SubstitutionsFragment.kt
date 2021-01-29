@@ -14,6 +14,7 @@ import com.example.alf.R
 import com.example.alf.data.model.Substitution
 import com.example.alf.databinding.FragmentSubstitutionsBinding
 import com.example.alf.ui.common.ActionModeCallback
+import com.example.alf.ui.match.team.selection.Mode
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -107,10 +108,12 @@ class SubstitutionsFragment : Fragment(), SubstitutionsAdapter.SubstitutionsList
     }
 
     private fun onFabClicked() {
-        /*val action = SubstitutionsFragmentDirections.actionSubstitutionsFragmentToSubstitutionTypesFragment(
-                args.matchId, args.hostTeamId, args.guestTeamId
+        val action = SubstitutionsFragmentDirections.actionSubstitutionsFragmentToMinuteSelectionFragment(
+                matchId = args.matchId,
+                hostTeamId = args.hostTeamId, guestTeamId = args.guestTeamId,
+                mode = Mode.SUBSTITUTION_TEAM
         )
-        findNavController().navigate(action)*/
+        findNavController().navigate(action)
     }
 
     private fun showSnackBar(view: View, msg: String) {

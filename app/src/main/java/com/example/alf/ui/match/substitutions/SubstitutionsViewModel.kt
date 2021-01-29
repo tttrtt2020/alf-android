@@ -1,6 +1,7 @@
 package com.example.alf.ui.match.substitutions
 
 import androidx.lifecycle.*
+import com.example.alf.AlfApplication
 import com.example.alf.data.model.Substitution
 import com.example.alf.data.repository.SubstitutionApiService
 import com.example.alf.network.Resource
@@ -36,6 +37,8 @@ class SubstitutionsViewModel(private val matchId: Int) : ViewModel() {
         substitutionsResourceLiveData.value = Resource.Loading()
         substitutionApiService.fetchMatchSubstitutions(
                 matchId,
+                AlfApplication.getProperty("substitutions.sort"),
+                AlfApplication.getProperty("substitutions.sort2"),
                 { substitutionsResourceLiveData.value = Resource.Success(it) },
                 { substitutionsResourceLiveData.value = Resource.Error(it) }
         )
@@ -45,7 +48,7 @@ class SubstitutionsViewModel(private val matchId: Int) : ViewModel() {
         loadingInProgressLiveData.value = true
         substitutionApiService.deleteMatchSubstitution(
                 matchId,
-                substitution,
+                substitution.id!!,
                 { deleteSubstitutionActionLiveData.value = ViewEvent(position) },
                 { deleteSubstitutionActionLiveData.value = ViewEvent(-1) }
         )

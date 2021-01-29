@@ -39,11 +39,11 @@ class SubstitutionApiService {
 
     fun deleteMatchSubstitution(
             matchId: Int,
-            substitution: Substitution,
+            substitutionId: Int,
             successCallback: () -> Unit,
             failureCallback: (errorMessage: String) -> Unit
     ) {
-        substitutionApiInterface.deleteMatchSubstitution(matchId, substitution).enqueue(object : Callback<Unit> {
+        substitutionApiInterface.deleteMatchSubstitution(matchId, substitutionId).enqueue(object : Callback<Unit> {
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 failureCallback(t.localizedMessage!!)
@@ -63,10 +63,12 @@ class SubstitutionApiService {
 
     fun fetchMatchSubstitutions(
             matchId: Int,
+            sort: String,
+            sort2: String,
             successCallback: (substitutions: List<Substitution>) -> Unit,
             failureCallback: (errorMessage: String) -> Unit
     ) {
-        substitutionApiInterface.fetchMatchSubstitutions(matchId).enqueue(object : Callback<List<Substitution>> {
+        substitutionApiInterface.fetchMatchSubstitutions(matchId, sort, sort2).enqueue(object : Callback<List<Substitution>> {
 
             override fun onFailure(call: Call<List<Substitution>>, t: Throwable) {
                 failureCallback(t.localizedMessage!!)

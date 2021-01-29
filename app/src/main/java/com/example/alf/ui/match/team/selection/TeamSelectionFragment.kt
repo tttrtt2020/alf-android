@@ -27,11 +27,6 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
 
     private lateinit var viewAdapter: TeamsAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -46,11 +41,6 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews()
         observeTeamSelectionViewModel()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.team, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun setupViews() {
@@ -71,16 +61,24 @@ class TeamSelectionFragment : Fragment(), TeamsAdapter.TeamsListener {
     }
 
     private fun openPlayerSelection(team: Team) {
-        val action = TeamSelectionFragmentDirections.actionTeamSelectionFragmentToPlayerSelectionFragment(
-                matchId = args.matchId,
-                hostTeamId = args.hostTeamId,
-                guestTeamId = args.guestTeamId,
-                minute = args.minute,
-                teamId = team.id,
-                fieldPosition = null,
-                eventType = args.eventType,
-                team = team
-        )
+        val action = when (args.mode) {
+            Mode.EVENT_TEAM -> TeamSelectionFragmentDirections.actionTeamSelectionFragmentToEventTypeSelectionFragment(
+                    matchId = args.matchId,
+                    hostTeamId = args.hostTeamId, guestTeamId = args.guestTeamId,
+                    minute = args.minute,
+                    teamId = team.id, team = team
+            )
+            Mode.SUBSTITUTION_TEAM -> TeamSelectionFragmentDirections.actionTeamSelectionFragmentToPlayerSelectionFragment(
+                    matchId = args.matchId,
+                    hostTeamId = args.hostTeamId, guestTeamId = args.guestTeamId,
+                    minute = args.minute,
+                    teamId = team.id, team = team,
+                    fieldPosition = null,
+                    eventType = null,
+                    playerOut = null,
+                    mode = com.example.alf.ui.match.players.selection.Mode.SUBSTITUTION_OUT_PLAYER
+            )
+        }
         findNavController().navigate(action)
     }
 

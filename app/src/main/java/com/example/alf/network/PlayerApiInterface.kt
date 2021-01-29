@@ -24,4 +24,22 @@ interface PlayerApiInterface {
             @Query("page") page: Int
     ): PlayersPage
 
+    @GET("matches/{matchId}/{teamId}/{minute}/substitutionAllowableOutPlayers")
+    suspend fun fetchMatchSubstitutionOutAllowablePlayers(
+            @Path("matchId") matchId: Int, @Path("teamId") teamId: Int,
+            @Path("minute") minute: Int,
+            @Query("query") query: String,
+            @Query("sort") field: String,
+            @Query("page") page: Int
+    ): PlayersPage
+
+    @GET("matches/{matchId}/{teamId}/{minute}/substitutionAllowableInPlayers")
+    suspend fun fetchMatchSubstitutionInAllowablePlayers(
+            @Path("matchId") matchId: Int, @Path("teamId") teamId: Int,
+            @Path("minute") minute: Int,
+            @Query("query") query: String,
+            @Query("sort") field: String,
+            @Query("page") page: Int
+    ): PlayersPage
+
 }

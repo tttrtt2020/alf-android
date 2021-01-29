@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.data.model.event.EventType
 import com.example.alf.databinding.FragmentEventTypeSelectionBinding
+import com.example.alf.ui.match.players.selection.Mode
 import com.google.android.material.snackbar.Snackbar
 
 class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListener {
@@ -72,12 +73,15 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
     }
 
     override fun onItemClick(eventType: EventType) {
-        val action = EventTypeSelectionFragmentDirections.actionEventTypeSelectionFragmentToTeamSelectionFragment(
+        val action = EventTypeSelectionFragmentDirections.actionEventTypeSelectionFragmentToPlayerSelectionFragment(
                 matchId = args.matchId,
-                hostTeamId = args.hostTeamId,
-                guestTeamId = args.guestTeamId,
+                hostTeamId = args.hostTeamId, guestTeamId = args.guestTeamId,
                 minute = args.minute,
+                teamId = args.teamId, team = args.team,
+                fieldPosition = null,
                 eventType = eventType,
+                playerOut = null,
+                mode = Mode.EVENT_PLAYER
         )
         findNavController().navigate(action)
     }

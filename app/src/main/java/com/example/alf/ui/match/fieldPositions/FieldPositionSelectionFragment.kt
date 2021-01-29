@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.R
 import com.example.alf.data.model.match.FieldPosition
 import com.example.alf.databinding.FragmentFieldPositionSelectionBinding
+import com.example.alf.ui.match.players.selection.Mode
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -91,10 +92,13 @@ class FieldPositionSelectionFragment : Fragment(), FieldPositionsAdapter.FieldPo
     private fun openPlayerSelectionFragment(fieldPosition: FieldPosition?) {
         val action = FieldPositionSelectionFragmentDirections.actionFieldPositionSelectionFragmentToPlayerSelectionFragment(
                 matchId = args.matchId,
-                0, 0,
-                teamId = args.teamId,
+                hostTeamId = 0, guestTeamId = 0,
+                minute = 0,
+                teamId = args.teamId, team = null,
                 fieldPosition = fieldPosition,
-                0, null, null
+                eventType = null,
+                playerOut = null,
+                mode = Mode.TEAM_PLAYER
         )
         findNavController().navigate(action)
     }

@@ -149,9 +149,9 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
             }
         }
 
-        playerSelectionViewModel.goBack.observe(viewLifecycleOwner) { viewEvent ->
+        playerSelectionViewModel.navigate.observe(viewLifecycleOwner) { viewEvent ->
             viewEvent.getContentIfNotHandledOrReturnNull()?.let {
-                goBack(viewEvent.peekContent())
+                navigate(viewEvent.peekContent())
             }
         }
     }
@@ -160,7 +160,7 @@ class PlayerSelectionFragment : Fragment(), SearchView.OnQueryTextListener,
         playerSelectionViewModel.selectPlayer(player)
     }
 
-    private fun goBack(action: NavDirections) {
+    private fun navigate(action: NavDirections) {
         findNavController().navigate(action)
     }
 

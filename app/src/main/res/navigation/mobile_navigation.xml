@@ -150,9 +150,17 @@
         <argument
             android:name="minute"
             app:argType="integer" />
+        <argument
+            android:name="teamId"
+            app:argType="integer" />
+        <argument
+            android:name="team"
+            app:argType="com.example.alf.data.model.Team"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
-            android:id="@+id/action_eventTypeSelectionFragment_to_teamSelectionFragment"
-            app:destination="@id/teamSelectionFragment"
+            android:id="@+id/action_eventTypeSelectionFragment_to_playerSelectionFragment"
+            app:destination="@id/playerSelectionFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
@@ -280,26 +288,33 @@
             android:name="guestTeamId"
             app:argType="integer" />
         <argument
+            android:name="minute"
+            app:argType="integer" />
+        <argument
             android:name="teamId"
             app:argType="integer" />
+        <argument
+            android:name="team"
+            app:argType="com.example.alf.data.model.Team"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <argument
             android:name="fieldPosition"
             app:argType="com.example.alf.data.model.match.FieldPosition"
             app:nullable="true"
             android:defaultValue="@null" />
         <argument
-            android:name="minute"
-            app:argType="integer" />
-        <argument
             android:name="eventType"
             app:argType="com.example.alf.data.model.event.EventType"
             app:nullable="true"
             android:defaultValue="@null" />
         <argument
-            android:name="team"
-            app:argType="com.example.alf.data.model.Team"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:name="playerOut"
+            app:argType="com.example.alf.data.model.Player"
+            app:nullable="true" />
+        <argument
+            android:name="mode"
+            app:argType="com.example.alf.ui.match.players.selection.Mode" />
         <action
             android:id="@+id/action_playerSelectionFragment_to_teamFragment"
             app:destination="@id/teamFragment"
@@ -313,6 +328,22 @@
             android:id="@+id/action_playerSelectionFragment_to_eventsFragment"
             app:destination="@id/eventsFragment"
             app:popUpTo="@id/eventsFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_from_left"
+            app:exitAnim="@anim/slide_out_to_right"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+        <action
+            android:id="@+id/action_playerSelectionFragment_self"
+            app:destination="@id/playerSelectionFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+        <action
+            android:id="@+id/action_playerSelectionFragment_to_substitutionsFragment"
+            app:destination="@id/substitutionsFragment"
+            app:popUpTo="@id/substitutionsFragment"
             app:popUpToInclusive="true"
             app:enterAnim="@anim/slide_in_from_left"
             app:exitAnim="@anim/slide_out_to_right"
@@ -366,10 +397,15 @@
             android:name="minute"
             app:argType="integer" />
         <argument
-            android:name="eventType"
-            app:argType="com.example.alf.data.model.event.EventType"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:name="mode"
+            app:argType="com.example.alf.ui.match.team.selection.Mode" />
+        <action
+            android:id="@+id/action_teamSelectionFragment_to_eventTypeSelectionFragment"
+            app:destination="@id/eventTypeSelectionFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
         <action
             android:id="@+id/action_teamSelectionFragment_to_playerSelectionFragment"
             app:destination="@id/playerSelectionFragment"
@@ -392,9 +428,12 @@
         <argument
             android:name="guestTeamId"
             app:argType="integer" />
+        <argument
+            android:name="mode"
+            app:argType="com.example.alf.ui.match.team.selection.Mode" />
         <action
-            android:id="@+id/action_minuteSelectionFragment_to_eventTypeSelectionFragment"
-            app:destination="@id/eventTypeSelectionFragment"
+            android:id="@+id/action_minuteSelectionFragment_to_teamSelectionFragment"
+            app:destination="@id/teamSelectionFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"
             app:popEnterAnim="@anim/slide_in_from_left"
@@ -423,6 +462,13 @@
         <argument
             android:name="guestTeamId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_substitutionsFragment_to_minuteSelectionFragment"
+            app:destination="@id/minuteSelectionFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 </navigation>

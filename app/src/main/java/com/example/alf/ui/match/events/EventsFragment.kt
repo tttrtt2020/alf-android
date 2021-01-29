@@ -14,6 +14,7 @@ import com.example.alf.R
 import com.example.alf.data.model.event.Event
 import com.example.alf.databinding.FragmentEventsBinding
 import com.example.alf.ui.common.ActionModeCallback
+import com.example.alf.ui.match.team.selection.Mode
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -108,7 +109,9 @@ class EventsFragment : Fragment(), EventsAdapter.EventsListener {
 
     private fun onFabClicked() {
         val action = EventsFragmentDirections.actionEventsFragmentToEventTypesFragment(
-                args.matchId, args.hostTeamId, args.guestTeamId
+                matchId = args.matchId,
+                hostTeamId = args.hostTeamId, guestTeamId = args.guestTeamId,
+                mode = Mode.EVENT_TEAM
         )
         findNavController().navigate(action)
     }
