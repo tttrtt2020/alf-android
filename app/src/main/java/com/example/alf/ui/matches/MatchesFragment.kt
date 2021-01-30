@@ -89,12 +89,8 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.show_only_finished -> {
+            /*R.id.show_only_finished -> {
                 TODO("Not yet implemented")
-            }
-            /*R.id.help -> {
-                showHelp()
-                true
             }*/
             else -> super.onOptionsItemSelected(item)
         }

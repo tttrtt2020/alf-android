@@ -15,11 +15,12 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />-->
 
-    <item
+    <!-- todo: implement later -->
+    <!--<item
         android:id="@+id/show_only_finished"
         android:title="@string/show_only_finished"
         android:checkable="true"
         app:showAsAction="never">
-    </item>
+    </item>-->
 
 </menu>
