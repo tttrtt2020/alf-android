@@ -4,10 +4,10 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
+        <!--<item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="@string/menu_home" />-->
         <item
             android:id="@+id/nav_persons"
             android:icon="@drawable/ic_menu_persons"
@@ -16,9 +16,9 @@
             android:id="@+id/nav_matches"
             android:icon="@drawable/ic_menu_matches"
             android:title="@string/menu_matches" />
-        <item
+        <!--<item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="@string/menu_gallery" />-->
     </group>
 </menu>
