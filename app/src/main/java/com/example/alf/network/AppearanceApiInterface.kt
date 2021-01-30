@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface AppearanceApiInterface {
 
-    @GET("matches/{matchId}/{teamId}/squad")
+    @GET("matches/{matchId}/{teamId}/appearances")
     fun fetchMatchTeamAppearances(
         @Path("matchId") matchId: Int,
         @Path("teamId") teamId: Int

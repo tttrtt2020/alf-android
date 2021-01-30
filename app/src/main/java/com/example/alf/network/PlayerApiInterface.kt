@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface PlayerApiInterface {
 
-    @GET("matches/{matchId}/{teamId}/allowablePlayers")
+    @GET("matches/{matchId}/{teamId}/appearanceAllowablePlayers")
     suspend fun fetchMatchTeamAllowablePlayers(
         @Path("matchId") matchId: Int, @Path("teamId") teamId: Int,
         @Query("query") query: String,
@@ -15,7 +15,7 @@ interface PlayerApiInterface {
         @Query("page") page: Int
     ): PlayersPage
 
-    @GET("matches/{matchId}/{teamId}/{eventTypeId}/{minute}/allowablePlayers")
+    @GET("matches/{matchId}/{teamId}/{eventTypeId}/{minute}/eventAllowablePlayers")
     suspend fun fetchMatchEventAllowablePlayers(
             @Path("matchId") matchId: Int, @Path("teamId") teamId: Int,
             @Path("eventTypeId") eventTypeId: Int, @Path("minute") minute: Int,
