@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.alf.data.model.MatchTeam
 import com.example.alf.data.model.Player
+import com.example.alf.data.model.match.Appearance
 import com.example.alf.data.model.match.Formation
 import com.example.alf.data.repository.AppearanceApiService
 import com.example.alf.data.repository.MatchApiService
@@ -57,11 +58,10 @@ class TeamViewModel(
         )
     }
 
-    fun deletePlayer(player: Player, position: Int) {
+    fun deleteAppearance(appearance: Appearance, position: Int) {
         loadingInProgressLiveData.value = true
         appearanceApiService.deleteAppearance(
-                matchId,
-                player,
+                appearance.id,
                 { deletePlayerActionLiveData.value = ViewEvent(position) },
                 { deletePlayerActionLiveData.value = ViewEvent(-1) }
         )

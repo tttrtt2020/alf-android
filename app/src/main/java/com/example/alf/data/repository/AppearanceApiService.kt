@@ -67,12 +67,11 @@ class AppearanceApiService {
     }
 
     fun deleteAppearance(
-        matchId: Int,
-        player: Player,
-        successCallback: () -> Unit,
-        failureCallback: (errorMessage: String) -> Unit
+            appearanceId: Int,
+            successCallback: () -> Unit,
+            failureCallback: (errorMessage: String) -> Unit
     ) {
-        appearanceApiInterface.deleteAppearance(matchId, player.id).enqueue(object : Callback<Unit> {
+        appearanceApiInterface.deleteAppearance(appearanceId).enqueue(object : Callback<Unit> {
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 failureCallback(t.localizedMessage!!)

@@ -9,22 +9,21 @@ interface AppearanceApiInterface {
 
     @GET("matches/{matchId}/{teamId}/appearances")
     fun fetchMatchTeamAppearances(
-        @Path("matchId") matchId: Int,
-        @Path("teamId") teamId: Int
+            @Path("matchId") matchId: Int,
+            @Path("teamId") teamId: Int
     ): Call<List<Appearance>>
 
     @POST("matches/{matchId}/{teamId}/players")
     fun addAppearance(
-        @Path("matchId") matchId: Int,
-        @Path("teamId") teamId: Int,
-        @Query("fieldPositionId") fieldPositionId: Int?,
-        @Body player: Player
+            @Path("matchId") matchId: Int,
+            @Path("teamId") teamId: Int,
+            @Query("fieldPositionId") fieldPositionId: Int?,
+            @Body player: Player
     ): Call<Player>
 
-    @DELETE("matches/{matchId}/{playerId}")
+    @DELETE("appearances/{appearanceId}")
     fun deleteAppearance(
-        @Path("matchId") matchId: Int,
-        @Path("playerId") playerId: Int
+            @Path("appearanceId") appearanceId: Int
     ): Call<Unit>
 
 }

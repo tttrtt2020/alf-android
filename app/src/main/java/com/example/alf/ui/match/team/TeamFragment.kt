@@ -192,7 +192,7 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
     }
 
     override fun onItemDeleted(appearance: Appearance, position: Int) {
-        deletePlayer(appearance.player, position)
+        deleteAppearance(appearance, position)
     }
 
     override fun onItemClick(appearance: Appearance) {
@@ -214,8 +214,8 @@ class TeamFragment : Fragment(), AppearancesAdapter.SquadListener {
         }
     }
 
-    private fun deletePlayer(player: Player, position: Int) {
-        teamViewModel.deletePlayer(player, position)
+    private fun deleteAppearance(appearance: Appearance, position: Int) {
+        teamViewModel.deleteAppearance(appearance, position)
     }
 
     class AppearanceActionModeCallback(
