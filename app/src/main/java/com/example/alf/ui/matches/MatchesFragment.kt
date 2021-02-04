@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.alf.AlfApplication
 import com.example.alf.Injection
 import com.example.alf.R
-import com.example.alf.data.model.Match
+import com.example.alf.data.model.MatchListItem
 import com.example.alf.databinding.FragmentMatchesBinding
 import com.example.alf.ui.MatchesLoadStateAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -169,7 +169,7 @@ class MatchesFragment : Fragment(), MatchesPagingAdapter.MatchListener, SearchVi
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    override fun onItemClick(match: Match) {
+    override fun onItemClick(match: MatchListItem) {
         val action = MatchesFragmentDirections.actionNavMatchesToMatchFragment(
                 matchId = match.id,
                 hostTeamId = match.hostTeam.id,

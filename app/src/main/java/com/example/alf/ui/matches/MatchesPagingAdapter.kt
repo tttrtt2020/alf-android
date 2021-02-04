@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alf.AlfApplication
-import com.example.alf.data.model.Match
+import com.example.alf.data.model.MatchListItem
 import com.example.alf.data.model.Team
 import com.example.alf.databinding.ItemMatchBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var listener: MatchListener) :
-    PagingDataAdapter<Match, MatchesPagingAdapter.ViewHolder>(diffCallback) {
+class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<MatchListItem>, var listener: MatchListener) :
+    PagingDataAdapter<MatchListItem, MatchesPagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
 
@@ -58,12 +58,12 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
     }
 
     interface MatchListener {
-        fun onItemClick(match: Match)
+        fun onItemClick(match: MatchListItem)
     }
 
     inner class ViewHolder(private val binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(match: Match) {
+        fun bind(match: MatchListItem) {
             binding.match = match
             binding.executePendingBindings()
         }
@@ -83,13 +83,13 @@ class MatchesPagingAdapter(diffCallback: DiffUtil.ItemCallback<Match>, var liste
         }
     }
 
-    object MatchComparator : DiffUtil.ItemCallback<Match>() {
-        override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {
+    object MatchComparator : DiffUtil.ItemCallback<MatchListItem>() {
+        override fun areItemsTheSame(oldItem: MatchListItem, newItem: MatchListItem): Boolean {
             // Id is unique.
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Match, newItem: Match): Boolean {
+        override fun areContentsTheSame(oldItem: MatchListItem, newItem: MatchListItem): Boolean {
             return oldItem == newItem
         }
     }

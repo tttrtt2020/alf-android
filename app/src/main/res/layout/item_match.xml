@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="match" type="com.example.alf.data.model.Match" />
+        <variable name="match" type="com.example.alf.data.model.MatchListItem" />
     </data>
 
     <RelativeLayout

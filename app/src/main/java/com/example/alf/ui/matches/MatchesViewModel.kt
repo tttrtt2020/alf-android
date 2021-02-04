@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.alf.data.model.Match
+import com.example.alf.data.model.MatchListItem
 import com.example.alf.data.repository.MatchApiService
 import kotlinx.coroutines.flow.Flow
 
@@ -17,7 +17,7 @@ class MatchesViewModel(
 
     private var currentQueryValue: String? = null
 
-    var currentSearchResult: Flow<PagingData<Match>>? = null
+    var currentSearchResult: Flow<PagingData<MatchListItem>>? = null
 
     // todo: rework to MediatorLiveData depending on flow or similar
     var loadingInProgressLiveData = MutableLiveData(true)
@@ -26,13 +26,13 @@ class MatchesViewModel(
         matchApiService = MatchApiService()
     }
 
-    fun searchMatches(query: String, sort: String): Flow<PagingData<Match>> {
+    fun searchMatches(query: String, sort: String): Flow<PagingData<MatchListItem>> {
         val lastResult = currentSearchResult
         if (query == currentQueryValue && lastResult != null) {
             return lastResult
         }
         currentQueryValue = query
-        val newResult: Flow<PagingData<Match>> = matchesPagingRepository
+        val newResult: Flow<PagingData<MatchListItem>> = matchesPagingRepository
                 .getSearchResultStream(query, sort)
                 .cachedIn(viewModelScope)
         currentSearchResult = newResult

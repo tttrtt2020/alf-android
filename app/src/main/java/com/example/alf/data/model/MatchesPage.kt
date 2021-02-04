@@ -1,7 +1,7 @@
 package com.example.alf.data.model
 
 data class MatchesPage (
-        val content: List<Match>,
+        val content: List<MatchListItem>,
         var last: Boolean,
         var totalPages: Int,
         var totalElements: Int,

@@ -2,7 +2,7 @@ package com.example.alf.data.paging
 
 import androidx.paging.PagingSource
 import com.example.alf.AlfApplication
-import com.example.alf.data.model.Match
+import com.example.alf.data.model.MatchListItem
 import com.example.alf.service.MatchesService
 import retrofit2.HttpException
 import java.io.IOException
@@ -11,11 +11,11 @@ class MatchesPagingSource(
         private val service: MatchesService,
         private val query: String,
         private val sort: String
-) : PagingSource<Int, Match>() {
+) : PagingSource<Int, MatchListItem>() {
 
     private val startingPageIndex = AlfApplication.getProperty("pagination.matches.startIndex").toInt()
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Match> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MatchListItem> {
         try {
             // Start refresh at page 1 if undefined.
             val nextPageNumber = params.key ?: startingPageIndex
