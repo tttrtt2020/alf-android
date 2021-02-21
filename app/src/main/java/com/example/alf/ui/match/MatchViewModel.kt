@@ -27,8 +27,8 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
     val guestTeamLogoUrlLiveData = Transformations.map(guestTeamLiveData) { t -> t?.let { buildTeamLogoUrl(it) } }
     val statusLiveData = Transformations.map(matchLiveData) { m -> m.data?.status }
     val stadiumPhotoUrlLiveData = Transformations.map(matchLiveData) { m -> m.data?.stadium?.let { buildStadiumPhotoUrl(it) } }
-    val resultLiveData = Transformations.map(matchLiveData) { m ->
-        if (m.data?.status == "FINISHED") (m.data.resultHostGoals.toString() + ":" + m.data.resultGuestGoals.toString())
+    val scoreLiveData = Transformations.map(matchLiveData) { m ->
+        if (m.data?.status == "FINISHED") (m.data.scoreHost.toString() + ":" + m.data.scoreGuest.toString())
         else "- : -"
     }
     val dateLiveData = Transformations.map(matchLiveData) { m -> m.data?.dateTime?.let { dateFormat.format(m.data.dateTime!!) } }

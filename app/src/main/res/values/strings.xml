@@ -70,7 +70,7 @@
     <string name="team">Team</string>
     <string name="person">Person</string>
     <string name="additional_info">Additional info</string>
-    <string name="match_result_unknown">- : -</string>
+    <string name="match_score_unknown">- : -</string>
 
     <string name="in_for">In for: %s</string>
     <string name="out_for">Out for: %s</string>

@@ -45,14 +45,14 @@
                         android:gravity="center">
 
                         <TextView
-                            android:id="@+id/result"
+                            android:id="@+id/score"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
                             android:textSize="@dimen/text_size_medium"
                             android:textStyle="bold"
                             android:textColor="@color/white"
-                            android:text="@{matchViewModel.resultLiveData}" />
+                            android:text="@{matchViewModel.scoreLiveData}" />
 
                         <TextView
                             android:id="@+id/date"

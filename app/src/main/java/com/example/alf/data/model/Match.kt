@@ -11,8 +11,8 @@ data class Match(
         var hostTeam: Team,
         var guestTeam: Team,
         var status: String,
-        var resultHostGoals: Int,
-        var resultGuestGoals: Int,
+        var scoreHost: Int,
+        var scoreGuest: Int,
         var youtubeId: String?
 ) : Serializable {
     companion object {

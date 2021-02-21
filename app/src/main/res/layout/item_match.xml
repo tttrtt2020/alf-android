@@ -26,13 +26,13 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/result"
+                android:id="@+id/score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
-                android:text="@{match.status.equalsIgnoreCase(match.STATUS_FINISHED) ? (match.resultHostGoals + ` : ` + match.resultGuestGoals) : @string/match_result_unknown}" />
+                android:text="@{match.status.equalsIgnoreCase(match.STATUS_FINISHED) ? (match.scoreHost + ` : ` + match.scoreGuest) : @string/match_score_unknown}" />
 
             <TextView
                 android:id="@+id/date"

@@ -10,8 +10,8 @@ data class MatchListItem(
         var hostTeam: Team,
         var guestTeam: Team,
         var status: String,
-        var resultHostGoals: Int,
-        var resultGuestGoals: Int,
+        var scoreHost: Int,
+        var scoreGuest: Int,
 ) : Serializable {
     companion object {
         // TODO: 2/4/21 use same statuses as in Match class
