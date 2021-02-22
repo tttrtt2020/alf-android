@@ -1,6 +1,8 @@
 package com.example.alf.ui.match
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -114,6 +116,8 @@ class MatchFragment : Fragment() {
         binding.hostLayout.setOnClickListener { onHostClicked() }
         binding.guestLayout.setOnClickListener { onGuestClicked() }
 
+        binding.stadiumLayout.setOnClickListener { matchViewModel.openStadium() }
+
         binding.bottomNavigation.apply {
             itemIconTintList = null
             setOnNavigationItemSelectedListener { item -> onOptionsItemSelected(item) }
@@ -124,6 +128,12 @@ class MatchFragment : Fragment() {
         matchViewModel.getMatchResultLiveData.observe(viewLifecycleOwner, {
             onGetMatchResult(it)
         })
+
+        matchViewModel.openStadiumLiveData.observe(viewLifecycleOwner) { viewEvent ->
+            viewEvent.getContentIfNotHandledOrReturnNull()?.let {
+                openStadiumOnMap(it)
+            }
+        }
     }
 
     private fun onGetMatchResult(success: Boolean?) {
@@ -162,6 +172,11 @@ class MatchFragment : Fragment() {
                 args.guestTeamId
         )
         findNavController().navigate(action)
+    }
+
+    private fun openStadiumOnMap(uri: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        context?.startActivity(intent)
     }
 
     private fun showSnackBar(view: View, msg: String) {

@@ -1,12 +1,16 @@
 package com.example.alf.ui.match
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.example.alf.AlfApplication
 import com.example.alf.data.model.Match
 import com.example.alf.data.model.Stadium
 import com.example.alf.data.model.Team
 import com.example.alf.data.repository.MatchApiService
 import com.example.alf.network.Resource
+import com.example.alf.ui.common.ViewEvent
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +43,8 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
 
     val getMatchResultLiveData = Transformations.map(matchLiveData) { mi -> mi != null } as MutableLiveData<Boolean?>
 
+    val openStadiumLiveData = MutableLiveData<ViewEvent<String>>()
+
     val buttonsEnabledLiveData = Transformations.map(matchLiveData) { m -> m is Resource.Success }
 
     val loadingInProgressLiveData = MediatorLiveData<Boolean>()
@@ -70,6 +76,28 @@ class MatchViewModel(private val matchId: Int) : ViewModel() {
 
     fun getMatch(): Match? {
         return matchLiveData.value?.data
+    }
+
+    fun openStadium() {
+        val uri: String
+        val latitude = stadiumLiveData.value?.latitude
+        val longitude = stadiumLiveData.value?.longitude
+        if (latitude != null && longitude != null
+                && !latitude.equals(0.0) && !longitude.equals(0.0)
+        ) {
+            uri = String.format(Locale.getDefault(), "geo:$latitude,$longitude?q=$latitude,$longitude")
+        } else {
+            var address = stadiumLiveData.value?.address
+            val name = stadiumLiveData.value?.name
+            val city = stadiumLiveData.value?.city
+            if (city == null) {
+                address = "$city $address"
+            }
+
+            uri = String.format(Locale.getDefault(), "geo:0,0?q=$name $address")
+        }
+
+        openStadiumLiveData.value = ViewEvent(uri)
     }
 
 }
