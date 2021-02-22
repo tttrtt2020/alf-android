@@ -17,155 +17,300 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/main_info_frame_layout"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/main_info_frame_layout_height"
-                android:layout_alignParentTop="true"
-                android:background="@color/gray"
-                app:backgroundImageUrl="@{matchViewModel.stadiumPhotoUrlLiveData}">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/dark_transparent_foreground"/>
+                android:layout_height="match_parent"
+                android:layout_above="@id/bottom_navigation">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
+
+                    <FrameLayout
+                        android:id="@+id/main_info_frame_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/main_info_frame_layout_height"
+                        android:layout_alignParentTop="true"
+                        android:background="@color/gray"
+                        app:backgroundImageUrl="@{matchViewModel.stadiumPhotoUrlLiveData}">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/dark_transparent_foreground"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/result_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/card_margin"
+                                android:orientation="vertical"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/score"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:textSize="@dimen/text_size_medium"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/white"
+                                    android:text="@{matchViewModel.scoreLiveData}" />
+
+                                <TextView
+                                    android:id="@+id/date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="2dp"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:textColor="@color/white"
+                                    android:text="@{matchViewModel.dateLiveData}" />
+
+                                <TextView
+                                    android:id="@+id/time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:textColor="@color/white"
+                                    android:text="@{matchViewModel.timeLiveData}" />
+
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/host_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toStartOf="@id/result_layout"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:padding="@dimen/card_margin"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:foreground="?android:attr/selectableItemBackground">
+
+                                <ImageView
+                                    android:id="@+id/host_logo"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_marginEnd="@dimen/card_margin"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="centerCrop"
+                                    android:contentDescription="@string/content_description_team_logo"
+                                    app:imageUrl="@{matchViewModel.hostTeamLogoUrlLiveData}"/>
+
+                                <TextView
+                                    android:id="@+id/host_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toEndOf="@id/host_logo"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:gravity="center"
+                                    android:textSize="@dimen/text_size_medium"
+                                    android:textColor="@color/white"
+                                    android:text="@{matchViewModel.hostTeamNameLiveData}" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/guest_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toEndOf="@id/result_layout"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:padding="@dimen/card_margin"
+                                android:focusable="true"
+                                android:clickable="true"
+                                android:foreground="?android:attr/selectableItemBackground">
+
+                                <ImageView
+                                    android:id="@+id/guest_logo"
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:layout_marginStart="@dimen/card_margin"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="centerCrop"
+                                    android:contentDescription="@string/content_description_team_logo"
+                                    app:imageUrl="@{matchViewModel.guestTeamLogoUrlLiveData}"/>
+
+                                <TextView
+                                    android:id="@+id/guest_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toStartOf="@id/guest_logo"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:gravity="center"
+                                    android:textSize="@dimen/text_size_medium"
+                                    android:textColor="@color/white"
+                                    android:text="@{matchViewModel.guestTeamNameLiveData}" />
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                    </FrameLayout>
 
                     <LinearLayout
-                        android:id="@+id/result_layout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_margin"
-                        android:orientation="vertical"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center">
+                        android:layout_below="@id/main_info_frame_layout"
+                        android:divider="?android:dividerHorizontal"
+                        android:showDividers="middle|end"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/score"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/competition_layout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:textSize="@dimen/text_size_medium"
-                            android:textStyle="bold"
-                            android:textColor="@color/white"
-                            android:text="@{matchViewModel.scoreLiveData}" />
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/card_margin">
 
-                        <TextView
-                            android:id="@+id/date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:textSize="@dimen/text_size_small"
-                            android:textColor="@color/white"
-                            android:text="@{matchViewModel.dateLiveData}" />
+                            <TextView
+                                android:id="@+id/competition_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/card_margin_half"
+                                android:textSize="@dimen/header_text_size"
+                                android:textColor="@color/text_color_header"
+                                android:text="@string/competition"/>
 
-                        <TextView
-                            android:id="@+id/time"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_medium"
+                                android:text="@{matchViewModel.competitionNameLiveData != null ? matchViewModel.competitionNameLiveData : @string/no_competition}"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/format_layout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_size_small"
-                            android:textColor="@color/white"
-                            android:text="@{matchViewModel.timeLiveData}" />
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/card_margin">
+
+                            <TextView
+                                android:id="@+id/format_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/card_margin_half"
+                                android:textSize="@dimen/header_text_size"
+                                android:textColor="@color/text_color_header"
+                                android:text="@string/format"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_medium"
+                                android:text="@{matchViewModel.formatLiveData.name}"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/stadium_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/card_margin">
+
+                            <TextView
+                                android:id="@+id/stadium_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/card_margin_half"
+                                android:textSize="@dimen/header_text_size"
+                                android:textColor="@color/text_color_header"
+                                android:text="@string/stadium"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_medium"
+                                android:text="@{matchViewModel.stadiumLiveData.name}"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/status_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/card_margin">
+
+                            <TextView
+                                android:id="@+id/status_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/card_margin_half"
+                                android:textSize="@dimen/header_text_size"
+                                android:textColor="@color/text_color_header"
+                                android:text="@string/status"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_medium"
+                                android:text="@{matchViewModel.statusLiveData}"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/score_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/card_margin">
+
+                            <TextView
+                                android:id="@+id/score_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/card_margin_half"
+                                android:textSize="@dimen/header_text_size"
+                                android:textColor="@color/text_color_header"
+                                android:text="@string/score"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_size_medium"
+                                android:text="@{matchViewModel.scoreLiveData}"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:id="@+id/host_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toStartOf="@id/result_layout"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:padding="@dimen/card_margin"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:id="@+id/host_logo"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginEnd="@dimen/card_margin"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:contentDescription="@string/content_description_team_logo"
-                            app:imageUrl="@{matchViewModel.hostTeamLogoUrlLiveData}"/>
-
-                        <TextView
-                            android:id="@+id/host_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/host_logo"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:textSize="@dimen/text_size_medium"
-                            android:textColor="@color/white"
-                            android:text="@{matchViewModel.hostTeamNameLiveData}" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/guest_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toEndOf="@id/result_layout"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:padding="@dimen/card_margin"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:id="@+id/guest_logo"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginStart="@dimen/card_margin"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:contentDescription="@string/content_description_team_logo"
-                            app:imageUrl="@{matchViewModel.guestTeamLogoUrlLiveData}"/>
-
-                        <TextView
-                            android:id="@+id/guest_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toStartOf="@id/guest_logo"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="center"
-                            android:textSize="@dimen/text_size_medium"
-                            android:textColor="@color/white"
-                            android:text="@{matchViewModel.guestTeamNameLiveData}" />
-                    </RelativeLayout>
-
                 </RelativeLayout>
 
-            </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/main_info_frame_layout"
-                android:layout_above="@id/bottom_navigation"
-                android:padding="@dimen/card_margin"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:orientation="vertical">
-
-            </LinearLayout>
+            </ScrollView>
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"

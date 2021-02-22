@@ -13,7 +13,8 @@ data class Match(
         var status: String,
         var scoreHost: Int,
         var scoreGuest: Int,
-        var youtubeId: String?
+        var youtubeId: String?,
+        var competitionName: String?
 ) : Serializable {
     companion object {
         const val STATUS_FINISHED: String = "FINISHED"

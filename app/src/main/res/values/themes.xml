@@ -15,6 +15,7 @@
         <item name="windowActionModeOverlay">true</item>
         <!-- todo: set color -->
         <item name="android:actionModeBackground">@color/dark_gray</item>
+        <item name="android:textColor">@color/text_color</item>
     </style>
 
     <style name="Theme.ALF.NoActionBar">

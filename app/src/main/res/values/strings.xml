@@ -92,4 +92,11 @@
     <string name="empty_collection_teams">No teams</string>
     <string name="empty_collection_substitutions">No substitutions</string>
 
+    <string name="competition">Competition</string>
+    <string name="format">Format</string>
+    <string name="stadium">Stadium</string>
+    <string name="status">Status</string>
+    <string name="score">Score</string>
+    <string name="no_competition">No competition</string>
+
 </resources>
