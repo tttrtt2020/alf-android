@@ -1,5 +1,6 @@
 package com.example.alf.data.model
 
+import com.example.alf.data.model.match.Status
 import java.io.Serializable
 import java.util.*
 
@@ -10,7 +11,7 @@ data class Match(
         var stadium: Stadium?,
         var hostTeam: Team,
         var guestTeam: Team,
-        var status: String,
+        var status: Status,
         var scoreHost: Int,
         var scoreGuest: Int,
         var youtubeId: String?,

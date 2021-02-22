@@ -27,6 +27,7 @@
     <string name="title_person">Person</string>
     <string name="title_match">Match</string>
     <string name="title_formations">Formations</string>
+    <string name="title_status_selection">Select status</string>
     <string name="title_event_type_selection">Select event type</string>
     <string name="title_team_selection">Select team</string>
     <string name="title_event">Event</string>

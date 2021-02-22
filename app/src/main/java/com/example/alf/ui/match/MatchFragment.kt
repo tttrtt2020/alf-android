@@ -113,10 +113,11 @@ class MatchFragment : Fragment() {
     }
 
     private fun setupViews() {
-        binding.hostLayout.setOnClickListener { onHostClicked() }
-        binding.guestLayout.setOnClickListener { onGuestClicked() }
+        binding.hostLayout.setOnClickListener { openHostTeam() }
+        binding.guestLayout.setOnClickListener { openGuestTeam() }
 
         binding.stadiumLayout.setOnClickListener { matchViewModel.openStadium() }
+        binding.statusLayout.setOnClickListener { openStatusSelection() }
 
         binding.bottomNavigation.apply {
             itemIconTintList = null
@@ -141,6 +142,15 @@ class MatchFragment : Fragment() {
             if (success) {
                 matchViewModel.getMatchResultLiveData.value = null
             } else showSnackBar(binding.root, "Get failed")
+        }
+    }
+
+    private fun openStatusSelection() {
+        matchViewModel.getMatch()?.let {
+            val action = MatchFragmentDirections.actionMatchFragmentToStatusSelectionFragment(
+                    args.matchId, args.hostTeamId, args.guestTeamId
+            )
+            findNavController().navigate(action)
         }
     }
 
@@ -183,7 +193,7 @@ class MatchFragment : Fragment() {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun onHostClicked() {
+    private fun openHostTeam() {
         matchViewModel.hostTeamLiveData.value?.let {
             val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
                     args.matchId,
@@ -193,7 +203,7 @@ class MatchFragment : Fragment() {
         }
     }
 
-    private fun onGuestClicked() {
+    private fun openGuestTeam() {
         matchViewModel.guestTeamLiveData.value?.let {
             val action = MatchFragmentDirections.actionMatchFragmentToTeamFragment(
                     args.matchId,

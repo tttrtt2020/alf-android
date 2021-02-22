@@ -32,7 +32,7 @@
                 android:layout_marginBottom="4dp"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
-                android:text="@{match.status.equalsIgnoreCase(match.STATUS_FINISHED) ? (match.scoreHost + ` : ` + match.scoreGuest) : @string/match_score_unknown}" />
+                android:text="@{match.status.name.equalsIgnoreCase(match.STATUS_FINISHED) ? (match.scoreHost + ` : ` + match.scoreGuest) : @string/match_score_unknown}" />
 
             <TextView
                 android:id="@+id/date"

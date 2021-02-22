@@ -20,6 +20,7 @@
     <dimen name="edit_live_event_header_text_size">@dimen/text_size_medium</dimen>
     <dimen name="edit_live_event_text_size">@dimen/text_size_large</dimen>
     <dimen name="event_minute_text_size">@dimen/text_size_medium</dimen>
+    <dimen name="status_name_text_size">@dimen/text_size_medium</dimen>
     <dimen name="event_type_name_text_size">@dimen/text_size_medium</dimen>
     <dimen name="substitution_minute_text_size">@dimen/text_size_medium</dimen>
     <dimen name="substitution_team_text_size">@dimen/text_size_medium</dimen>
