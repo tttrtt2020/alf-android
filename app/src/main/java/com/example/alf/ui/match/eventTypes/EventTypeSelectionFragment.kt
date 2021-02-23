@@ -85,4 +85,5 @@ class EventTypeSelectionFragment : Fragment(), EventTypesAdapter.EventTypesListe
         )
         findNavController().navigate(action)
     }
+
 }

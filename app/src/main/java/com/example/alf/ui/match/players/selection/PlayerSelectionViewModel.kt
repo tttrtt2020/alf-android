@@ -42,7 +42,6 @@ class PlayerSelectionViewModel(
     val navigate = MutableLiveData<ViewEvent<NavDirections>>()
 
     init {
-
         loadingInProgressLiveData.apply {
             //addSource(currentSearchResult!!.asLiveData()) { loadingInProgressLiveData.value = false }
             addSource(selectionResultLiveData) { loadingInProgressLiveData.value = false }
